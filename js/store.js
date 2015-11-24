@@ -48,5 +48,10 @@
         console.log(module.all_binders);
     }
     module.save_binder = save_binder;
+
+    module.get_card = function(card_name){
+        var card = module.all_cards[card_name.toLowerCase()];
+        return card;
+    }
     
 })(Module('store'));

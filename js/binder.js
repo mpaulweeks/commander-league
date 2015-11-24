@@ -5,18 +5,28 @@
     var from_decklist = {};
     var from_sideboard = {};
 
-    function init(){
-        var user_id = "mpw";
-        binder = store.load_binder(user_id);
+
+    function str_format(str){
+        var args = arguments;
+        return str.replace(/{(\d+)}/g, function(match, number) {
+            return typeof args[number] != 'undefined' ? args[number] : match;
+        });
     }
 
+    function init(){
+        var user_id = "1";
+        binder = store.load_binder(user_id);
+    }
+    module.init = init;
+
     function add_card_to_sideboard(card){
-        if (!card.name in binder.decklist){
+        if (!(card.name in binder.decklist)){
             binder.sideboard[card.name] = card;
         } else {
             console.log("cannot add card already in deck");
         }
     }
+    module.add_card_to_sideboard = add_card_to_sideboard;
 
     function remove_card_from_sideboard(card){
         delete binder.sideboard[card.name];
@@ -61,9 +71,32 @@
         store.save_binder(user_id, binder);
     }
 
-    function draw(){
+    var MOVE = '<input type="button" class="move_from_sideboard" value="<<"/>';
+    var CARD = '<li data-id={1}>{3}{2}</li>';
 
+    function draw(){
+        var html_sideboard = "";
+        for (var key in binder.sideboard){
+            var card = binder.sideboard[key];
+            html_sideboard += str_format(CARD, card.name, card.name, MOVE);
+        }
+        $("#sideboard").html(html_sideboard);
+
+        var html_from_sideboard = "";
+        for (var key in from_sideboard){
+            var card = from_sideboard[key];
+            html_from_sideboard += str_format(CARD, card.name, card.name, '');
+        }
+        $("#from_sideboard").html(html_from_sideboard);
+
+        $(".move_from_sideboard").on('click', function(evt){
+            var name = $(this).parent().data('id');
+            var card = store.get_card(name);
+            swap_from_sideboard(card);
+            draw();
+        });
     }
+    module.draw = draw;
 
 })(Module('binder'));
 
