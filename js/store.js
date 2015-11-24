@@ -1,8 +1,6 @@
 (function(module){
 
-    var tool = Module("tool");
-
-    var ALL_CARDS_FILE = 'json/binder.json';
+    var BINDER_FILE = 'json/binder.json';
     var ALL_CARDS_FILE = 'json/AllCards.json';
     var GITHUB_BASE = 'http://mpaulweeks.github.io/commander-league/';
 
@@ -31,6 +29,7 @@
             });
         });
     }
+    module.init = init;
 
     function load_binder(user_id){
         if (user_id in module.all_binders){
@@ -42,10 +41,12 @@
             sideboard: {}
         };
     }
+    module.load_binder = load_binder;
 
     function save_binder(binder){
         module.all_binders[binder.user_id] = binder;
         console.log(module.all_binders);
     }
+    module.save_binder = save_binder;
     
 })(Module('store'));
