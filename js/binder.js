@@ -1,12 +1,12 @@
 (function(module){
 
     var store = Module("store");
-    var user_id = "mpw";
     var binder = null;
     var from_decklist = {};
     var from_sideboard = {};
 
     function init(){
+        var user_id = "mpw";
         binder = store.load_binder(user_id);
     }
 

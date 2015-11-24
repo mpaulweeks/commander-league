@@ -36,11 +36,15 @@
         if (user_id in module.all_binders){
             return module.all_binders[user_id];
         }
-        return {};
+        return {
+            user_id: user_id,
+            decklist: {},
+            sideboard: {}
+        };
     }
 
-    function save_binder(user_id, binder){
-        module.all_binders[user_id] = binder;
+    function save_binder(binder){
+        module.all_binders[binder.user_id] = binder;
         console.log(module.all_binders);
     }
     
