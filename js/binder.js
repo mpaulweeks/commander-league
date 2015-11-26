@@ -117,12 +117,12 @@
     }
     module.swap_cards = swap_cards;
 
-    var SWAP_FROM_SIDEBOARD = '<input type="button" class="swap_from_sideboard" value="<<"/>';
-    var SWAP_FROM_DECKLIST = '<input type="button" class="swap_from_decklist" value=">>"/>';
-    var DELETE_SIDEBOARD = '<input type="button" class="delete_sideboard" value="-"/>';
-    var INCREMENT_SIDEBOARD = '<input type="button" class="increment_sideboard" value="+"/>';
-    var DELETE_FROM_DECKLIST = '<input type="button" class="delete_from_decklist" value="-"/>';
-    var DELETE_FROM_SIDEBOARD = '<input type="button" class="delete_from_sideboard" value="-"/>';
+    var SWAP_FROM_SIDEBOARD = '<input type="button" class="action" data-func="swap_from_sideboard" value="<<"/>';
+    var SWAP_FROM_DECKLIST = '<input type="button" class="action" data-func="swap_from_decklist" value=">>"/>';
+    var DELETE_SIDEBOARD = '<input type="button" class="action" data-func="delete_sideboard" value="-"/>';
+    var INCREMENT_SIDEBOARD = '<input type="button" class="action" data-func="increment_sideboard" value="+"/>';
+    var DELETE_FROM_DECKLIST = '<input type="button" class="action" data-func="delete_from_decklist" value="-"/>';
+    var DELETE_FROM_SIDEBOARD = '<input type="button" class="action" data-func="delete_from_sideboard" value="-"/>';
     var CARD = '<li data-id={1}>{2} {3}x {1}</li>';
 
     function get_card_html(card, property, display){
@@ -134,6 +134,15 @@
             display += INCREMENT_SIDEBOARD;
         }
         return str_format(CARD, card.name, display, count);
+    }
+
+    var card_actions = {
+        "swap_from_decklist": swap_from_decklist,
+        "swap_from_sideboard": swap_from_sideboard,
+        "delete_from_decklist": delete_card_from_decklist,
+        "delete_from_sideboard": delete_card_from_sideboard,
+        "delete_sideboard": delete_card_sideboard,
+        "increment_sideboard": increment_card_sideboard,
     }
 
     function draw(){
@@ -153,40 +162,11 @@
         $("#sideboard").html(html_sideboard);
         $("#from_sideboard").html(html_from_sideboard);
 
-        $(".swap_from_sideboard").on('click', function(evt){
+        $(".action").on('click', function(evt){
             var name = $(this).parent().data('id');
             var card = binder.cards[name];
-            swap_from_sideboard(card);
-            draw();
-        });
-        $(".swap_from_decklist").on('click', function(evt){
-            var name = $(this).parent().data('id');
-            var card = binder.cards[name];
-            swap_from_decklist(card);
-            draw();
-        });
-        $(".delete_from_sideboard").on('click', function(evt){
-            var name = $(this).parent().data('id');
-            var card = binder.cards[name];
-            delete_card_from_sideboard(card);
-            draw();
-        });
-        $(".delete_from_decklist").on('click', function(evt){
-            var name = $(this).parent().data('id');
-            var card = binder.cards[name];
-            delete_card_from_decklist(card);
-            draw();
-        });
-        $(".delete_sideboard").on('click', function(evt){
-            var name = $(this).parent().data('id');
-            var card = binder.cards[name];
-            delete_card_sideboard(card);
-            draw();
-        });
-        $(".increment_sideboard").on('click', function(evt){
-            var name = $(this).parent().data('id');
-            var card = binder.cards[name];
-            increment_card_sideboard(card);
+            var action = $(this).data("func");
+            card_actions[action](card);
             draw();
         });
     }
