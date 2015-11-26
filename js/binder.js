@@ -2,7 +2,20 @@
 
     var store = Module("store");
     var binder = null;
+    // for debug
     module.get_binder = function(){return binder;};
+
+    var valid_multiples = {
+        "Forest": true,
+        "Plains": true,
+        "Swamp": true,
+        "Island": true,
+        "Mountain": true,
+    }
+
+    function multiples_ok(card){
+        return card.name in valid_multiples;
+    }
 
     function str_format(str){
         var args = arguments;
@@ -38,16 +51,24 @@
     module.add_card_to_sideboard = add_card_to_sideboard;
 
     function delete_card_sideboard(card){
-        card.sideboard = 0;
-        card.from_sideboard = 0;
+        card.sideboard -= 1;
+        if (card.from_sideboard > card.sideboard){
+            card.from_sideboard -= 1;
+        }
+    }
+
+    function increment_card_sideboard(card){
+        if (multiples_ok(card)){
+            card.sideboard += 1;
+        }
     }
 
     function delete_card_from_sideboard(card){
-        card.from_sideboard = 0;
+        card.from_sideboard -= 1;
     }
 
     function delete_card_from_decklist(card){
-        card.from_decklist = 0;
+        card.from_decklist -= 1;
     }
 
     function swap_from_decklist(card){
@@ -98,10 +119,22 @@
 
     var SWAP_FROM_SIDEBOARD = '<input type="button" class="swap_from_sideboard" value="<<"/>';
     var SWAP_FROM_DECKLIST = '<input type="button" class="swap_from_decklist" value=">>"/>';
-    var DELETE_SIDEBOARD = '<input type="button" class="delete_sideboard" value="X"/>';
-    var DELETE_FROM_DECKLIST = '<input type="button" class="delete_from_decklist" value="X"/>';
-    var DELETE_FROM_SIDEBOARD = '<input type="button" class="delete_from_sideboard" value="X"/>';
-    var CARD = '<li data-id={1}>{2}</li>';
+    var DELETE_SIDEBOARD = '<input type="button" class="delete_sideboard" value="-"/>';
+    var INCREMENT_SIDEBOARD = '<input type="button" class="increment_sideboard" value="+"/>';
+    var DELETE_FROM_DECKLIST = '<input type="button" class="delete_from_decklist" value="-"/>';
+    var DELETE_FROM_SIDEBOARD = '<input type="button" class="delete_from_sideboard" value="-"/>';
+    var CARD = '<li data-id={1}>{2} {3}x {1}</li>';
+
+    function get_card_html(card, property, display){
+        var count = card[property];
+        if (count < 1){
+            return '';
+        }
+        if (multiples_ok(card) && property == "sideboard"){
+            display += INCREMENT_SIDEBOARD;
+        }
+        return str_format(CARD, card.name, display, count);
+    }
 
     function draw(){
         var html_decklist = "";
@@ -110,18 +143,10 @@
         var html_from_sideboard = "";
         for (var key in binder.cards){
             var card = binder.cards[key];
-            if (card.decklist > 0){
-                html_decklist += str_format(CARD, card.name, SWAP_FROM_DECKLIST + card.name);
-            }
-            if (card.from_decklist > 0){
-                html_from_decklist += str_format(CARD, card.name, DELETE_FROM_DECKLIST + card.name);
-            }
-            if (card.sideboard > 0){
-                html_sideboard += str_format(CARD, card.name, DELETE_SIDEBOARD + SWAP_FROM_SIDEBOARD + card.name);
-            }
-            if (card.from_sideboard > 0){
-                html_from_sideboard += str_format(CARD, card.name, DELETE_FROM_SIDEBOARD + card.name);
-            }
+            html_decklist += get_card_html(card, "decklist", SWAP_FROM_DECKLIST);
+            html_from_decklist += get_card_html(card, "from_decklist", DELETE_FROM_DECKLIST);
+            html_sideboard += get_card_html(card, "sideboard", SWAP_FROM_SIDEBOARD + DELETE_SIDEBOARD);
+            html_from_sideboard += get_card_html(card, "from_sideboard", DELETE_FROM_SIDEBOARD);
         }
         $("#decklist").html(html_decklist);
         $("#from_decklist").html(html_from_decklist);
@@ -156,6 +181,12 @@
             var name = $(this).parent().data('id');
             var card = binder.cards[name];
             delete_card_sideboard(card);
+            draw();
+        });
+        $(".increment_sideboard").on('click', function(evt){
+            var name = $(this).parent().data('id');
+            var card = binder.cards[name];
+            increment_card_sideboard(card);
             draw();
         });
     }
