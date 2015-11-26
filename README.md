@@ -4,8 +4,7 @@ ViewModels
 
 binder
     user_id:    <int>
-    decklist:   <cardlist>
-    sideboard:  <cardlist>
+    cards:      <cardlist>
 
 cardlist
     <string>: <card>
@@ -15,6 +14,10 @@ card
     price
     category
     multiverse_id
+    decklist
+    sideboard
+    from_decklist
+    from_sideboard
 
 Models
 

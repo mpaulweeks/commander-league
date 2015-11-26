@@ -31,27 +31,31 @@
     }
     module.init = init;
 
-    function load_binder(user_id){
+    function load_binder(user_id, callback){
+        var ret = null;
         if (user_id in module.all_binders){
-            return module.all_binders[user_id];
+            ret = module.all_binders[user_id];
         }
-        return {
-            user_id: user_id,
-            decklist: {},
-            sideboard: {}
-        };
+        else {
+            ret = {
+                user_id: user_id,
+                cards: {},
+            };
+        }
+        callback(ret);
     }
     module.load_binder = load_binder;
 
-    function save_binder(binder){
+    function save_binder(binder, callback){
         module.all_binders[binder.user_id] = binder;
         console.log(module.all_binders);
+        callback();
     }
     module.save_binder = save_binder;
 
-    module.get_card = function(card_name){
+    module.get_card = function(card_name, callback){
         var card = module.all_cards[card_name.toLowerCase()];
-        return card;
+        callback(card);
     }
     
 })(Module('store'));
