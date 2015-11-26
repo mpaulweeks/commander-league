@@ -36,16 +36,17 @@
     function add_card_to_sideboard(new_card){
         if (!(new_card.name in binder.cards)){
             binder.cards[new_card.name] = new_card;
+            card.sideboard = 1;
+            card.decklist = 0;
+            card.from_sideboard = 0;
+            card.from_decklist = 0;
         }
         var card = binder.cards[new_card.name];
-        if ("decklist" in card && card.decklist > 0){
-            console.log("cannot add card already in binder");
+        if ("decklist" in card && card.decklist > 0 && !multiples_ok(card)){
+            console.log("cannot add card already in deck");
             return;
         }
-        card.sideboard = 1;
-        card.decklist = 0;
-        card.from_sideboard = 0;
-        card.from_decklist = 0;
+        increment_card_sideboard(card);
         store.save_binder(binder, draw);
     }
     module.add_card_to_sideboard = add_card_to_sideboard;
