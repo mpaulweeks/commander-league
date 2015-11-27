@@ -57,5 +57,30 @@
         var card = module.all_cards[card_name.toLowerCase()];
         callback(card);
     }
+
+    module.get_cards_by_colors = function(colors){
+        var out = [];
+        for (var key in module.all_cards){
+            var card = module.all_cards[key];
+            var is_match = false;
+            var is_illegal = false;
+            if ("colors" in card){
+                for (var i = 0; i < card.colors.length; i++){
+                    var card_color = card.colors[i];
+                    is_match = is_match || colors.indexOf(card_color) > -1;
+                    is_illegal = is_illegal || colors.indexOf(card_color) == -1;
+                }
+            } else {
+                is_match = true;
+            }
+            if (is_match && !is_illegal){
+                out.push(card);
+            }
+        }
+        out.sort(function(a,b){
+            return a.name.localeCompare(b.name);
+        });
+        return out;
+    }
     
 })(Module('store'));
