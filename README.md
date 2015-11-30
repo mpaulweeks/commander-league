@@ -14,6 +14,7 @@ card
     price
     category
     multiverse_id
+
     decklist
     sideboard
     from_decklist
