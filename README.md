@@ -23,12 +23,10 @@ card
 Models
 
 user
-    user_id
-    user_slug
-    user_name
+    slug
+    name
 
 card
-    id
     name
     price
     price_fetched
@@ -38,7 +36,7 @@ status_code
     decklist
 
 card_status
-    user_id
-    card_id
+    user_slug
+    card_name
     status_id
     timestamp
