@@ -1,18 +1,20 @@
 
 require_relative 'store'
 
-USER_NAMES = ['Eliah', 'Qwerty', 'MPW', 'Dan', 'EDW']
+USER_NAMES = [
+  ['eliah', 'Eliah'],
+  ['qwerty', 'Patrick'],
+  ['mpw', 'M. Paul'],
+  ['gant', 'Dan'],
+  ['edmond', 'Edmond'],
+]
 
 def create_users()
-  def make_slug(name)
-    return name.downcase
+  def make_object(tuple)
+    return {'slug' => tuple[0], 'name' => tuple[1]}
   end
 
-  def make_object(name)
-    return {'slug' => make_slug(name), 'name' => name}
-  end
-
-  user_hash = Hash[USER_NAMES.map{|n| [make_slug(n), make_object(n)]}]
+  user_hash = Hash[USER_NAMES.map{|n| [n[0], make_object(n)]}]
   db_hash = {KEY_USER => user_hash}
   save_database(db_hash)
 end
