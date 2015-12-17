@@ -3,7 +3,7 @@
 ViewModels
 
 binder
-    user_id:    <int>
+    user_id:    <string>
     cards:      <cardlist>
 
 cardlist
