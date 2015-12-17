@@ -15,9 +15,9 @@ card
     category
     multiverse_id
 
-    decklist
+    maindeck
     sideboard
-    from_decklist
+    from_maindeck
     from_sideboard
 
 Models
@@ -33,7 +33,7 @@ card
 
 status_code
     sideboard
-    decklist
+    maindeck
 
 card_status
     user_slug

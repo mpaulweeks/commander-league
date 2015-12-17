@@ -1,6 +1,9 @@
 
 require_relative 'store'
 
+STATUS_IN_MAINDECK = 'maindeck'
+STATUS_IN_SIDEBOARD = 'sideboard'
+
 def Repository()
   DB_CACHE = {}
 
@@ -23,7 +26,7 @@ def Repository()
       end
     end
 
-    out_cards = {"decklist" => [], "sideboard" => []}
+    out_cards = {"maindeck" => [], "sideboard" => []}
     # process out_status
     
     out_hash = {"user_id" => user_slug, "cards" => out_cards}

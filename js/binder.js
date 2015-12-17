@@ -36,13 +36,13 @@
     function add_card_to_sideboard(new_card){
         if (!(new_card.name in binder.cards)){
             new_card.sideboard = 1;
-            new_card.decklist = 0;
+            new_card.maindeck = 0;
             new_card.from_sideboard = 0;
-            new_card.from_decklist = 0;
+            new_card.from_maindeck = 0;
             binder.cards[new_card.name] = new_card;
         }
         var card = binder.cards[new_card.name];
-        if ("decklist" in card && card.decklist > 0 && !multiples_ok(card)){
+        if ("maindeck" in card && card.maindeck > 0 && !multiples_ok(card)){
             console.log("cannot add card already in deck");
             return;
         }
@@ -68,13 +68,13 @@
         card.from_sideboard -= 1;
     }
 
-    function delete_card_from_decklist(card){
-        card.from_decklist -= 1;
+    function delete_card_from_maindeck(card){
+        card.from_maindeck -= 1;
     }
 
-    function swap_from_decklist(card){
-        if (card.from_decklist < card.decklist){
-            card.from_decklist += 1;
+    function swap_from_maindeck(card){
+        if (card.from_maindeck < card.maindeck){
+            card.from_maindeck += 1;
         }
     }
 
@@ -89,9 +89,9 @@
         var num_from_side = 0;
         for (var key in binder.cards){
             var card = binder.cards[key];
-            num_from_deck += card.from_decklist;
+            num_from_deck += card.from_maindeck;
             num_from_side += card.from_sideboard;
-            if (card.from_decklist > 0 && card.from_sideboard > 0){
+            if (card.from_maindeck > 0 && card.from_sideboard > 0){
                 console.log('error');
                 return false;
             }
@@ -107,11 +107,11 @@
 
         for (var key in binder.cards){
             var card = binder.cards[key];
-            card.decklist -= card.from_decklist;
-            card.decklist += card.from_sideboard;
-            card.sideboard += card.from_decklist;
+            card.maindeck -= card.from_maindeck;
+            card.maindeck += card.from_sideboard;
+            card.sideboard += card.from_maindeck;
             card.sideboard -= card.from_sideboard;
-            card.from_decklist = 0;
+            card.from_maindeck = 0;
             card.from_sideboard = 0;
         }
         store.save_binder(binder, draw);
@@ -119,10 +119,10 @@
     module.swap_cards = swap_cards;
 
     var SWAP_FROM_SIDEBOARD = '<input type="button" class="action" data-func="swap_from_sideboard" value="<<"/>';
-    var SWAP_FROM_DECKLIST = '<input type="button" class="action" data-func="swap_from_decklist" value=">>"/>';
+    var SWAP_FROM_maindeck = '<input type="button" class="action" data-func="swap_from_maindeck" value=">>"/>';
     var DELETE_SIDEBOARD = '<input type="button" class="action" data-func="delete_sideboard" value="-"/>';
     var INCREMENT_SIDEBOARD = '<input type="button" class="action" data-func="increment_sideboard" value="+"/>';
-    var DELETE_FROM_DECKLIST = '<input type="button" class="action" data-func="delete_from_decklist" value="-"/>';
+    var DELETE_FROM_maindeck = '<input type="button" class="action" data-func="delete_from_maindeck" value="-"/>';
     var DELETE_FROM_SIDEBOARD = '<input type="button" class="action" data-func="delete_from_sideboard" value="-"/>';
     var CARD = '<li data-id={1}>{2} {3}x {1}</li>';
 
@@ -138,28 +138,28 @@
     }
 
     var card_actions = {
-        "swap_from_decklist": swap_from_decklist,
+        "swap_from_maindeck": swap_from_maindeck,
         "swap_from_sideboard": swap_from_sideboard,
-        "delete_from_decklist": delete_card_from_decklist,
+        "delete_from_maindeck": delete_card_from_maindeck,
         "delete_from_sideboard": delete_card_from_sideboard,
         "delete_sideboard": delete_card_sideboard,
         "increment_sideboard": increment_card_sideboard,
     }
 
     function draw(){
-        var html_decklist = "";
-        var html_from_decklist = "";
+        var html_maindeck = "";
+        var html_from_maindeck = "";
         var html_sideboard = "";
         var html_from_sideboard = "";
         for (var key in binder.cards){
             var card = binder.cards[key];
-            html_decklist += get_card_html(card, "decklist", SWAP_FROM_DECKLIST);
-            html_from_decklist += get_card_html(card, "from_decklist", DELETE_FROM_DECKLIST);
+            html_maindeck += get_card_html(card, "maindeck", SWAP_FROM_maindeck);
+            html_from_maindeck += get_card_html(card, "from_maindeck", DELETE_FROM_maindeck);
             html_sideboard += get_card_html(card, "sideboard", SWAP_FROM_SIDEBOARD + DELETE_SIDEBOARD);
             html_from_sideboard += get_card_html(card, "from_sideboard", DELETE_FROM_SIDEBOARD);
         }
-        $("#decklist").html(html_decklist);
-        $("#from_decklist").html(html_from_decklist);
+        $("#maindeck").html(html_maindeck);
+        $("#from_maindeck").html(html_from_maindeck);
         $("#sideboard").html(html_sideboard);
         $("#from_sideboard").html(html_from_sideboard);
 
