@@ -3,6 +3,7 @@ require_relative 'store'
 
 STATUS_IN_MAINDECK = 'maindeck'
 STATUS_IN_SIDEBOARD = 'sideboard'
+STATUS_IN_SHOEBOX = 'shoebox'
 
 module Repo
 
@@ -22,8 +23,12 @@ module Repo
     end
 
     out_cards = {STATUS_IN_MAINDECK => [], STATUS_IN_SIDEBOARD => []}
+    db_cards = db_cache[Store::KEY_CARD]
     out_status.each do |card_name, card_status|
-      card = db_cache[Store::KEY_CARD][card_name]
+      card = {'card_name' => card_name}
+      if db_cards.has_key?(card_name)
+        card = db_cards[card_name]
+      end
       out_cards[card_status][card_name] = card
     end
     

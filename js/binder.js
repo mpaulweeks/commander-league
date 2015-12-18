@@ -1,5 +1,8 @@
 (function(module){
 
+    // load from url
+    var user_id = "1";
+
     var store = Module("store");
     var binder = null;
     // for debug
@@ -25,7 +28,6 @@
     }
 
     function init(){
-        var user_id = "1";
         store.load_binder(user_id, function (data){
             binder = data;
             draw();
@@ -114,7 +116,7 @@
             card.from_maindeck = 0;
             card.from_sideboard = 0;
         }
-        store.save_binder(binder, draw);
+        store.save_binder(binder, init);
     }
     module.swap_cards = swap_cards;
 

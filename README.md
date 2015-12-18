@@ -40,3 +40,25 @@ card_status
     card_name
     status_id
     timestamp
+    quantity (optional)
+
+Endpoints
+
+binder
+    GET
+        user_slug
+
+swap
+    POST
+        binder
+            user_slug
+            from_maindeck
+            from_sideboard
+
+sideboard
+    POST
+        user_slug
+        card_name
+    DELETE
+        user_slug
+        card_name
