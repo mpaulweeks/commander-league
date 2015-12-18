@@ -4,24 +4,17 @@ require_relative 'store'
 STATUS_IN_MAINDECK = 'maindeck'
 STATUS_IN_SIDEBOARD = 'sideboard'
 
-class Repository
-  DB_CACHE = {}
+module Repo
 
-  def initialize()
-    refresh_cache()
-  end
+  def Repo.load_user_cards(user_slug)
+    db_cache = Store.load_database()
 
-  def refresh_cache()
-    DB_CACHE = load_database()
-  end
-
-  def load_binder(user_slug)
     out_status = {}
-    DB_CACHE[KEY_STATUS][user_slug].each do |cs|
+    db_cache[Store::KEY_STATUS][user_slug].each do |cs|
       card_name = cs["card_name"]
       is_latest = true # && cs["timestamp"] < timestamp
       if out_status.has_key?(cs["status"])
-        is_latest = out_status[card_name]["timestamp"]] < cs["timestamp"]
+        is_latest = out_status[card_name]["timestamp"] < cs["timestamp"]
       end
       if is_latest
         out_status[card_name] = cs
@@ -30,7 +23,7 @@ class Repository
 
     out_cards = {STATUS_IN_MAINDECK => [], STATUS_IN_SIDEBOARD => []}
     out_status.each do |card_name, card_status|
-      card = DB_CACHE[KEY_CARD][card_name]
+      card = db_cache[Store::KEY_CARD][card_name]
       out_cards[card_status][card_name] = card
     end
     
@@ -38,7 +31,9 @@ class Repository
     return out_hash
   end
 
-  def save_binder(view_binder)
+  def Repo.save_changes(view_binder)
+    db_cache = Store.load_database()
+
     user_slug = view_binder['user_slug']
     old_binder = load_binder(user_slug)
     new_binder = view_binder['cards']

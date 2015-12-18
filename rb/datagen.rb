@@ -15,8 +15,10 @@ def create_users()
   end
 
   user_hash = Hash[USER_NAMES.map{|n| [n[0], make_object(n)]}]
-  db_hash = {KEY_USER => user_hash}
-  save_database(db_hash)
+  db_hash = {Store::KEY_USER => user_hash}
+  Store.update_database(db_hash)
 end
 
 create_users()
+
+puts Store.load_database()
