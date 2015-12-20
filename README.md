@@ -36,11 +36,11 @@ status_code
     maindeck
 
 card_status
-    user_slug
-    card_name
-    status_id
-    timestamp
-    quantity (optional)
+    user_slug   string
+    card_name   string
+    timestamp   datetime
+    maindeck    int
+    sideboard   int
 
 Endpoints
 

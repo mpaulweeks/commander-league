@@ -1,10 +1,6 @@
 
 require_relative 'store'
 
-STATUS_IN_MAINDECK = 'maindeck'
-STATUS_IN_SIDEBOARD = 'sideboard'
-STATUS_IN_SHOEBOX = 'shoebox'
-
 module Repo
 
   def Repo.load_user_cards(user_slug)
@@ -22,25 +18,29 @@ module Repo
       end
     end
 
-    out_cards = {STATUS_IN_MAINDECK => [], STATUS_IN_SIDEBOARD => []}
+    out_cards = {}
     db_cards = db_cache[Store::KEY_CARD]
     out_status.each do |card_name, card_status|
-      card = {'card_name' => card_name}
-      if db_cards.has_key?(card_name)
-        card = db_cards[card_name]
-      end
-      out_cards[card_status][card_name] = card
+      card = db_cards[card_name].merge({
+        :maindeck => card_status['maindeck'],
+        :sideboard => card_status['sideboard'],
+      })
+      out_cards[card_name] = card
     end
     
     out_hash = {"user_id" => user_slug, "cards" => out_cards}
     return out_hash
   end
 
-  def Repo.save_changes(view_binder)
+  def Repo.save_swap(view_binder)
     db_cache = Store.load_database()
 
     user_slug = view_binder['user_slug']
     old_binder = load_binder(user_slug)
     new_binder = view_binder['cards']
+
+    # todo
   end
 end
+
+puts Repo.load_user_cards('mpw')

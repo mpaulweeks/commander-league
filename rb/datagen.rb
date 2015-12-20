@@ -1,6 +1,5 @@
 
 require_relative 'store'
-require_relative 'repo'
 
 USER_NAMES = [
   ['eliah', 'Eliah'],
@@ -35,6 +34,7 @@ def create_decks()
   status_hash = {}
   now = Time.new.inspect
 
+  card_hash = {}
   USER_DECKS.each do |user_slug, file_name|
     card_statuses = Array.new
     file_path = 'data/' + file_name + '.txt'
@@ -52,21 +52,28 @@ def create_decks()
         next
       end
       card = all_cards_lower[card_name.downcase]
+      card_name = card['name']
       card_status = {
-        'user_slug' => user_slug,
-        'card_name' => card['name'],
-        'status_id' => STATUS_IN_MAINDECK,
-        'timestamp' => now,
+        :user_slug => user_slug,
+        :card_name => card_name,
+        :maindeck => quantity,
+        :sideboard => 0,
+        :timestamp => now,
       }
-      if quantity > 1
-        card_status['quantity'] = quantity
-      end
       card_statuses.push(card_status)
+      card_hash[card_name] = {
+        :card_name => card_name,
+        :price => nil,
+        :price_fetched => nil,
+      }
     end
     status_hash[user_slug] = card_statuses
   end
 
-  db_hash = {Store::KEY_STATUS => status_hash}
+  db_hash = {
+    Store::KEY_CARD => card_hash,
+    Store::KEY_STATUS => status_hash,
+  }
   Store.update_database(db_hash)
 end
 
