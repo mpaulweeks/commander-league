@@ -27,6 +27,10 @@
 
 <div class="container">
 
+    <span id='server_data' style="display: none;">
+        <%= message %>
+    </span>
+
     <div class="col-md-4">
         <h3> maindeck </h3>
         <div id="maindeck" class="cardlistdisplay"></div>
@@ -58,7 +62,7 @@
         Module("main").index();
     });
 </script>
-<script src="js/gatherer_helper.js"></script>
-<script src="js/autocard.js"></script>
+<!-- <script src="js/gatherer_helper.js"></script>
+<script src="js/autocard.js"></script> -->
 </body>
 </html>

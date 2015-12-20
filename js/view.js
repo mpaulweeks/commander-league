@@ -13,6 +13,9 @@
     var CARD_OPTION = '<option value="{1}">{2}</option>';
 
     function run(){
+        message = $('#server_data').html()
+        console.log(message);
+
         binder.init();
 
         var card_choices = store.get_cards_by_colors(["White", "Red"]);
