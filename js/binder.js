@@ -1,9 +1,7 @@
 (function(module){
 
-    // load from url
-    var user_id = null;
-
     var store = Module("store");
+    var user_slug = null;
     var binder = null;
     // for debug
     module.get_binder = function(){return binder;};
@@ -33,15 +31,15 @@
     }
 
     function refresh(){
-        store.load_binder(user_id, _load_binder);
+        // store.load_binder(user_slug, _load_binder);
     }
 
     function init(){
         data_str = $('#server_data').html()
         $('#server_data').empty()
         data = JSON.parse(data_str);
-        user_id = data.user_id.slug
-        console.log(user_id);
+        user_slug = data.user.slug
+        console.log(user_slug);
         _load_binder(data);
     }
     module.init = init;
@@ -132,10 +130,9 @@
     module.swap_cards = swap_cards;
 
     var SWAP_FROM_SIDEBOARD = '<input type="button" class="action" data-func="swap_from_sideboard" value="<<"/>';
-    var SWAP_FROM_maindeck = '<input type="button" class="action" data-func="swap_from_maindeck" value=">>"/>';
+    var SWAP_FROM_MAINDECK = '<input type="button" class="action" data-func="swap_from_maindeck" value=">>"/>';
     var DELETE_SIDEBOARD = '<input type="button" class="action" data-func="delete_sideboard" value="-"/>';
     var INCREMENT_SIDEBOARD = '<input type="button" class="action" data-func="increment_sideboard" value="+"/>';
-    var DELETE_FROM_maindeck = '<input type="button" class="action" data-func="delete_from_maindeck" value="-"/>';
     var DELETE_FROM_SIDEBOARD = '<input type="button" class="action" data-func="delete_from_sideboard" value="-"/>';
     var CARD = '<li data-id={1}>{2} {3}x {1}</li>';
 
@@ -153,7 +150,6 @@
     var card_actions = {
         "swap_from_maindeck": swap_from_maindeck,
         "swap_from_sideboard": swap_from_sideboard,
-        "delete_from_maindeck": delete_card_from_maindeck,
         "delete_from_sideboard": delete_card_from_sideboard,
         "delete_sideboard": delete_card_sideboard,
         "increment_sideboard": increment_card_sideboard,
@@ -166,13 +162,11 @@
         var html_from_sideboard = "";
         for (var key in binder.cards){
             var card = binder.cards[key];
-            html_maindeck += get_card_html(card, "maindeck", SWAP_FROM_maindeck);
-            html_from_maindeck += get_card_html(card, "from_maindeck", DELETE_FROM_maindeck);
+            html_maindeck += get_card_html(card, "maindeck", SWAP_FROM_MAINDECK);
             html_sideboard += get_card_html(card, "sideboard", SWAP_FROM_SIDEBOARD + DELETE_SIDEBOARD);
             html_from_sideboard += get_card_html(card, "from_sideboard", DELETE_FROM_SIDEBOARD);
         }
         $("#maindeck").html(html_maindeck);
-        $("#from_maindeck").html(html_from_maindeck);
         $("#sideboard").html(html_sideboard);
         $("#from_sideboard").html(html_from_sideboard);
 

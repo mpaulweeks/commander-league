@@ -49,7 +49,7 @@ module Repo
     db_cache = Store.load_database()
     user_hash = self.load_user_info(db_cache, user_slug)
     card_hash = self.load_cards(db_cache, user_slug)
-    out_hash = {"user_id" => user_hash, "cards" => card_hash}
+    out_hash = {"user" => user_hash, "cards" => card_hash}
     return out_hash
   end
 
