@@ -23,7 +23,11 @@ def create_users()
   end
 
   user_hash = Hash[USER_NAMES.map{|n| [n[0], make_object(n)]}]
-  db_hash = {Store::KEY_USER => user_hash}
+  wallet_hash = Hash[USER_NAMES.map{|n| [n[0], []]}]
+  db_hash = {
+    Store::KEY_USER => user_hash,
+    Store::KEY_WALLET => wallet_hash,
+  }
   Store.update_database(db_hash)
 end
 

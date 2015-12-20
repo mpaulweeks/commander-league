@@ -3,9 +3,20 @@ require_relative 'store'
 
 module Repo
 
-  def Repo.load_user_cards(user_slug)
-    db_cache = Store.load_database()
+  def self.load_user_info(db_cache, user_slug)
+    user = db_cache[Store::KEY_USER][user_slug]
+    balance = 0
+    db_cache[Store::KEY_WALLET][user_slug].each do |transaction|
+      balance += transaction['delta']
+    end
+    user_hash = {
+      :user_slug => user_slug,
+      :user_name => user['name'],
+      :balance => balance,
+    }
+  end
 
+  def self.load_cards(db_cache, user_slug)
     out_status = {}
     db_cache[Store::KEY_STATUS][user_slug].each do |cs|
       card_name = cs["card_name"]
@@ -27,8 +38,15 @@ module Repo
       })
       out_cards[card_name] = card
     end
-    
-    out_hash = {"user_id" => user_slug, "cards" => out_cards}
+
+    return out_cards
+  end
+
+  def Repo.load_user_cards(user_slug)
+    db_cache = Store.load_database()
+    user_hash = self.load_user_info(db_cache, user_slug)
+    card_hash = self.load_cards(db_cache, user_slug)
+    out_hash = {"user_id" => user_hash, "cards" => card_hash}
     return out_hash
   end
 

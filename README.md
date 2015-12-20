@@ -26,6 +26,11 @@ user
     slug
     name
 
+wallet
+    user_slug
+    delta
+    timestamp
+
 card
     name
     price

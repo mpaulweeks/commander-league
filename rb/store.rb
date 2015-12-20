@@ -8,13 +8,15 @@ module Store
   KEY_USER = 'user'
   KEY_STATUS = 'status'
   KEY_CARD = 'card'
-  @KEYS = [KEY_USER, KEY_CARD, KEY_STATUS]
+  KEY_WALLET = 'wallet'
+  @KEYS = [KEY_USER, KEY_CARD, KEY_STATUS, KEY_WALLET]
 
   def Store.glass_database!()
     db_hash = {
       Store::KEY_USER => {},
       Store::KEY_CARD => {},
       Store::KEY_STATUS => {},
+      Store::KEY_WALLET => {},
     }
     File.open(@DATABASE_PATH, "w") do |f|
       f.write(db_hash.to_json)
