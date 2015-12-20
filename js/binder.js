@@ -1,7 +1,7 @@
 (function(module){
 
     // load from url
-    var user_id = "1";
+    var user_id = null;
 
     var store = Module("store");
     var binder = null;
@@ -27,11 +27,22 @@
         });
     }
 
+    function _load_binder(data){
+        binder = data;
+        draw();
+    }
+
+    function refresh(){
+        store.load_binder(user_id, _load_binder);
+    }
+
     function init(){
-        store.load_binder(user_id, function (data){
-            binder = data;
-            draw();
-        });
+        data_str = $('#server_data').html()
+        $('#server_data').empty()
+        data = JSON.parse(data_str);
+        user_id = data.user_id.slug
+        console.log(user_id);
+        _load_binder(data);
     }
     module.init = init;
 
@@ -116,7 +127,7 @@
             card.from_maindeck = 0;
             card.from_sideboard = 0;
         }
-        store.save_binder(binder, init);
+        store.save_binder(binder, refresh);
     }
     module.swap_cards = swap_cards;
 

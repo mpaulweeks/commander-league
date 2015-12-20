@@ -10,8 +10,8 @@ module Repo
       balance += transaction['delta']
     end
     user_hash = {
-      :user_slug => user_slug,
-      :user_name => user['name'],
+      :slug => user_slug,
+      :name => user['name'],
       :balance => balance,
     }
   end
@@ -33,8 +33,11 @@ module Repo
     db_cards = db_cache[Store::KEY_CARD]
     out_status.each do |card_name, card_status|
       card = db_cards[card_name].merge({
+        :name => card_name,
         :maindeck => card_status['maindeck'],
         :sideboard => card_status['sideboard'],
+        :from_maindeck => 0,
+        :from_sideboard => 0,
       })
       out_cards[card_name] = card
     end
