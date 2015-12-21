@@ -66,7 +66,7 @@ def create_decks()
       }
       card_statuses.push(card_status)
       card_hash[card_name] = {
-        :card_name => card_name,
+        :name => card_name,
         :price => nil,
         :price_fetched => nil,
       }

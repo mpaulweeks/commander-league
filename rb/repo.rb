@@ -33,7 +33,6 @@ module Repo
     db_cards = db_cache[Store::KEY_CARD]
     out_status.each do |card_name, card_status|
       card = db_cards[card_name].merge({
-        :name => card_name,
         :maindeck => card_status['maindeck'],
         :sideboard => card_status['sideboard'],
         :from_maindeck => 0,
