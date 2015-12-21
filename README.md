@@ -1,5 +1,13 @@
 # commander-league
 
+todo:
+    - price refreshing
+    - categories
+    - multiverse id
+    - ajax for GET endpoint
+    - sideboard endpoint
+    - swap endpoint
+
 ViewModels
 
 binder
