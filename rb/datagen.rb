@@ -52,7 +52,7 @@ def create_decks()
       quantity = Integer(line.slice(0..space))
       card_name = line.slice((space+1)..-1)
       if not all_cards_lower.has_key?(card_name.downcase)
-        puts card_name.downcase
+        puts 'Card not found: %s' % card_name.downcase
         next
       end
       card = all_cards_lower[card_name.downcase]

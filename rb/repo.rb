@@ -7,7 +7,7 @@ module Repo
     user = db_cache[Store::KEY_USER][user_slug]
     balance = 0
     db_cache[Store::KEY_WALLET][user_slug].each do |transaction|
-      balance += transaction['delta']
+      balance += transaction[:delta]
     end
     user_hash = {
       :slug => user_slug,
@@ -49,14 +49,14 @@ module Repo
     db_cache = Store.load_database()
     user_hash = self.load_user_info(db_cache, user_slug)
     card_hash = self.load_cards(db_cache, user_slug)
-    out_hash = {"user" => user_hash, "cards" => card_hash}
+    out_hash = {:user => user_hash, :cards => card_hash}
     return out_hash
   end
 
   def Repo.save_swap(view_binder)
     db_cache = Store.load_database()
 
-    user_slug = view_binder['user_slug']
+    user_slug = view_binder['user']
     old_binder = load_binder(user_slug)
     new_binder = view_binder['cards']
 
@@ -64,4 +64,4 @@ module Repo
   end
 end
 
-puts Repo.load_user_cards('mpw')
+# puts Repo.load_user_cards('mpw')
