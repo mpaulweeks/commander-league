@@ -46,4 +46,10 @@ module Store
     all_cards_hash = JSON.parse(all_cards_file)
     return all_cards_hash
   end
+
+  def Store.load_multiverse()
+    multiverse_file = File.read('json/multiverse_ids.json')
+    multiverse_hash = JSON.parse(multiverse_file)
+    return multiverse_hash
+  end
 end
