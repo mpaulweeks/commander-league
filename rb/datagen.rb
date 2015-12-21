@@ -25,8 +25,8 @@ def create_users
     wallet_hash[slug] = []
   end
   db_hash = {
-    Store::KEY_USER => user_hash,
-    Store::KEY_WALLET => wallet_hash,
+    Store::USER => user_hash,
+    Store::WALLET => wallet_hash,
   }
   Store.update_database(db_hash)
 end
@@ -41,7 +41,7 @@ def create_decks()
   card_hash = {}
   USER_DECKS.each do |user_slug, file_name|
     card_statuses = Array.new
-    file_path = 'data/' + file_name + '.txt'
+    file_path = "data/#{file_name}.txt"
     file_text = File.readlines(file_path)
     file_text.each do |line|
       line = line.strip()
@@ -75,8 +75,8 @@ def create_decks()
   end
 
   db_hash = {
-    Store::KEY_CARD => card_hash,
-    Store::KEY_STATUS => status_hash,
+    Store::CARD => card_hash,
+    Store::STATUS => status_hash,
   }
   Store.update_database(db_hash)
 end
