@@ -1,29 +1,29 @@
 
 require_relative 'store'
 
-USER_NAMES = [
-  ['eliah', 'Eliah'],
-  ['qwerty', 'Patrick'],
-  ['mpw', 'M. Paul'],
-  ['gant', 'Dan'],
-  ['edmond', 'Edmond'],
-]
-
-USER_DECKS = {
-  'eliah' => 'simic',
-  'querty' => 'orzhov',
-  'mpw' => 'golgari',
-  'gant' => 'boros',
-  'edmond' => 'izzet',
+USER_NAMES = {
+  :eliah => 'Eliah',
+  :qwerty => 'Patrick',
+  :mpw => 'M. Paul',
+  :gant => 'Dan',
+  :edmond => 'Edmond',
 }
 
-def create_users()
-  def make_object(tuple)
-    return {'slug' => tuple[0], 'name' => tuple[1]}
-  end
+USER_DECKS = {
+  :eliah => 'simic',
+  :querty => 'orzhov',
+  :mpw => 'golgari',
+  :gant => 'boros',
+  :edmond => 'izzet',
+}
 
-  user_hash = Hash[USER_NAMES.map{|n| [n[0], make_object(n)]}]
-  wallet_hash = Hash[USER_NAMES.map{|n| [n[0], []]}]
+def create_users
+  user_hash = {}
+  wallet_hash = {}
+  USER_NAMES.each do |slug, name|
+    user_hash[slug] = {:slug => slug, :name => name}
+    wallet_hash[slug] = []
+  end
   db_hash = {
     Store::KEY_USER => user_hash,
     Store::KEY_WALLET => wallet_hash,
