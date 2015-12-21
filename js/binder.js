@@ -133,8 +133,9 @@
     var SWAP_FROM_MAINDECK = '<input type="button" class="action" data-func="swap_from_maindeck" value=">>"/>';
     var DELETE_SIDEBOARD = '<input type="button" class="action" data-func="delete_sideboard" value="-"/>';
     var INCREMENT_SIDEBOARD = '<input type="button" class="action" data-func="increment_sideboard" value="+"/>';
+    var DELETE_FROM_MAINDECK = '<input type="button" class="action" data-func="delete_from_maindeck" value="-"/>';
     var DELETE_FROM_SIDEBOARD = '<input type="button" class="action" data-func="delete_from_sideboard" value="-"/>';
-    var CARD = '<li data-id={1}>{2} {3}x {1}</li>';
+    var CARD = '<li data-id="{1}">{2} {3}x {1}</li>';
 
     function get_card_html(card, property, display){
         var count = card[property];
@@ -150,6 +151,7 @@
     var card_actions = {
         "swap_from_maindeck": swap_from_maindeck,
         "swap_from_sideboard": swap_from_sideboard,
+        "delete_from_maindeck": delete_card_from_maindeck,
         "delete_from_sideboard": delete_card_from_sideboard,
         "delete_sideboard": delete_card_sideboard,
         "increment_sideboard": increment_card_sideboard,
@@ -163,10 +165,12 @@
         for (var key in binder.cards){
             var card = binder.cards[key];
             html_maindeck += get_card_html(card, "maindeck", SWAP_FROM_MAINDECK);
+            html_from_maindeck += get_card_html(card, "from_maindeck", DELETE_FROM_MAINDECK);
             html_sideboard += get_card_html(card, "sideboard", SWAP_FROM_SIDEBOARD + DELETE_SIDEBOARD);
             html_from_sideboard += get_card_html(card, "from_sideboard", DELETE_FROM_SIDEBOARD);
         }
         $("#maindeck").html(html_maindeck);
+        $("#from_maindeck").html(html_from_maindeck);
         $("#sideboard").html(html_sideboard);
         $("#from_sideboard").html(html_from_sideboard);
 
