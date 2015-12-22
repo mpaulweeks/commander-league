@@ -17,7 +17,10 @@ def get_cards_json(oracle, user_slug)
 end
 
 get '/' do
-  user_slug = 'mpw'
+  redirect to('/mpw'), 303
+end
+
+get '/:user_slug' do |user_slug|
   data = get_cards_json(_oracle, user_slug)
   erb :index, :locals => {:data => data}
 end
