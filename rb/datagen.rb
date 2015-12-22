@@ -86,8 +86,10 @@ def main()
   Store.glass_database!()
   create_users()
   create_decks()
-  Repo.modify_sideboard('mpw', 'Borderland Ranger', 1)
-  Repo.modify_sideboard('mpw', 'Sylvan Ranger', 1)
+  Repo.create_statuses!('mpw', [
+    {'card_name' => 'Borderland Ranger', 'maindeck' => 0, 'sideboard' => 1},
+    {'card_name' => 'Sylvan Ranger', 'maindeck' => 0, 'sideboard' => 1},
+  ])
 end
 
 main()

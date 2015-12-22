@@ -89,15 +89,46 @@ module Repo
     Store.insert_status!(new_status)
   end
 
-  def Repo.save_swap(view_binder)
-    db_cache = Store.load_database()
-
-    user_slug = view_binder['user']
-    old_binder = load_binder(user_slug)
-    new_binder = view_binder['cards']
-
-    # todo
+  def self.is_valid_status?(status_hash)
+    return (
+      status_hash.has_key?('card_name') &&
+      status_hash.has_key?('maindeck') &&
+      status_hash.has_key?('sideboard')
+    )
   end
+
+  def Repo.create_statuses!(user_slug, statuses)
+    db_cache = Store.load_database
+
+    to_save = []
+    statuses.each do |raw_status_hash|
+      if not self.is_valid_status?(raw_status_hash)
+        puts 'failed validation! %s' % raw_status_hash
+        next
+      end
+
+      new_status_hash = {
+        :user_slug => user_slug,
+        :card_name => raw_status_hash['card_name'],
+        :maindeck => raw_status_hash['maindeck'],
+        :sideboard => raw_status_hash['sideboard'],
+        :timestamp => Store.now,
+      }
+      to_save.push(new_status_hash)
+      ensure_card_exists(db_cache, new_status_hash[:card_name])
+    end
+
+    Store.insert_statuses!(user_slug, to_save)
+
+    refreshed_cards = Repo.load_user_cards(user_slug)[:cards]
+    updated_cards = {}
+    to_save.each do |status_hash|
+      card_name = status_hash[:name]
+      updated_cards[card_name] = refreshed_cards[card_name]
+    end
+    return updated_cards
+  end
+
 end
 
 # puts Repo.load_user_cards('mpw')
