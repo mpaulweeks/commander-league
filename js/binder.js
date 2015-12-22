@@ -35,19 +35,32 @@
         _load_binder_obj(data);
     }
 
+    function load_new_card_data(data_str){
+        var data = JSON.parse(data_str);
+        for (card_name in data){
+            var new_card = data[card_name];
+            if (card_name in binder.cards){
+                var old_card = binder.cards[card_name];
+                new_card.from_maindeck = old_card.from_maindeck;
+                new_card.from_sideboard = old_card.from_sideboard;
+            }
+            binder.cards[card_name] = new_card;
+        }
+        draw();
+    }
+
     function init(){
-        data_str = $('#server_data').html()
+        var data_str = $('#server_data').html()
         $('#server_data').empty()
-        data = JSON.parse(data_str);
+        var data = JSON.parse(data_str);
         user_slug = data.user.slug
-        console.log(user_slug);
         _load_binder_obj(data);
     }
     module.init = init;
 
     function add_card_to_sideboard(new_card){
         if (!(new_card.name in binder.cards)){
-            new_card.sideboard = 1;
+            new_card.sideboard = 0;
             new_card.maindeck = 0;
             new_card.from_sideboard = 0;
             new_card.from_maindeck = 0;
@@ -59,7 +72,6 @@
             return;
         }
         increment_card_sideboard(card);
-        store.modify_sideboard(user_slug, card.name, card.sideboard, load_binder_str);
     }
     module.add_card_to_sideboard = add_card_to_sideboard;
 
@@ -71,8 +83,9 @@
     }
 
     function increment_card_sideboard(card){
-        if (multiples_ok(card)){
+        if (card.sideboard == 0 || multiples_ok(card)){
             card.sideboard += 1;
+            store.create_statuses(user_slug, [card], load_new_card_data);
         }
     }
 

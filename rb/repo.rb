@@ -91,7 +91,7 @@ module Repo
 
   def self.is_valid_status?(status_hash)
     return (
-      status_hash.has_key?('card_name') &&
+      status_hash.has_key?('name') &&
       status_hash.has_key?('maindeck') &&
       status_hash.has_key?('sideboard')
     )
@@ -109,7 +109,7 @@ module Repo
 
       new_status_hash = {
         :user_slug => user_slug,
-        :card_name => raw_status_hash['card_name'],
+        :card_name => raw_status_hash['name'],
         :maindeck => raw_status_hash['maindeck'],
         :sideboard => raw_status_hash['sideboard'],
         :timestamp => Store.now,
@@ -123,7 +123,7 @@ module Repo
     refreshed_cards = Repo.load_user_cards(user_slug)[:cards]
     updated_cards = {}
     to_save.each do |status_hash|
-      card_name = status_hash[:name]
+      card_name = status_hash[:card_name]
       updated_cards[card_name] = refreshed_cards[card_name]
     end
     return updated_cards

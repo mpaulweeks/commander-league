@@ -87,8 +87,8 @@ def main()
   create_users()
   create_decks()
   Repo.create_statuses!('mpw', [
-    {'card_name' => 'Borderland Ranger', 'maindeck' => 0, 'sideboard' => 1},
-    {'card_name' => 'Sylvan Ranger', 'maindeck' => 0, 'sideboard' => 1},
+    {'name' => 'Borderland Ranger', 'maindeck' => 0, 'sideboard' => 1},
+    {'name' => 'Sylvan Ranger', 'maindeck' => 0, 'sideboard' => 1},
   ])
 end
 

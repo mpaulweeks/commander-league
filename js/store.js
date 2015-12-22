@@ -68,6 +68,18 @@
     }
     module.modify_sideboard = modify_sideboard;
 
+    function create_statuses(user_slug, cards, callback){
+        data = JSON.stringify(cards)
+        $.ajax({
+            url: 'api/user/' + user_slug + '/status',
+            type: 'POST',
+            data: data,
+        }).done(function (data){
+            callback(data);
+        });
+    }
+    module.create_statuses = create_statuses;
+
     module.get_card = function(card_name, callback){
         var card = module.all_cards[card_name.toLowerCase()];
         callback(card);
