@@ -89,6 +89,7 @@ def main()
   Repo.create_statuses!('mpw', [
     {'name' => 'Borderland Ranger', 'maindeck' => 0, 'sideboard' => 1},
     {'name' => 'Sylvan Ranger', 'maindeck' => 0, 'sideboard' => 1},
+    {'name' => 'Plains', 'maindeck' => 0, 'sideboard' => 3},
   ])
 end
 

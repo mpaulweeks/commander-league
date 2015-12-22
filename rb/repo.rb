@@ -72,23 +72,6 @@ module Repo
     end
   end
 
-  def Repo.modify_sideboard(user_slug, card_name, quantity)
-    db_cache = Store.load_database()
-
-    ensure_card_exists(db_cache, card_name)
-
-    user_hash = self.load_cards(db_cache, user_slug)
-    current_card = user_hash[card_name]
-    new_status = {
-      :user_slug => user_slug,
-      :card_name => card_name,
-      :maindeck => current_card ? current_card[:maindeck] : 0,
-      :sideboard => quantity,
-      :timestamp => Store.now,
-    }
-    Store.insert_status!(new_status)
-  end
-
   def self.is_valid_status?(status_hash)
     return (
       status_hash.has_key?('name') &&
@@ -99,7 +82,6 @@ module Repo
 
   def Repo.create_statuses!(user_slug, statuses)
     db_cache = Store.load_database
-
     to_save = []
     statuses.each do |raw_status_hash|
       if not self.is_valid_status?(raw_status_hash)
@@ -117,7 +99,6 @@ module Repo
       to_save.push(new_status_hash)
       ensure_card_exists(db_cache, new_status_hash[:card_name])
     end
-
     Store.insert_statuses!(user_slug, to_save)
 
     refreshed_cards = Repo.load_user_cards(user_slug)[:cards]
