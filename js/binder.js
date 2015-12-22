@@ -75,10 +75,13 @@
     }
     module.add_card_to_sideboard = add_card_to_sideboard;
 
-    function delete_card_sideboard(card){
-        card.sideboard -= 1;
-        if (card.from_sideboard > card.sideboard){
-            card.from_sideboard -= 1;
+    function decrement_card_sideboard(card){
+        if (card.sideboard > 0){
+            card.sideboard -= 1;
+            if (card.from_sideboard > card.sideboard){
+                card.from_sideboard -= 1;
+            }
+            store.create_statuses(user_slug, [card], load_new_card_data);
         }
     }
 
@@ -167,7 +170,7 @@
         "swap_from_sideboard": swap_from_sideboard,
         "delete_from_maindeck": delete_card_from_maindeck,
         "delete_from_sideboard": delete_card_from_sideboard,
-        "delete_sideboard": delete_card_sideboard,
+        "delete_sideboard": decrement_card_sideboard,
         "increment_sideboard": increment_card_sideboard,
     }
 
