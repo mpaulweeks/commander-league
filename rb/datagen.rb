@@ -1,5 +1,6 @@
 
 require_relative 'store'
+require_relative 'repo'
 
 USER_NAMES = {
   :eliah => 'Eliah',
@@ -28,7 +29,7 @@ def create_users
     Store::USER => user_hash,
     Store::WALLET => wallet_hash,
   }
-  Store.update_database(db_hash)
+  Store.update_database!(db_hash)
 end
 
 def create_decks()
@@ -36,7 +37,7 @@ def create_decks()
   all_cards_lower = Hash[all_cards.map{|card_name, card| [card_name.downcase, card]}]
 
   status_hash = {}
-  now = Time.new.inspect
+  now = Store.now
 
   card_hash = {}
   USER_DECKS.each do |user_slug, file_name|
@@ -78,13 +79,15 @@ def create_decks()
     Store::CARD => card_hash,
     Store::STATUS => status_hash,
   }
-  Store.update_database(db_hash)
+  Store.update_database!(db_hash)
 end
 
 def main()
   Store.glass_database!()
   create_users()
   create_decks()
+  Repo.modify_sideboard('mpw', 'Borderland Ranger', 1)
+  Repo.modify_sideboard('mpw', 'Sylvan Ranger', 1)
 end
 
 main()

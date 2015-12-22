@@ -52,6 +52,43 @@ module Repo
     return out_hash
   end
 
+  def self.ensure_card_exists(db_cache, card_name)
+    card_hash = db_cache[Store::CARD][card_name]
+    if not card_hash
+      # fetch price
+      # price = 0
+      # price_fetched = Store.now
+      card_hash = {
+        :name => card_name,
+        :price => nil,
+        :price_fetched => nil,
+      }
+      store_hash = {
+        Store::CARD => {
+          card_name => card_hash,
+        }
+      }
+      Store.update_database!(store_hash)
+    end
+  end
+
+  def Repo.modify_sideboard(user_slug, card_name, quantity)
+    db_cache = Store.load_database()
+
+    ensure_card_exists(db_cache, card_name)
+
+    user_hash = self.load_cards(db_cache, user_slug)
+    current_card = user_hash[card_name]
+    new_status = {
+      :user_slug => user_slug,
+      :card_name => card_name,
+      :maindeck => current_card ? current_card[:maindeck] : 0,
+      :sideboard => quantity,
+      :timestamp => Store.now,
+    }
+    Store.insert_status!(new_status)
+  end
+
   def Repo.save_swap(view_binder)
     db_cache = Store.load_database()
 

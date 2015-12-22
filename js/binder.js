@@ -58,7 +58,8 @@
             return;
         }
         increment_card_sideboard(card);
-        store.save_binder(binder, draw);
+        // store.save_binder(binder, draw);
+        store.modify_sideboard(user_slug, card.name, card.sideboard, binder, draw);
     }
     module.add_card_to_sideboard = add_card_to_sideboard;
 

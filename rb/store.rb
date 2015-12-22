@@ -11,6 +11,10 @@ module Store
   WALLET = 'wallet'
   @KEYS = [USER, CARD, STATUS, WALLET]
 
+  def Store.now
+    Time.new.inspect
+  end
+
   def Store.glass_database!()
     db_hash = {
       Store::USER => {},
@@ -29,13 +33,22 @@ module Store
     return db_hash
   end
 
-  def Store.update_database(new_hash)
+  def Store.update_database!(new_hash)
     db_hash = load_database()
     @KEYS.each do |key|
       if new_hash.has_key?(key)
         db_hash[key] = db_hash[key].merge(new_hash[key])
       end
     end
+    File.open(@DATABASE_PATH, "w") do |f|
+      f.write(db_hash.to_json)
+    end
+  end
+
+  def Store.insert_status!(status_hash)
+    user_slug = status_hash[:user_slug]
+    db_hash = load_database()
+    db_hash[STATUS][user_slug].push(status_hash)
     File.open(@DATABASE_PATH, "w") do |f|
       f.write(db_hash.to_json)
     end

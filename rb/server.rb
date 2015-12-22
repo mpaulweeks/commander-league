@@ -29,3 +29,13 @@ get '/binder/:user_slug' do |user_slug|
   data = get_cards_json(_oracle, user_slug)
   return data
 end
+
+put '/binder/sideboard' do
+  user_slug = params['user_slug']
+  card_name = params['card_name']
+  quantity = params['quantity']
+  if not (user_slug && card_name && quantity)
+    return
+  end
+  Repo.modify_sideboard(user_slug, card_name, quantity)
+end
