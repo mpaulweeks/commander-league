@@ -139,7 +139,7 @@
             card.from_maindeck = 0;
             card.from_sideboard = 0;
         }
-        store.save_binder(binder, refresh);
+        // store.save_binder(binder, refresh);
     }
     module.swap_cards = swap_cards;
 
