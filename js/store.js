@@ -53,8 +53,7 @@
     }
     module.save_binder = save_binder;
 
-    function modify_sideboard(user_slug, card_name, quantity, binder, callback){
-        module.all_binders[binder.user_id] = binder;
+    function modify_sideboard(user_slug, card_name, quantity, callback){
         $.ajax({
             url: 'binder/sideboard',
             type: 'PUT',
@@ -63,8 +62,8 @@
                 card_name: card_name,
                 quantity: quantity,
             },
-        }).success(function (){
-            callback();
+        }).done(function (data){
+            callback(data);
         });
     }
     module.modify_sideboard = modify_sideboard;

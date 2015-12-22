@@ -25,13 +25,14 @@
         });
     }
 
-    function _load_binder(data){
+    function _load_binder_obj(data){
         binder = data;
         draw();
     }
 
-    function refresh(){
-        // store.load_binder(user_slug, _load_binder);
+    function load_binder_str(data_str){
+        data = JSON.parse(data_str);
+        _load_binder_obj(data);
     }
 
     function init(){
@@ -40,7 +41,7 @@
         data = JSON.parse(data_str);
         user_slug = data.user.slug
         console.log(user_slug);
-        _load_binder(data);
+        _load_binder_obj(data);
     }
     module.init = init;
 
@@ -58,8 +59,7 @@
             return;
         }
         increment_card_sideboard(card);
-        // store.save_binder(binder, draw);
-        store.modify_sideboard(user_slug, card.name, card.sideboard, binder, draw);
+        store.modify_sideboard(user_slug, card.name, card.sideboard, load_binder_str);
     }
     module.add_card_to_sideboard = add_card_to_sideboard;
 

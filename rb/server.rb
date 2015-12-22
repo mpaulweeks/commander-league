@@ -38,4 +38,6 @@ put '/binder/sideboard' do
     return
   end
   Repo.modify_sideboard(user_slug, card_name, quantity)
+  data = get_cards_json(_oracle, user_slug)
+  return data
 end
