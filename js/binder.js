@@ -133,16 +133,20 @@
             return;
         }
 
+        var to_swap = []
         for (var key in binder.cards){
             var card = binder.cards[key];
-            card.maindeck -= card.maindeck_swap;
-            card.maindeck += card.sideboard_swap;
-            card.sideboard += card.maindeck_swap;
-            card.sideboard -= card.sideboard_swap;
-            card.maindeck_swap = 0;
-            card.sideboard_swap = 0;
+            if (card.maindeck_swap > 0 || card.sideboard_swap > 0){
+                card.maindeck -= card.maindeck_swap;
+                card.maindeck += card.sideboard_swap;
+                card.sideboard += card.maindeck_swap;
+                card.sideboard -= card.sideboard_swap;
+                card.maindeck_swap = 0;
+                card.sideboard_swap = 0;
+                to_swap.push(card);
+            }
         }
-        // store.save_binder(binder, refresh);
+        store.create_statuses(user_slug, to_swap, load_new_card_data);
     }
     module.swap_cards = swap_cards;
 
