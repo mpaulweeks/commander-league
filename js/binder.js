@@ -156,13 +156,11 @@
     var INCREMENT_SIDEBOARD = '<input type="button" class="action" data-func="increment_sideboard" value="+"/>';
     var DELETE_MAINDECK_SWAP = '<input type="button" class="action" data-func="delete_maindeck_swap" value="-"/>';
     var DELETE_SIDEBOARD_SWAP = '<input type="button" class="action" data-func="delete_sideboard_swap" value="-"/>';
-    var CARD = '<li data-id="{1}">{2} {3}x {1}</li>';
+    var CARD = '<div class="card" data-id="{1}">{2} {3}x {1}</div>';
+    var CATEGORY = '<div class="category">{1} ({2})</div>';
 
     function get_card_html(card, property, display){
         var count = card[property];
-        if (count < 1){
-            return '';
-        }
         if (multiples_ok(card) && property == "sideboard"){
             display += INCREMENT_SIDEBOARD;
         }
@@ -196,18 +194,8 @@
 
     var categories = ['Land', 'Creature', 'Spell'];
 
-    function compare(a, b){
-        if (a < b){
-            return -1;
-        }
-        if (a > b){
-            return 1;
-        }
-        return 0;
-    }
-
     function draw(){
-        var cards_by_category = {};
+        var cards_by_category_then_list = {};
         categories.forEach(function (category){
             var matching_cards = [];
             for (var key in binder.cards){
@@ -219,18 +207,37 @@
             matching_cards.sort(function (a,b){
                 return a.name > b.name;
             });
-            cards_by_category[category] = matching_cards;
+            var sub_dict = {};
+            list_types.forEach(function (list_type){
+                var cards_in_list = [];
+                var total_count = 0;
+                var list_label = list_type[0];
+                matching_cards.forEach(function (card){
+                    var card_count = card[list_label];
+                    if (card_count > 0){
+                        total_count += card_count;
+                        cards_in_list.push(card);
+                    }
+                });
+                sub_dict[list_label] = {
+                    cards: cards_in_list,
+                    count: total_count,
+                };
+            });
+            cards_by_category_then_list[category] = sub_dict;
         });
+
         list_types.forEach(function (list_type){
             var total_html = '';
+            var list_label = list_type[0];
             categories.forEach(function (category){
-                var matching_cards = cards_by_category[category];
-                var cards_html = get_cards_html(matching_cards, list_type);
-                if (cards_html.length > 0){
-                    total_html += '<p>' + category + '</p>' + cards_html;
+                var matching_dict = cards_by_category_then_list[category][list_label];
+                if (matching_dict.count > 0){
+                    var cards_html = get_cards_html(matching_dict.cards, list_type);
+                    total_html += str_format(CATEGORY, category, matching_dict.count) + cards_html;
                 }
             });
-            $('#' + list_type[0]).html(total_html);
+            $('#' + list_label).html(total_html);
         });
 
         $(".action").on('click', function(evt){

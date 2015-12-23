@@ -15,3 +15,10 @@
 		width: 9.855em;
 	}
 }
+h3 {
+  text-align: center;
+}
+.category {
+  font-weight: bold;
+  text-align: center;
+}
