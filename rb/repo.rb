@@ -1,4 +1,6 @@
 
+require 'set'
+
 require_relative 'store'
 
 module Repo
@@ -18,6 +20,7 @@ module Repo
 
   def self.load_cards(db_cache, user_slug)
     out_status = {}
+    was_maindeck = Set.new
     db_cache[Store::STATUS][user_slug].each do |cs|
       card_name = cs["card_name"]
       is_latest = true # && cs["timestamp"] < timestamp
@@ -26,6 +29,9 @@ module Repo
       end
       if is_latest
         out_status[card_name] = cs
+      end
+      if cs["maindeck"] > 0
+        was_maindeck.add(card_name)
       end
     end
 
@@ -41,6 +47,9 @@ module Repo
         :maindeck_swap => 0,
         :sideboard_swap => 0,
       }
+      if was_maindeck.include? card_name
+        out_card[:price] = nil
+      end
       out_cards[card_name] = out_card
     end
 
