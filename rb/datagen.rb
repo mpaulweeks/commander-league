@@ -12,7 +12,7 @@ USER_NAMES = {
 
 USER_DECKS = {
   :eliah => 'simic',
-  :querty => 'orzhov',
+  :qwerty => 'orzhov',
   :mpw => 'golgari',
   :gant => 'boros',
   :edmond => 'izzet',

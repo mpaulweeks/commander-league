@@ -19,7 +19,7 @@ module Repo
     }
   end
 
-  def self.load_cards(db_cache, user_slug)
+  def Repo.load_cards(db_cache, user_slug)
     out_status = {}
     was_maindeck = Set.new
     db_cache[Store::STATUS][user_slug].each do |cs|
@@ -60,7 +60,7 @@ module Repo
   def Repo.load_user_cards(user_slug)
     db_cache = Store.load_database()
     user_hash = self.load_user_info(db_cache, user_slug)
-    card_hash = self.load_cards(db_cache, user_slug)
+    card_hash = Repo.load_cards(db_cache, user_slug)
     out_hash = {:user => user_hash, :cards => card_hash}
     return out_hash
   end
@@ -70,9 +70,13 @@ module Repo
     if not card_hash
       card_hash = {
         :name => card_name,
-        :price => Market.get_price(card_name),
-        :price_fetched => Store.now,
+        'price' => nil,
+        'price_fetched' => nil,
       }
+    end
+    if card_hash['price'] == nil
+      card_hash['price'] = Market.get_price(card_name)
+      card_hash['price_fetched'] = Store.now
       store_hash = {
         Store::CARD => {
           card_name => card_hash,
@@ -111,7 +115,9 @@ module Repo
     end
     Store.insert_statuses!(user_slug, to_save)
 
-    refreshed_cards = Repo.load_user_cards(user_slug)[:cards]
+    # refresh db cache, load current versions
+    db_cache = Store.load_database
+    refreshed_cards = Repo.load_cards(db_cache, user_slug)
     updated_cards = {}
     to_save.each do |status_hash|
       card_name = status_hash[:card_name]
