@@ -23,7 +23,11 @@ def create_users
   wallet_hash = {}
   USER_NAMES.each do |slug, name|
     user_hash[slug] = {:slug => slug, :name => name}
-    wallet_hash[slug] = []
+    wallet_hash[slug] = [{
+      :user_slug => slug,
+      :delta => 5.0,
+      :timestamp => Store.now,
+    }]
   end
   db_hash = {
     Store::USER => user_hash,

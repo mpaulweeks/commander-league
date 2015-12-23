@@ -115,6 +115,7 @@
     function is_legal_swap(){
         var num_from_deck = 0;
         var num_from_side = 0;
+        var total_price = 0;
         for (var key in binder.cards){
             var card = binder.cards[key];
             num_from_deck += card.maindeck_swap;
@@ -123,8 +124,15 @@
                 console.log('error');
                 return false;
             }
+            if (card.sideboard_swap > 0){
+                total_price += card.price * card.sideboard_swap;
+            }
         }
-        return num_from_deck > 0 && num_from_deck == num_from_side;
+        return (
+            num_from_deck > 0 &&
+            num_from_deck == num_from_side &&
+            total_price <= binder.user.balance
+        );
     }
 
     function swap_cards(){
@@ -226,6 +234,15 @@
             });
             cards_by_category_then_list[category] = sub_dict;
         });
+
+        var swap_total = 0.0;
+        categories.forEach(function (category){
+            var cards = cards_by_category_then_list[category]['sideboard_swap'].cards;
+            cards.forEach(function (card){
+                swap_total += card.sideboard_swap * card.price;
+            });
+        });
+        $('#total_swap_price').html(swap_total);
 
         list_types.forEach(function (list_type){
             var total_html = '';

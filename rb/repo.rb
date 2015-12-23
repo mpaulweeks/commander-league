@@ -8,9 +8,9 @@ module Repo
 
   def self.load_user_info(db_cache, user_slug)
     user = db_cache[Store::USER][user_slug]
-    balance = 0
+    balance = 0.0
     db_cache[Store::WALLET][user_slug].each do |transaction|
-      balance += transaction[:delta]
+      balance += transaction['delta']
     end
     user_hash = {
       :slug => user_slug,
