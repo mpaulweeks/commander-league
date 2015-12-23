@@ -27,23 +27,26 @@ def update_prices
       end
     end
   end
-  cards_to_ignore = cards_with_prices - cards_to_update
 
   cards = {}
-  cards_to_ignore.each do |card_name|
-    card = db_cache[Store::CARD][card_name]
-    card['price'] = nil
-    card['price_fetched'] = nil
-    cards[card_name] = card
-  end
-  cards_to_update.each do |card_name|
+  cards_with_prices.each do |card_name|
     card = db_cache[Store::CARD][card_name]
     if card['price_fetched'] < cutoff
-      card['price'] = Market.get_price(card_name)
-      card['price_fetched'] = Store.now
+      if cards_to_update.include? card_name
+        card['price'] = Market.get_price(card_name)
+        card['price_fetched'] = Store.now
+      else
+        card['price'] = nil
+        card['price_fetched'] = nil
+      end
       cards[card_name] = card
     end
   end
+
+  store_hash = {
+    Store::CARD => cards,
+  }
+  Store.update_database!(store_hash)
 end
 
 update_prices()
