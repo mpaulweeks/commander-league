@@ -52,6 +52,14 @@ module Store
     end
   end
 
+  def Store.insert_wallet!(user_slug, wallet_entry)
+    db_hash = load_database()
+    db_hash[WALLET][user_slug].push(wallet_entry)
+    File.open(@DATABASE_PATH, "w") do |f|
+      f.write(db_hash.to_json)
+    end
+  end
+
   def Store.load_all_cards()
     all_cards_file = File.read('json/AllCards.json')
     all_cards_hash = JSON.parse(all_cards_file)

@@ -6,7 +6,7 @@ require_relative 'market'
 
 module Repo
 
-  def self.load_user_info(db_cache, user_slug)
+  def Repo.load_user_info(db_cache, user_slug)
     user = db_cache[Store::USER][user_slug]
     balance = 0.0
     db_cache[Store::WALLET][user_slug].each do |transaction|
@@ -59,7 +59,7 @@ module Repo
 
   def Repo.load_user_cards(user_slug)
     db_cache = Store.load_database()
-    user_hash = self.load_user_info(db_cache, user_slug)
+    user_hash = Repo.load_user_info(db_cache, user_slug)
     card_hash = Repo.load_cards(db_cache, user_slug)
     out_hash = {:user => user_hash, :cards => card_hash}
     return out_hash
@@ -96,7 +96,11 @@ module Repo
 
   def Repo.create_statuses!(user_slug, statuses)
     db_cache = Store.load_database
+    old_user = Repo.load_user_info(db_cache, user_slug)
+    old_cards = Repo.load_cards(db_cache, user_slug)
     to_save = []
+    cards_added = 0
+    balance = 0.0
     statuses.each do |raw_status_hash|
       if not self.is_valid_status?(raw_status_hash)
         puts 'failed validation! %s' % raw_status_hash
@@ -112,8 +116,35 @@ module Repo
       }
       to_save.push(new_status_hash)
       ensure_card_exists(db_cache, new_status_hash[:card_name])
+
+      card_name = new_status_hash[:card_name]
+      if old_cards.include? card_name
+        old_card_hash = old_cards[card_name]
+        cards_added += new_status_hash[:maindeck]
+        cards_added -= new_status_hash[:sideboard]
+        cards_added -= old_card_hash[:maindeck]
+        cards_added += old_card_hash[:sideboard]
+        if old_card_hash[:price] != nil
+          balance += old_card_hash[:price] * (new_status_hash[:maindeck] - old_card_hash[:maindeck])
+        end
+      end
+    end
+
+    if balance > old_user[:balance]
+      raise ArgumentError.new("failed! too high a balance. #{balance} > #{old_user[:balance]}")
+    end
+    if cards_added > 0
+      raise ArgumentError.new("failed! added more cards than removed. #{cards_added} > 0")
     end
     Store.insert_statuses!(user_slug, to_save)
+    if balance > 0.0
+      wallet_entry = {
+        :user_slug => user_slug,
+        :delta => 0.0 - balance,
+        :timestamp => Store.now,
+      }
+      Store.insert_wallet!(user_slug, wallet_entry)
+    end
 
     # refresh db cache, load current versions
     db_cache = Store.load_database

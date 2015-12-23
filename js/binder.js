@@ -203,6 +203,8 @@
     var categories = ['Land', 'Creature', 'Spell'];
 
     function draw(){
+        $('#user_balance').html(binder.user.balance);
+
         var cards_by_category_then_list = {};
         categories.forEach(function (category){
             var matching_cards = [];
