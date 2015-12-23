@@ -2,6 +2,7 @@
 require 'set'
 
 require_relative 'store'
+require_relative 'market'
 
 module Repo
 
@@ -67,13 +68,10 @@ module Repo
   def self.ensure_card_exists(db_cache, card_name)
     card_hash = db_cache[Store::CARD][card_name]
     if not card_hash
-      # fetch price
-      # price = 0
-      # price_fetched = Store.now
       card_hash = {
         :name => card_name,
-        :price => nil,
-        :price_fetched => nil,
+        :price => Market.get_price(card_name),
+        :price_fetched => Store.now,
       }
       store_hash = {
         Store::CARD => {
