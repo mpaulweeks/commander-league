@@ -169,6 +169,15 @@
         return str_format(CARD, card.name, display, count);
     }
 
+    function get_cards_html(cards, list_type){
+        var html_out = "";
+        for (var i = 0; i < cards.length; i++){
+            var card = cards[i];
+            html_out += get_card_html(card, list_type[0], list_type[1]);
+        }
+        return html_out;
+    }
+
     var card_actions = {
         "swap_from_maindeck": swap_from_maindeck,
         "swap_from_sideboard": swap_from_sideboard,
@@ -176,24 +185,48 @@
         "delete_sideboard_swap": decrement_card_sideboard_swap,
         "delete_sideboard": decrement_card_sideboard,
         "increment_sideboard": increment_card_sideboard,
+    };
+
+    var list_types = [
+        ['maindeck', SWAP_FROM_MAINDECK],
+        ['maindeck_swap', DELETE_MAINDECK_SWAP],
+        ['sideboard', SWAP_FROM_SIDEBOARD + DELETE_SIDEBOARD],
+        ['sideboard_swap', DELETE_SIDEBOARD_SWAP],
+    ];
+
+    var categories = ['Land', 'Creature', 'Spell'];
+
+    function compare(a, b){
+        if (a < b){
+            return -1;
+        }
+        if (a > b){
+            return 1;
+        }
+        return 0;
     }
 
     function draw(){
-        var html_maindeck = "";
-        var html_maindeck_swap = "";
-        var html_sideboard = "";
-        var html_sideboard_swap = "";
-        for (var key in binder.cards){
-            var card = binder.cards[key];
-            html_maindeck += get_card_html(card, "maindeck", SWAP_FROM_MAINDECK);
-            html_maindeck_swap += get_card_html(card, "maindeck_swap", DELETE_MAINDECK_SWAP);
-            html_sideboard += get_card_html(card, "sideboard", SWAP_FROM_SIDEBOARD + DELETE_SIDEBOARD);
-            html_sideboard_swap += get_card_html(card, "sideboard_swap", DELETE_SIDEBOARD_SWAP);
-        }
-        $("#maindeck").html(html_maindeck);
-        $("#maindeck_swap").html(html_maindeck_swap);
-        $("#sideboard").html(html_sideboard);
-        $("#sideboard_swap").html(html_sideboard_swap);
+        list_types.forEach(function (list_type){
+            var total_html = '';
+            categories.forEach(function (category){
+                var matching_cards = [];
+                for (var key in binder.cards){
+                    var card = binder.cards[key];
+                    if (card.category == category){
+                        matching_cards.push(card);
+                    }
+                }
+                matching_cards.sort(function (a,b){
+                    return a.name > b.name;
+                });
+                var cards_html = get_cards_html(matching_cards, list_type);
+                if (cards_html.length > 0){
+                    total_html += '<p>' + category + '</p>' + cards_html;
+                }
+            });
+            $('#' + list_type[0]).html(total_html);
+        });
 
         $(".action").on('click', function(evt){
             var name = $(this).parent().data('id');
