@@ -35,16 +35,20 @@
         _load_binder_obj(data);
     }
 
-    function load_new_card_data(data_str){
+    function load_new_data(data_str){
         var data = JSON.parse(data_str);
-        for (card_name in data){
-            var new_card = data[card_name];
+        var cards = data.cards;
+        for (card_name in cards){
+            var new_card = cards[card_name];
             if (card_name in binder.cards){
                 var old_card = binder.cards[card_name];
                 new_card.maindeck_swap = old_card.maindeck_swap;
                 new_card.sideboard_swap = old_card.sideboard_swap;
             }
             binder.cards[card_name] = new_card;
+        }
+        if ('user' in data){
+            binder.user = data.user;
         }
         draw();
     }
@@ -81,14 +85,14 @@
             if (card.sideboard_swap > card.sideboard){
                 decrement_card_sideboard_swap(card);
             }
-            store.create_statuses(user_slug, [card], load_new_card_data);
+            store.create_statuses(user_slug, [card], load_new_data);
         }
     }
 
     function increment_card_sideboard(card){
         if (card.sideboard == 0 || multiples_ok(card)){
             card.sideboard += 1;
-            store.create_statuses(user_slug, [card], load_new_card_data);
+            store.create_statuses(user_slug, [card], load_new_data);
         }
     }
 
@@ -154,7 +158,7 @@
                 to_swap.push(card);
             }
         }
-        store.create_statuses(user_slug, to_swap, load_new_card_data);
+        store.create_statuses(user_slug, to_swap, load_new_data);
     }
     module.swap_cards = swap_cards;
 

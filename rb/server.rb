@@ -32,9 +32,8 @@ end
 
 post '/api/user/:user_slug/status' do |user_slug|
   request.body.rewind  # in case someone already read it
-  data = JSON.parse request.body.read
-  cards = Repo.create_statuses!(user_slug, data)
-  _oracle.add_card_meta!(cards)
-  data = JSON.generate(cards)
-  return data
+  status_hash = JSON.parse request.body.read
+  new_data = Repo.create_statuses!(user_slug, status_hash)
+  _oracle.add_card_meta!(new_data[:cards])
+  return JSON.generate(new_data)
 end

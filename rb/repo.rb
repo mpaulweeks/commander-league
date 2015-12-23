@@ -120,10 +120,7 @@ module Repo
       card_name = new_status_hash[:card_name]
       if old_cards.include? card_name
         old_card_hash = old_cards[card_name]
-        cards_added += new_status_hash[:maindeck]
-        cards_added -= new_status_hash[:sideboard]
-        cards_added -= old_card_hash[:maindeck]
-        cards_added += old_card_hash[:sideboard]
+        cards_added += new_status_hash[:maindeck] - old_card_hash[:maindeck]
         if old_card_hash[:price] != nil
           balance += old_card_hash[:price] * (new_status_hash[:maindeck] - old_card_hash[:maindeck])
         end
@@ -133,8 +130,8 @@ module Repo
     if balance > old_user[:balance]
       raise ArgumentError.new("failed! too high a balance. #{balance} > #{old_user[:balance]}")
     end
-    if cards_added > 0
-      raise ArgumentError.new("failed! added more cards than removed. #{cards_added} > 0")
+    if cards_added != 0
+      raise ArgumentError.new("failed! num cards != removed. added: #{cards_added}")
     end
     Store.insert_statuses!(user_slug, to_save)
     if balance > 0.0
@@ -154,7 +151,13 @@ module Repo
       card_name = status_hash[:card_name]
       updated_cards[card_name] = refreshed_cards[card_name]
     end
-    return updated_cards
+    updated_data = {
+      :cards => updated_cards
+    }
+    if balance > 0.0
+      updated_data[:user] = Repo.load_user_info(db_cache, user_slug)
+    end
+    return updated_data
   end
 
 end
