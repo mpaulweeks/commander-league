@@ -35,8 +35,8 @@ module Repo
       card = db_cards[card_name].merge({
         :maindeck => card_status['maindeck'],
         :sideboard => card_status['sideboard'],
-        :from_maindeck => 0,
-        :from_sideboard => 0,
+        :maindeck_swap => 0,
+        :sideboard_swap => 0,
       })
       out_cards[card_name] = card
     end

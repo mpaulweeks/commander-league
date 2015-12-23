@@ -10,22 +10,18 @@ todo:
 ViewModels
 
 binder
-    user_id:    <string>
-    cards:      <cardlist>
-
-cardlist
-    <string>: <card>
+    user: dict
+    cards: dict
 
 card
     name
     price
     category
     multiverse_id
-
     maindeck
     sideboard
-    from_maindeck
-    from_sideboard
+    maindeck_swap
+    sideboard_swap
 
 Models
 
@@ -43,34 +39,21 @@ card
     price
     price_fetched
 
-status_code
-    sideboard
-    maindeck
-
-card_status
+status
     user_slug   string
     card_name   string
-    timestamp   datetime
     maindeck    int
     sideboard   int
+    timestamp   datetime
 
-Endpoints
+Endpoints /api
 
-binder
+/user/:user_slug
     GET
-        user_slug
 
-swap
+/user/:user_slug/status
     POST
-        binder
-            user_slug
-            from_maindeck
-            from_sideboard
-
-sideboard
-    POST
-        user_slug
-        card_name
-    DELETE
-        user_slug
-        card_name
+        list of:
+            name
+            maindeck
+            sideboard

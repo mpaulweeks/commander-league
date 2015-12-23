@@ -41,8 +41,8 @@
             var new_card = data[card_name];
             if (card_name in binder.cards){
                 var old_card = binder.cards[card_name];
-                new_card.from_maindeck = old_card.from_maindeck;
-                new_card.from_sideboard = old_card.from_sideboard;
+                new_card.maindeck_swap = old_card.maindeck_swap;
+                new_card.sideboard_swap = old_card.sideboard_swap;
             }
             binder.cards[card_name] = new_card;
         }
@@ -62,8 +62,8 @@
         if (!(new_card.name in binder.cards)){
             new_card.sideboard = 0;
             new_card.maindeck = 0;
-            new_card.from_sideboard = 0;
-            new_card.from_maindeck = 0;
+            new_card.sideboard_swap = 0;
+            new_card.maindeck_swap = 0;
             binder.cards[new_card.name] = new_card;
         }
         var card = binder.cards[new_card.name];
@@ -78,8 +78,8 @@
     function decrement_card_sideboard(card){
         if (card.sideboard > 0){
             card.sideboard -= 1;
-            if (card.from_sideboard > card.sideboard){
-                card.from_sideboard -= 1;
+            if (card.sideboard_swap > card.sideboard){
+                decrement_card_sideboard_swap(card);
             }
             store.create_statuses(user_slug, [card], load_new_card_data);
         }
@@ -92,23 +92,23 @@
         }
     }
 
-    function delete_card_from_sideboard(card){
-        card.from_sideboard -= 1;
+    function decrement_card_sideboard_swap(card){
+        card.sideboard_swap -= 1;
     }
 
-    function delete_card_from_maindeck(card){
-        card.from_maindeck -= 1;
+    function decrement_card_maindeck_swap(card){
+        card.maindeck_swap -= 1;
     }
 
     function swap_from_maindeck(card){
-        if (card.from_maindeck < card.maindeck){
-            card.from_maindeck += 1;
+        if (card.maindeck_swap < card.maindeck){
+            card.maindeck_swap += 1;
         }
     }
 
     function swap_from_sideboard(card){
-        if (card.from_sideboard < card.sideboard){
-            card.from_sideboard += 1;
+        if (card.sideboard_swap < card.sideboard){
+            card.sideboard_swap += 1;
         }
     }
 
@@ -117,9 +117,9 @@
         var num_from_side = 0;
         for (var key in binder.cards){
             var card = binder.cards[key];
-            num_from_deck += card.from_maindeck;
-            num_from_side += card.from_sideboard;
-            if (card.from_maindeck > 0 && card.from_sideboard > 0){
+            num_from_deck += card.maindeck_swap;
+            num_from_side += card.sideboard_swap;
+            if (card.maindeck_swap > 0 && card.sideboard_swap > 0){
                 console.log('error');
                 return false;
             }
@@ -135,12 +135,12 @@
 
         for (var key in binder.cards){
             var card = binder.cards[key];
-            card.maindeck -= card.from_maindeck;
-            card.maindeck += card.from_sideboard;
-            card.sideboard += card.from_maindeck;
-            card.sideboard -= card.from_sideboard;
-            card.from_maindeck = 0;
-            card.from_sideboard = 0;
+            card.maindeck -= card.maindeck_swap;
+            card.maindeck += card.sideboard_swap;
+            card.sideboard += card.maindeck_swap;
+            card.sideboard -= card.sideboard_swap;
+            card.maindeck_swap = 0;
+            card.sideboard_swap = 0;
         }
         // store.save_binder(binder, refresh);
     }
@@ -150,8 +150,8 @@
     var SWAP_FROM_MAINDECK = '<input type="button" class="action" data-func="swap_from_maindeck" value=">>"/>';
     var DELETE_SIDEBOARD = '<input type="button" class="action" data-func="delete_sideboard" value="-"/>';
     var INCREMENT_SIDEBOARD = '<input type="button" class="action" data-func="increment_sideboard" value="+"/>';
-    var DELETE_FROM_MAINDECK = '<input type="button" class="action" data-func="delete_from_maindeck" value="-"/>';
-    var DELETE_FROM_SIDEBOARD = '<input type="button" class="action" data-func="delete_from_sideboard" value="-"/>';
+    var DELETE_MAINDECK_SWAP = '<input type="button" class="action" data-func="delete_maindeck_swap" value="-"/>';
+    var DELETE_SIDEBOARD_SWAP = '<input type="button" class="action" data-func="delete_sideboard_swap" value="-"/>';
     var CARD = '<li data-id="{1}">{2} {3}x {1}</li>';
 
     function get_card_html(card, property, display){
@@ -168,28 +168,28 @@
     var card_actions = {
         "swap_from_maindeck": swap_from_maindeck,
         "swap_from_sideboard": swap_from_sideboard,
-        "delete_from_maindeck": delete_card_from_maindeck,
-        "delete_from_sideboard": delete_card_from_sideboard,
+        "delete_maindeck_swap": decrement_card_maindeck_swap,
+        "delete_sideboard_swap": decrement_card_sideboard_swap,
         "delete_sideboard": decrement_card_sideboard,
         "increment_sideboard": increment_card_sideboard,
     }
 
     function draw(){
         var html_maindeck = "";
-        var html_from_maindeck = "";
+        var html_maindeck_swap = "";
         var html_sideboard = "";
-        var html_from_sideboard = "";
+        var html_sideboard_swap = "";
         for (var key in binder.cards){
             var card = binder.cards[key];
             html_maindeck += get_card_html(card, "maindeck", SWAP_FROM_MAINDECK);
-            html_from_maindeck += get_card_html(card, "from_maindeck", DELETE_FROM_MAINDECK);
+            html_maindeck_swap += get_card_html(card, "maindeck_swap", DELETE_MAINDECK_SWAP);
             html_sideboard += get_card_html(card, "sideboard", SWAP_FROM_SIDEBOARD + DELETE_SIDEBOARD);
-            html_from_sideboard += get_card_html(card, "from_sideboard", DELETE_FROM_SIDEBOARD);
+            html_sideboard_swap += get_card_html(card, "sideboard_swap", DELETE_SIDEBOARD_SWAP);
         }
         $("#maindeck").html(html_maindeck);
-        $("#from_maindeck").html(html_from_maindeck);
+        $("#maindeck_swap").html(html_maindeck_swap);
         $("#sideboard").html(html_sideboard);
-        $("#from_sideboard").html(html_from_sideboard);
+        $("#sideboard_swap").html(html_sideboard_swap);
 
         $(".action").on('click', function(evt){
             var name = $(this).parent().data('id');
