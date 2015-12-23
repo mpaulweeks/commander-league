@@ -1,11 +1,8 @@
 # commander-league
 
 todo:
-    - price refreshing
-    - categories
+    - fetching price
     - multiverse id
-    - ajax for GET endpoint
-    - swap endpoint
 
 ViewModels
 

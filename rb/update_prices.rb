@@ -1,15 +1,16 @@
 
 require 'set'
+require 'time'
 
 require_relative 'store'
 require_relative 'repo'
 require_relative 'market'
 
 STALE_DAYS = 7
+STALE_SECONDS = STALE_DAYS*60*60*24
 
 def update_prices
-  # cutoff = Store.now - STALE_DAYS
-  cutoff = Store.now
+  cutoff = (Time.parse(Store.now) - STALE_SECONDS).inspect
 
   cards_with_prices = Set.new
   cards_to_update = Set.new
