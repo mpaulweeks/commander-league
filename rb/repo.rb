@@ -32,13 +32,16 @@ module Repo
     out_cards = {}
     db_cards = db_cache[Store::CARD]
     out_status.each do |card_name, card_status|
-      card = db_cards[card_name].merge({
+      card_hash = db_cards[card_name]
+      out_card = {
+        :name => card_hash['name'],
+        :price => card_hash['price'],
         :maindeck => card_status['maindeck'],
         :sideboard => card_status['sideboard'],
         :maindeck_swap => 0,
         :sideboard_swap => 0,
-      })
-      out_cards[card_name] = card
+      }
+      out_cards[card_name] = out_card
     end
 
     return out_cards
