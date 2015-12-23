@@ -29,12 +29,3 @@ class Oracle
     end
   end
 end
-
-def sample
-  o = Oracle.new
-  cards = {'Masticore' => {}, "Meren of Clan Nel Toth" => {}}
-  o.add_card_meta!(cards)
-  puts cards
-end
-
-# sample

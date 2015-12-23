@@ -1,7 +1,6 @@
 
 require 'json'
 
-
 module Store
   @DATABASE_PATH = 'json/database.json'
 
@@ -40,15 +39,6 @@ module Store
         db_hash[key] = db_hash[key].merge(new_hash[key])
       end
     end
-    File.open(@DATABASE_PATH, "w") do |f|
-      f.write(db_hash.to_json)
-    end
-  end
-
-  def Store.insert_status!(status_hash)
-    user_slug = status_hash[:user_slug]
-    db_hash = load_database()
-    db_hash[STATUS][user_slug].push(status_hash)
     File.open(@DATABASE_PATH, "w") do |f|
       f.write(db_hash.to_json)
     end

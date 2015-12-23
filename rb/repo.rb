@@ -121,5 +121,3 @@ module Repo
   end
 
 end
-
-# puts Repo.load_user_cards('mpw')
