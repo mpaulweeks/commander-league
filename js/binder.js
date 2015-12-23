@@ -207,19 +207,24 @@
     }
 
     function draw(){
+        var cards_by_category = {};
+        categories.forEach(function (category){
+            var matching_cards = [];
+            for (var key in binder.cards){
+                var card = binder.cards[key];
+                if (card.category == category){
+                    matching_cards.push(card);
+                }
+            }
+            matching_cards.sort(function (a,b){
+                return a.name > b.name;
+            });
+            cards_by_category[category] = matching_cards;
+        });
         list_types.forEach(function (list_type){
             var total_html = '';
             categories.forEach(function (category){
-                var matching_cards = [];
-                for (var key in binder.cards){
-                    var card = binder.cards[key];
-                    if (card.category == category){
-                        matching_cards.push(card);
-                    }
-                }
-                matching_cards.sort(function (a,b){
-                    return a.name > b.name;
-                });
+                var matching_cards = cards_by_category[category];
                 var cards_html = get_cards_html(matching_cards, list_type);
                 if (cards_html.length > 0){
                     total_html += '<p>' + category + '</p>' + cards_html;
