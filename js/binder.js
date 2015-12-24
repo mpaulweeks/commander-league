@@ -72,7 +72,7 @@
         }
         var card = binder.cards[new_card_name];
         if ("maindeck" in card && card.maindeck > 0 && !multiples_ok(card)){
-            console.log("cannot add card already in deck");
+            alert("cannot add card already in deck");
             return;
         }
         increment_card_sideboard(card);
@@ -125,7 +125,7 @@
             num_from_deck += card.maindeck_swap;
             num_from_side += card.sideboard_swap;
             if (card.maindeck_swap > 0 && card.sideboard_swap > 0){
-                console.log('error');
+                alert('cannot swap with a card in both maindeck and sideboard');
                 return false;
             }
             if (card.sideboard_swap > 0){
@@ -141,7 +141,7 @@
 
     function swap_cards(){
         if (!is_legal_swap()){
-            console.log("cant swap");
+            alert("cant swap. check the cost and ensure same # of cards");
             return;
         }
 
