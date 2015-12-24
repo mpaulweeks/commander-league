@@ -1,28 +1,92 @@
 # commander-league
 
-todo:
-    - commander legal filtering
-    - splash page
-    - auto-generate navbar
+## todo
+ - script to backup db
+ - splash page
+ - auto-generate navbar
+ - don't make everything public
+ - nginx
 
-ViewModels
+## API
 
-binder
-    user: dict
-    cards: dict
+### /api/:user_slug GET
 
-card
-    name
-    price
-    category
-    multiverse_id
-    maindeck
-    sideboard
-    maindeck_swap
-    sideboard_swap
+#### response
 
-Models
+```
+{
+    "user":{
+        "slug":"mpw",
+        "name":"M. Paul",
+        "colors":["B","G"],
+        "balance":4.0
+    },
+    "cards":{
+        "Sakura-Tribe Elder":{
+            "name":"Sakura-Tribe Elder",
+            "price":null,
+            "maindeck":1,
+            "sideboard":0,
+            "category":"Creature",
+            "multiverse":405363
+        },
+        ...
+    },
+}
+```
 
+### /api/user/:user_slug/status POST
+
+#### request
+
+```
+[
+    {
+        "name":"Abduction",
+        "maindeck":0,
+        "sideboard":1,
+    },
+    {
+        "name":"Lightning Greaves",
+        "maindeck":1,
+        "sideboard":0,
+    },
+]   
+```
+
+#### response
+```
+{
+    "user":{
+        "slug":"eliah",
+        "name":"Eliah",
+        "colors":["U","G"],
+        "balance":4.25,
+    },
+    "cards":{
+        "Abduction":{
+            "name":"Abduction",
+            "price":null,
+            "maindeck":0,
+            "sideboard":1,
+            "category":"Spell",
+            "multiverse":14526,
+        },
+        "Lightning Greaves":{
+            "name":"Lightning Greaves",
+            "price":null,
+            "maindeck":1,
+            "sideboard":0,
+            "category":"Spell",
+            "multiverse":405284,
+        }
+    },
+}
+```
+
+## Database
+
+```
 user
     slug
     name
@@ -43,15 +107,4 @@ status
     maindeck    int
     sideboard   int
     timestamp   datetime
-
-Endpoints /api
-
-/user/:user_slug
-    GET
-
-/user/:user_slug/status
-    POST
-        list of:
-            name
-            maindeck
-            sideboard
+```
