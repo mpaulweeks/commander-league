@@ -25,17 +25,7 @@
         });
     }
 
-    function _load_binder_obj(data){
-        binder = data;
-        draw();
-    }
-
-    function load_binder_str(data_str){
-        data = JSON.parse(data_str);
-        _load_binder_obj(data);
-    }
-
-    function load_new_data(data_str){
+    function load_update_data(data_str){
         var data = JSON.parse(data_str);
         var cards = data.cards;
         for (card_name in cards){
@@ -56,9 +46,15 @@
     function init(){
         var data_str = $('#server_data').html()
         $('#server_data').empty()
-        var data = JSON.parse(data_str);
-        user_slug = data.user.slug
-        _load_binder_obj(data);
+        binder = JSON.parse(data_str);
+        user_slug = binder.user.slug;
+        var cards = binder.cards;
+        for (card_name in cards){
+            var card = cards[card_name];
+            card.maindeck_swap = 0;
+            card.sideboard_swap = 0;
+        }
+        draw();
     }
     module.init = init;
 
@@ -85,14 +81,14 @@
             if (card.sideboard_swap > card.sideboard){
                 decrement_card_sideboard_swap(card);
             }
-            store.create_statuses(user_slug, [card], load_new_data);
+            store.create_statuses(user_slug, [card], load_update_data);
         }
     }
 
     function increment_card_sideboard(card){
         if (card.sideboard == 0 || multiples_ok(card)){
             card.sideboard += 1;
-            store.create_statuses(user_slug, [card], load_new_data);
+            store.create_statuses(user_slug, [card], load_update_data);
         }
     }
 
@@ -158,7 +154,7 @@
                 to_swap.push(card);
             }
         }
-        store.create_statuses(user_slug, to_swap, load_new_data);
+        store.create_statuses(user_slug, to_swap, load_update_data);
     }
     module.swap_cards = swap_cards;
 

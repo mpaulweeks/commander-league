@@ -45,8 +45,6 @@ module Repo
         :price => card_hash['price'],
         :maindeck => card_status['maindeck'],
         :sideboard => card_status['sideboard'],
-        :maindeck_swap => 0,
-        :sideboard_swap => 0,
       }
       if was_maindeck.include? card_name
         out_card[:price] = nil
