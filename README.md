@@ -1,8 +1,9 @@
 # commander-league
 
 todo:
-    - fetching price
-    - multiverse id
+    - commander legal filtering
+    - splash page
+    - auto-generate navbar
 
 ViewModels
 

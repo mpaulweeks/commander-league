@@ -49,6 +49,7 @@
         $('#server_data').empty()
         binder = JSON.parse(data_str);
         user_slug = binder.user.slug;
+        $('#user_name').html(binder.user.name);
         var cards = binder.cards;
         for (card_name in cards){
             var card = cards[card_name];
