@@ -10,6 +10,8 @@ STALE_DAYS = 7
 STALE_SECONDS = STALE_DAYS*60*60*24
 
 def update_prices
+  puts "Running price updater..."
+
   cutoff = (Time.parse(Store.now) - STALE_SECONDS).inspect
 
   cards_with_prices = Set.new
@@ -44,10 +46,14 @@ def update_prices
     end
   end
 
-  store_hash = {
-    Store::CARD => cards,
-  }
-  Store.update_database!(store_hash)
+  puts "Prices updated: %s" % cards.size
+
+  if cards.size > 0
+    store_hash = {
+      Store::CARD => cards,
+    }
+    Store.update_database!(store_hash)
+  end
 end
 
 update_prices()
