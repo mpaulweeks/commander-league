@@ -26,10 +26,10 @@ module Market
   end
 
   def Market.get_price(card_name)
-    return 0.25
-    # url = COMBODECK_URL % card_name
-    # json_str = self.fetch_url(url)
-    # price = self.parse_json(card_name, json_str)
-    # return price
+    # return 0.25
+    url = COMBODECK_URL % card_name
+    json_str = self.fetch_url(url)
+    price = self.parse_json(card_name, json_str)
+    return price
   end
 end
