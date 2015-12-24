@@ -4,7 +4,6 @@ require 'net/http'
 
 COMBODECK_URL = "http://combodeck.net/Search/FullCard?cardName=%s"
 
-
 module Market
 
   def self.fetch_url(raw_url)
