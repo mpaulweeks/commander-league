@@ -27,9 +27,8 @@
 
         $("#lookup-form").on("submit", function(evt){
             evt.preventDefault();
-            // var val = $("#lookup-text").val();
-            var val = $("#lookup-select").val();
-            store.get_card(val, binder.add_card_to_sideboard);
+            var card_name = $("#lookup-select").val();
+            binder.add_card_to_sideboard(card_name);
         });
         $("#swap-cards").on("click", function(evt){
             evt.preventDefault();

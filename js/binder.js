@@ -60,15 +60,17 @@
     }
     module.init = init;
 
-    function add_card_to_sideboard(new_card){
-        if (!(new_card.name in binder.cards)){
+    function add_card_to_sideboard(new_card_name){
+        if (!(new_card_name in binder.cards)){
+            var new_card = {};
+            new_card.name = new_card_name;
             new_card.sideboard = 0;
             new_card.maindeck = 0;
             new_card.sideboard_swap = 0;
             new_card.maindeck_swap = 0;
-            binder.cards[new_card.name] = new_card;
+            binder.cards[new_card_name] = new_card;
         }
-        var card = binder.cards[new_card.name];
+        var card = binder.cards[new_card_name];
         if ("maindeck" in card && card.maindeck > 0 && !multiples_ok(card)){
             console.log("cannot add card already in deck");
             return;

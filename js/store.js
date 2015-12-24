@@ -1,9 +1,9 @@
 (function(module){
 
-    var ALL_CARDS_FILE = 'json/AllCards.json';
+    var LOOKUP_FILE = 'json/lookup.json';
     var GITHUB_BASE = 'http://mpaulweeks.github.io/commander-league/';
 
-    module.all_cards = null;
+    module.lookup = null;
 
     function fix_file(file_url){
         // if (tool.is_local && !tool.is_firefox){
@@ -13,13 +13,9 @@
     }
 
     module.init = function(callback){
-        var all_cards_file = fix_file(ALL_CARDS_FILE);
-        $.getJSON(all_cards_file, function(all_cards_data){
-            var lower_data = {};
-            for (var key in all_cards_data){
-                lower_data[key.toLowerCase()] = all_cards_data[key];
-            }
-            module.all_cards = lower_data;
+        var all_cards_file = fix_file(LOOKUP_FILE);
+        $.getJSON(all_cards_file, function(lookup){
+            module.lookup = lookup;
             callback();
         });
     };
@@ -35,21 +31,13 @@
         });
     };
 
-    module.get_card = function(card_name, callback){
-        var card = module.all_cards[card_name.toLowerCase()];
-        var new_card = {
-            'name': card.name,
-        };
-        callback(new_card);
-    };
-
     module.get_cards_by_colors = function(colors){
         var out = [];
-        for (var key in module.all_cards){
-            var card = module.all_cards[key];
+        for (var card_name in module.lookup){
+            var card = module.lookup[card_name];
             var is_match = false;
             var is_illegal = false;
-            if ("colorIdentity" in card){
+            if ("colorIdentity" in card && card.colorIdentity.length > 0){
                 for (var i = 0; i < card.colorIdentity.length; i++){
                     var card_color = card.colorIdentity[i];
                     is_match = is_match || colors.indexOf(card_color) > -1;
