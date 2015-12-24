@@ -168,6 +168,13 @@
     var CATEGORY = '<div class="col-md-12 category text-center">{1} ({2})</div>';
     var PRICE = '<div class="col-md-3 price text-right">{1}</div>';
 
+    function format_price(price){
+        if (price == null){
+            return 'FREE';
+        }
+        return price.toFixed(2);
+    }
+
     function get_card_html(card, property, display){
         var count = card[property];
         if (multiples_ok(card) && property == "sideboard"){
@@ -176,10 +183,7 @@
         var price_html = '';
         var card_width = 12;
         if (property == 'sideboard' || property == 'sideboard_swap'){
-            var price_str = card.price;
-            if (price_str == null){
-                price_str = 'FREE';
-            }
+            var price_str = format_price(card.price);
             price_html = str_format(PRICE, price_str);
             card_width = 9;
         }
