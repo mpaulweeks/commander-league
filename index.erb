@@ -31,19 +31,23 @@
         <%= data %>
     </span>
 
-    <div id="user_balance"></div>
-
     <div class="col-md-4">
         <h3> Maindeck </h3>
         <div id="maindeck" class="col-md-12 cardlistdisplay"></div>
     </div>
     <div class="col-md-4">
         <h3> Exchange </h3>
+        <div id="user_info" class="col-md-12">
+            <div class="col-md-6">
+                Balance: <span id="balance"></span>
+            </div>
+            <div class="col-md-6">
+                Cost: <span id="cost"></span>
+            </div>
+        </div>
         <div id="maindeck_swap" class="col-md-12 cardlistdisplay"></div>
-        <div class="col-md-12">
+        <div class="col-md-12 text-center">
             <button id="swap-cards">SWAP</button>
-            <span>Total price: </span>
-            <span id="total_swap_price"></span>
         </div>
         <div id="sideboard_swap" class="col-md-12 cardlistdisplay"></div>
     </div>

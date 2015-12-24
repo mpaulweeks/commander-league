@@ -24,3 +24,12 @@ h3 {
 .price {
   font-style: italic;
 }
+#user_info {
+  font-size: 14pt;
+}
+#balance {
+  color: green;
+}
+#cost {
+  color: red;
+}

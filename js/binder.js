@@ -218,7 +218,6 @@
     var categories = ['Land', 'Creature', 'Spell'];
 
     function draw(){
-        $('#user_balance').html(binder.user.balance);
 
         var cards_by_category_then_list = {};
         categories.forEach(function (category){
@@ -252,6 +251,7 @@
             cards_by_category_then_list[category] = sub_dict;
         });
 
+        $('#balance').html(format_price(binder.user.balance));
         var swap_total = 0.0;
         categories.forEach(function (category){
             var cards = cards_by_category_then_list[category]['sideboard_swap'].cards;
@@ -259,7 +259,7 @@
                 swap_total += card.sideboard_swap * card.price;
             });
         });
-        $('#total_swap_price').html(swap_total);
+        $('#cost').html(format_price(swap_total));
 
         list_types.forEach(function (list_type){
             var total_html = '';
