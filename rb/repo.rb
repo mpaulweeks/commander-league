@@ -15,6 +15,7 @@ module Repo
     user_hash = {
       :slug => user_slug,
       :name => user['name'],
+      :colors => user['colors'],
       :balance => balance,
     }
   end

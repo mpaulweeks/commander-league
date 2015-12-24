@@ -49,9 +49,9 @@
             var card = module.all_cards[key];
             var is_match = false;
             var is_illegal = false;
-            if ("colors" in card){
-                for (var i = 0; i < card.colors.length; i++){
-                    var card_color = card.colors[i];
+            if ("colorIdentity" in card){
+                for (var i = 0; i < card.colorIdentity.length; i++){
+                    var card_color = card.colorIdentity[i];
                     is_match = is_match || colors.indexOf(card_color) > -1;
                     is_illegal = is_illegal || colors.indexOf(card_color) == -1;
                 }

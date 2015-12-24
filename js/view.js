@@ -14,8 +14,8 @@
 
     function run(){
         binder.init();
-
-        var card_choices = store.get_cards_by_colors(["White", "Red"]);
+        var colors = binder.get_binder().user.colors;
+        var card_choices = store.get_cards_by_colors(colors);
         for (var i = 0; i < card_choices.length; i++){
             var card = card_choices[i];
             var card_html = str_format(CARD_OPTION, card.name, card.name);

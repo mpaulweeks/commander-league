@@ -2,27 +2,23 @@
 require_relative 'store'
 require_relative 'repo'
 
-USER_NAMES = {
-  :eliah => 'Eliah',
-  :qwerty => 'Patrick',
-  :mpw => 'M. Paul',
-  :gant => 'Dan',
-  :edmond => 'Edmond',
-}
-
-USER_DECKS = {
-  :eliah => 'simic',
-  :qwerty => 'orzhov',
-  :mpw => 'golgari',
-  :gant => 'boros',
-  :edmond => 'izzet',
+USER_DATA = {
+  :eliah => {:name => 'Eliah', :colors => ['U','G'], :deck => 'simic'},
+  :qwerty => {:name => 'Patrick', :colors => ['W','B'], :deck => 'orzhov'},
+  :mpw => {:name => 'M. Paul', :colors => ['B','G'], :deck => 'golgari'},
+  :gant => {:name => 'GantMan', :colors => ['W','R'], :deck => 'boros'},
+  :edmond => {:name => 'Edmond', :colors => ['U','R'], :deck => 'izzet'},
 }
 
 def create_users
   user_hash = {}
   wallet_hash = {}
-  USER_NAMES.each do |slug, name|
-    user_hash[slug] = {:slug => slug, :name => name}
+  USER_DATA.each do |slug, user_data|
+    user_hash[slug] = {
+      :slug => slug,
+      :name => user_data[:name],
+      :colors => user_data[:colors],
+    }
     wallet_hash[slug] = [{
       :user_slug => slug,
       :delta => 5.0,
@@ -44,7 +40,8 @@ def create_decks()
   now = Store.now
 
   card_hash = {}
-  USER_DECKS.each do |user_slug, file_name|
+  USER_DATA.each do |user_slug, user_data|
+    file_name = user_data[:deck]
     card_statuses = Array.new
     file_path = "data/#{file_name}.txt"
     file_text = File.readlines(file_path)
