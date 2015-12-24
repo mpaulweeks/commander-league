@@ -166,7 +166,7 @@
     var INCREMENT_SIDEBOARD = '<input type="button" class="action" data-func="increment_sideboard" value="+"/>';
     var DELETE_MAINDECK_SWAP = '<input type="button" class="action" data-func="delete_maindeck_swap" value="-"/>';
     var DELETE_SIDEBOARD_SWAP = '<input type="button" class="action" data-func="delete_sideboard_swap" value="-"/>';
-    var CARD = '<div class="col-md-12"></div><div class="col-md-{5}" data-id="{1}">{2} {3}x <a href="" class="mtgcard">{1}</a></div>{4}';
+    var CARD = '<div class="col-md-12"></div><div class="col-md-{5}" data-id="{1}">{2} {3}x <a href="http://combodeck.net/Query/{1}" target="_blank" class="mtgcard">{1}</a></div>{4}';
     var CATEGORY = '<div class="col-md-12 category text-center">{1} ({2})</div>';
     var PRICE = '<div class="col-md-3 price text-right">{1}</div>';
 
