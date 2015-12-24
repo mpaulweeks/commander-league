@@ -164,15 +164,26 @@
     var INCREMENT_SIDEBOARD = '<input type="button" class="action" data-func="increment_sideboard" value="+"/>';
     var DELETE_MAINDECK_SWAP = '<input type="button" class="action" data-func="delete_maindeck_swap" value="-"/>';
     var DELETE_SIDEBOARD_SWAP = '<input type="button" class="action" data-func="delete_sideboard_swap" value="-"/>';
-    var CARD = '<div class="card" data-id="{1}">{2} {3}x {1}</div>';
-    var CATEGORY = '<div class="category">{1} ({2})</div>';
+    var CARD = '<div class="col-md-12"></div><div class="col-md-{5}" data-id="{1}">{2} {3}x {1}</div>{4}';
+    var CATEGORY = '<div class="col-md-12 category text-center">{1} ({2})</div>';
+    var PRICE = '<div class="col-md-3 price text-right">{1}</div>';
 
     function get_card_html(card, property, display){
         var count = card[property];
         if (multiples_ok(card) && property == "sideboard"){
             display += INCREMENT_SIDEBOARD;
         }
-        return str_format(CARD, card.name, display, count);
+        var price_html = '';
+        var card_width = 12;
+        if (property == 'sideboard' || property == 'sideboard_swap'){
+            var price_str = card.price;
+            if (price_str == null){
+                price_str = 'FREE';
+            }
+            price_html = str_format(PRICE, price_str);
+            card_width = 9;
+        }
+        return str_format(CARD, card.name, display, count, price_html, card_width);
     }
 
     function get_cards_html(cards, list_type){

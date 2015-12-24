@@ -20,5 +20,7 @@ h3 {
 }
 .category {
   font-weight: bold;
-  text-align: center;
+}
+.price {
+  font-style: italic;
 }
