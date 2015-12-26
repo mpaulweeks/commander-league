@@ -6,6 +6,11 @@ require_relative 'market'
 
 module Repo
 
+  def Repo.load_user_slugs
+    db_cache = Store.load_database
+    return db_cache[Store::USER].collect{ |user_slug, hash| user_slug }
+  end
+
   def Repo.load_user_info(db_cache, user_slug)
     user = db_cache[Store::USER][user_slug]
     balance = 0.0

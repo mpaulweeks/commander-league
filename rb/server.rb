@@ -17,7 +17,8 @@ def get_cards_json(oracle, user_slug)
 end
 
 get '/' do
-  redirect to('/mpw'), 303
+  random_slug = Repo.load_user_slugs.sample
+  redirect to("/#{random_slug}"), 303
 end
 
 get '/:user_slug' do |user_slug|

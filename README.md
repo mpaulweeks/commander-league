@@ -1,8 +1,6 @@
 # commander-league
 
 ## todo
- - script to backup db
- - splash page
  - auto-generate navbar
  - don't make everything public
  - nginx
