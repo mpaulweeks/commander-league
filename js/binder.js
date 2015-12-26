@@ -233,7 +233,7 @@
                 }
             }
             matching_cards.sort(function (a,b){
-                return a.name > b.name;
+                return a.name.localeCompare(b.name);
             });
             var sub_dict = {};
             list_types.forEach(function (list_type){
