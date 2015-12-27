@@ -1,11 +1,11 @@
 # commander-league
 
-## todo
+## Todo
+
  - auto-generate navbar
- - don't make everything public
  - nginx
 
-## API
+## Public API
 
 ### /api/user/:user_slug GET
 
