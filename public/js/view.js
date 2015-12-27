@@ -12,7 +12,7 @@
 
     var CARD_OPTION = '<option value="{1}">{2}</option>';
 
-    function run(){
+    module.index = function(){
         binder.init();
         var colors = binder.get_binder().user.colors;
         var card_choices = store.get_cards_by_colors(colors);
@@ -34,8 +34,41 @@
             evt.preventDefault();
             binder.swap_cards();
         });
-    }
-    module.run = run;
+    };
+
+    module.diff = function(){
+        var data_str = $('#server_data').html()
+        $('#server_data').empty()
+        var data = JSON.parse(data_str);
+
+        var out = {
+            added: [],
+            removed: [],
+        };
+        for (var card_name in data){
+            var card = data[card_name];
+            if (card.added > 0){
+                out.added.push(card);
+            } else if (card.added < 0){
+                out.removed.push(card);
+            }
+        }
+
+        var sort_cards = function(a,b){
+            return a.name.localeCompare(b.name);
+        };
+
+        var CARD_HTML = '<div>{2}x {1}</div>';
+
+        for (var category in out){
+            out[category].sort(sort_cards);
+            var html = '';
+            out[category].forEach(function (card){
+                html += str_format(CARD_HTML, card.name, Math.abs(card.added));
+            })
+            $('#' + category).html(html);
+        }
+    };
 
 })(Module('view'));
 

@@ -18,6 +18,14 @@ def get_cards_json(oracle, user_slug)
   return JSON.generate(data)
 end
 
+def get_diff_json(oracle, user_slug, params)
+  from = params['from']
+  to = params['to']
+  data = Differ.get_diff(user_slug, from, to)
+  oracle.add_card_meta!(data)
+  return JSON.generate(data)
+end
+
 get '/' do
   random_slug = _user_slugs.sample
   redirect to("/#{random_slug}"), 303
@@ -53,14 +61,20 @@ post '/api/user/:user_slug/status' do |user_slug|
   return JSON.generate(new_data)
 end
 
+get '/:user_slug/diff' do |user_slug|
+  if not _user_slugs.include? user_slug
+    return 404
+  end
+
+  data = get_diff_json(_oracle, user_slug, params)
+  erb :diff, :locals => {:data => data}
+end
+
 get '/api/user/:user_slug/diff' do |user_slug|
   if not _user_slugs.include? user_slug
     return 404
   end
 
-  from = params['from']
-  to = params['to']
-  data = Differ.get_diff(user_slug, from, to)
-  _oracle.add_card_meta!(data)
-  return JSON.generate(data)
+  data = get_diff_json(_oracle, user_slug, params)
+  return data
 end
