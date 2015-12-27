@@ -22,7 +22,7 @@ def create_users
     wallet_hash[slug] = [{
       :user_slug => slug,
       :delta => 5.0,
-      :timestamp => Store.now,
+      :timestamp => Store.now_str,
     }]
   end
   db_hash = {
@@ -37,7 +37,7 @@ def create_decks()
   all_cards_lower = Hash[all_cards.map{|card_name, card| [card_name.downcase, card]}]
 
   status_hash = {}
-  now = Store.now
+  now = Store.now_str
 
   card_hash = {}
   USER_DATA.each do |user_slug, user_data|

@@ -10,8 +10,12 @@ module Store
   WALLET = 'wallet'
   @KEYS = [USER, CARD, STATUS, WALLET]
 
-  def Store.now
-    Time.new.inspect
+  def Store.now_str
+    Store.now_time.inspect
+  end
+
+  def Store.now_time
+    Time.new
   end
 
   def Store.glass_database!()

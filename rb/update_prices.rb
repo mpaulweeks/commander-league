@@ -12,7 +12,7 @@ STALE_SECONDS = STALE_DAYS*60*60*24
 def update_prices
   puts "Running price updater..."
 
-  cutoff = (Time.parse(Store.now) - STALE_SECONDS).inspect
+  cutoff = (Store.now_time - STALE_SECONDS).inspect
 
   cards_with_prices = Set.new
   cards_to_update = Set.new
@@ -37,7 +37,7 @@ def update_prices
     if card['price_fetched'] < cutoff
       if cards_to_update.include? card_name
         card['price'] = Market.get_price(card_name)
-        card['price_fetched'] = Store.now
+        card['price_fetched'] = Store.now_str
       else
         card['price'] = nil
         card['price_fetched'] = nil
