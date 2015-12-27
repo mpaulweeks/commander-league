@@ -7,9 +7,13 @@
 
 ## API
 
-### /api/:user_slug GET
+### /api/user/:user_slug GET
 
-#### response
+#### Example URL
+
+`/api/user/mpw`
+
+#### Example Response
 
 ```
 {
@@ -22,7 +26,7 @@
     "cards":{
         "Sakura-Tribe Elder":{
             "name":"Sakura-Tribe Elder",
-            "price":null,
+            "price":0.25,
             "maindeck":1,
             "sideboard":0,
             "category":"Creature",
@@ -35,7 +39,11 @@
 
 ### /api/user/:user_slug/status POST
 
-#### request
+#### Example URL
+
+`/api/user/eliah/status`
+
+#### Example Request
 
 ```
 [
@@ -52,7 +60,7 @@
 ]   
 ```
 
-#### response
+#### Example Response
 ```
 {
     "user":{
@@ -72,7 +80,7 @@
         },
         "Lightning Greaves":{
             "name":"Lightning Greaves",
-            "price":null,
+            "price":0.75,
             "maindeck":1,
             "sideboard":0,
             "category":"Spell",
@@ -88,6 +96,7 @@
 user
     slug
     name
+    colors 
 
 wallet
     user_slug
@@ -100,9 +109,9 @@ card
     price_fetched
 
 status
-    user_slug   string
-    card_name   string
-    maindeck    int
-    sideboard   int
-    timestamp   datetime
+    user_slug
+    card_name
+    maindeck
+    sideboard
+    timestamp
 ```
