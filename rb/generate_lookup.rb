@@ -28,7 +28,7 @@ def generate_lookup()
     end
   end
 
-  File.open('json/lookup.json', "w") do |f|
+  File.open('public/json/lookup.json', "w") do |f|
     f.write(lookup_hash.to_json)
   end
 end

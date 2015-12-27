@@ -5,8 +5,8 @@ require 'json'
 require_relative 'repo'
 require_relative 'oracle'
 
-set :public_folder, File.dirname(__FILE__) + '/..'
-set :views, settings.root + '/..'
+set :public_folder, File.dirname(__FILE__) + '/../public'
+set :views, settings.root + '/../view'
 
 _oracle = Oracle.new
 _user_slugs = Repo.load_user_slugs
