@@ -33,15 +33,18 @@ module Repo
     db_cache[Store::STATUS][user_slug].each do |cs|
       card_name = cs["card_name"]
       cs_timestamp = Time.parse(cs["timestamp"])
-      is_latest = cs_timestamp < cutoff_timestamp
-      if out_status.has_key? card_name
-        is_latest = is_latest && Time.parse(out_status[card_name]["timestamp"]) < cs_timestamp
-      end
-      if is_latest
-        out_status[card_name] = cs
-      end
-      if cs["maindeck"] > 0
-        was_maindeck.add(card_name)
+      if cs_timestamp <= cutoff_timestamp
+        is_latest = true
+        if out_status.has_key? card_name
+          is_latest = Time.parse(out_status[card_name]["timestamp"]) < cs_timestamp
+        end
+        if is_latest
+          out_status[card_name] = cs
+        end
+
+        if cs["maindeck"] > 0
+          was_maindeck.add(card_name)
+        end
       end
     end
 

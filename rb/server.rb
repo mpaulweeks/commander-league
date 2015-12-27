@@ -4,6 +4,7 @@ require 'sinatra'
 require 'json'
 require_relative 'repo'
 require_relative 'oracle'
+require_relative 'differ'
 
 set :public_folder, File.dirname(__FILE__) + '/../public'
 set :views, settings.root + '/../view'
@@ -50,4 +51,15 @@ post '/api/user/:user_slug/status' do |user_slug|
   new_data = Repo.create_statuses!(user_slug, status_hash)
   _oracle.add_card_meta!(new_data[:cards])
   return JSON.generate(new_data)
+end
+
+get '/api/user/:user_slug/diff' do |user_slug|
+  if not _user_slugs.include? user_slug
+    return 404
+  end
+
+  from = params['from']
+  to = params['to']
+  data = Differ.get_diff(user_slug, from, to)
+  return JSON.generate(data)
 end
