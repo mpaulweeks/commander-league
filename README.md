@@ -4,7 +4,6 @@
 
  - auto-generate navbar
  - nginx
- - reduce size of lookup
  - mutex lock on database.json?
 
 ## Public API

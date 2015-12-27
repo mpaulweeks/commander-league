@@ -10,17 +10,15 @@
         });
     }
 
-    var CARD_OPTION = '<option value="{1}">{2}</option>';
+    var CARD_OPTION = '<option value="{1}">{1}</option>';
 
     function run(){
         binder.init();
         var colors = binder.get_binder().user.colors;
-        var card_choices = store.get_cards_by_colors(colors);
-        for (var i = 0; i < card_choices.length; i++){
-            var card = card_choices[i];
-            var card_html = str_format(CARD_OPTION, card.name, card.name);
+        store.get_cards_by_colors(colors).forEach(function (card_name){
+            var card_html = str_format(CARD_OPTION, card_name);
             $('#lookup-select').append(card_html);
-        }
+        });
         $('#lookup-select').select2({
             placeholder: "Click to type"
         });

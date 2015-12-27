@@ -33,13 +33,14 @@
 
     module.get_cards_by_colors = function(colors){
         var out = [];
-        for (var card_name in module.lookup){
-            var card = module.lookup[card_name];
+        module.lookup.forEach(function (card){
+            var card_name = card[0];
+            var card_colors = card[1];
             var is_match = false;
             var is_illegal = false;
-            if ("colorIdentity" in card && card.colorIdentity.length > 0){
-                for (var i = 0; i < card.colorIdentity.length; i++){
-                    var card_color = card.colorIdentity[i];
+            if (card_colors.length > 0){
+                for (var i = 0; i < card_colors.length; i++){
+                    var card_color = card_colors[i];
                     is_match = is_match || colors.indexOf(card_color) > -1;
                     is_illegal = is_illegal || colors.indexOf(card_color) == -1;
                 }
@@ -47,11 +48,11 @@
                 is_match = true;
             }
             if (is_match && !is_illegal){
-                out.push(card);
+                out.push(card_name);
             }
-        }
+        });
         out.sort(function(a,b){
-            return a.name.localeCompare(b.name);
+            return a.localeCompare(b);
         });
         return out;
     };
