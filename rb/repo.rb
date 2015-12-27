@@ -1,5 +1,6 @@
 
 require 'set'
+require 'time'
 
 require_relative 'store'
 require_relative 'market'
@@ -25,21 +26,25 @@ module Repo
     }
   end
 
-  def Repo.load_cards(db_cache, user_slug)
+  def Repo.load_cards(db_cache, user_slug, cutoff_timestamp=nil)
     out_status = {}
     was_maindeck = Set.new
+    cutoff_timestamp = cutoff_timestamp || Store.now_time
     db_cache[Store::STATUS][user_slug].each do |cs|
       card_name = cs["card_name"]
       cs_timestamp = Time.parse(cs["timestamp"])
-      is_latest = true # && cs["timestamp"] < timestamp
-      if out_status.has_key?(card_name)
-        is_latest = Time.parse(out_status[card_name]["timestamp"]) < cs_timestamp
-      end
-      if is_latest
-        out_status[card_name] = cs
-      end
-      if cs["maindeck"] > 0
-        was_maindeck.add(card_name)
+      if cs_timestamp <= cutoff_timestamp
+        is_latest = true
+        if out_status.has_key? card_name
+          is_latest = Time.parse(out_status[card_name]["timestamp"]) < cs_timestamp
+        end
+        if is_latest
+          out_status[card_name] = cs
+        end
+
+        if cs["maindeck"] > 0
+          was_maindeck.add(card_name)
+        end
       end
     end
 
@@ -81,7 +86,7 @@ module Repo
     end
     if card_hash['price'] == nil
       card_hash['price'] = Market.get_price(card_name)
-      card_hash['price_fetched'] = Store.now
+      card_hash['price_fetched'] = Store.now_str
       store_hash = {
         Store::CARD => {
           card_name => card_hash,
@@ -117,7 +122,7 @@ module Repo
         :card_name => raw_status_hash['name'],
         :maindeck => raw_status_hash['maindeck'],
         :sideboard => raw_status_hash['sideboard'],
-        :timestamp => Store.now,
+        :timestamp => Store.now_str,
       }
       to_save.push(new_status_hash)
       ensure_card_exists(db_cache, new_status_hash[:card_name])
@@ -143,7 +148,7 @@ module Repo
       wallet_entry = {
         :user_slug => user_slug,
         :delta => 0.0 - balance,
-        :timestamp => Store.now,
+        :timestamp => Store.now_str,
       }
       Store.insert_wallet!(user_slug, wallet_entry)
     end

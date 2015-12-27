@@ -1,10 +1,26 @@
 # commander-league
 
+http://edh.mpaulweeks.com
+
 ## Todo
 
  - auto-generate navbar
  - nginx
  - mutex lock on database.json?
+
+## Public Views
+
+### /:user_slug
+
+#### Example URL
+
+`/mpw`
+
+### /:user_slug/diff
+
+#### Example URL
+
+`/mpw/diff`
 
 ## Public API
 
@@ -35,6 +51,32 @@
         },
         ...
     },
+}
+```
+
+### /api/user/:user_slug/diff GET
+
+#### Example URL
+
+`/api/user/mpw/diff`
+
+#### Example Response
+
+```
+{
+    "Sakura-Tribe Elder":{
+        "name":"Sakura-Tribe Elder",
+        "added": 0,
+        "category":"Creature",
+        "multiverse":405363
+    },
+    "Naya Panorama":{
+        "name":"Naya Panorama",
+        "added":1,
+        "category":"Land",
+        "multiverse":376424
+    },
+    ...
 }
 ```
 

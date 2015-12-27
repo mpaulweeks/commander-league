@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title> Commander League </title>
+    <link rel='shortcut icon' href='/img/favicon.png'/>
+
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="/js/jquery.min.js"></script>
+
+    <script type="text/javascript" src="http://twitter.github.io/bootstrap/assets/js/bootstrap-transition.js"></script>
+    <script type="text/javascript" src="http://twitter.github.io/bootstrap/assets/js/bootstrap-collapse.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <script src="/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/css/select2.css">
+    <script src="/js/select2.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/js/module.js"></script>
+    <script src="/js/view.js"></script>
+    <script src="/js/main.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <span id='server_data' style="display: none;">
+        <%= data %>
+    </span>
+
+    <div class="col-md-6">
+        <h3> Added </h3>
+        <div id="added" class="col-md-12 cardlistdisplay"></div>
+    </div>
+    <div class="col-md-6">
+        <h3> Removed </h3>
+        <div id="removed" class="col-md-12 cardlistdisplay"></div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        Module("main").diff();
+    });
+</script>
+<script src="/js/gatherer_helper.js"></script>
+<script src="/js/autocard.js"></script>
+</body>
+</html>

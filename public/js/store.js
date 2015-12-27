@@ -1,20 +1,10 @@
 (function(module){
 
-    var LOOKUP_FILE = 'json/lookup.json';
-    var GITHUB_BASE = 'http://mpaulweeks.github.io/commander-league/';
-
+    var LOOKUP_FILE = '/json/lookup.json';
     module.lookup = null;
 
-    function fix_file(file_url){
-        // if (tool.is_local && !tool.is_firefox){
-        //     return GITHUB_BASE + file_url;
-        // }
-        return file_url;
-    }
-
     module.init = function(callback){
-        var all_cards_file = fix_file(LOOKUP_FILE);
-        $.getJSON(all_cards_file, function(lookup){
+        $.getJSON(LOOKUP_FILE, function(lookup){
             module.lookup = lookup;
             callback();
         });
