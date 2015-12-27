@@ -30,9 +30,10 @@ module Repo
     was_maindeck = Set.new
     db_cache[Store::STATUS][user_slug].each do |cs|
       card_name = cs["card_name"]
+      cs_timestamp = Time.parse(cs["timestamp"])
       is_latest = true # && cs["timestamp"] < timestamp
-      if out_status.has_key?(cs["status"])
-        is_latest = out_status[card_name]["timestamp"] < cs["timestamp"]
+      if out_status.has_key?(card_name)
+        is_latest = Time.parse(out_status[card_name]["timestamp"]) < cs_timestamp
       end
       if is_latest
         out_status[card_name] = cs
