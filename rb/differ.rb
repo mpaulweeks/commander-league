@@ -1,5 +1,4 @@
 
-require 'set'
 require 'time'
 
 require_relative 'store'
@@ -27,33 +26,32 @@ module Differ
     from_cards = Repo.load_cards(db_cache, user_slug, from_time)
     to_cards = Repo.load_cards(db_cache, user_slug, to_time)
 
-    added_names = Set.new
-    removed_names = Set.new
+    cards_out = {}
 
     to_cards.each do |card_name, new_info|
       old_info = from_cards[card_name]
+      added = 0
       if old_info == nil
-        if new_info[:maindeck] > 0
-          added_names.add(card_name)
-        end
-      elsif old_info[:maindeck] < new_info[:maindeck]
-        added_names.add(card_name)
-      elsif old_info[:maindeck] > new_info[:maindeck]
-        removed_names.add(card_name)
+        added = new_info[:maindeck]
+      else
+        added = new_info[:maindeck] - old_info[:maindeck]
       end
+      cards_out[card_name] = {
+        :name => card_name,
+        :added => added,
+      }
     end
     from_cards.each do |card_name, old_info|
-      if not to_cards.has_key? card_name
-        removed_names.add(card_name)
+      if not cards_out.has_key? card_name
+        added = 0 - old_info[:maindeck]
+        cards_out[cards_name] = {
+          :name => card_name,
+          :added => added,
+        }
       end
     end
 
-    return {
-      :added => added_names,
-      :removed => removed_names,
-    }
+    return cards_out
   end
 
 end
-
-puts Differ.get_diff('edmond', nil, nil)

@@ -61,5 +61,6 @@ get '/api/user/:user_slug/diff' do |user_slug|
   from = params['from']
   to = params['to']
   data = Differ.get_diff(user_slug, from, to)
+  _oracle.add_card_meta!(data)
   return JSON.generate(data)
 end
