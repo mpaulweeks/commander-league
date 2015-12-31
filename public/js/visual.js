@@ -127,5 +127,33 @@
     }
     module.draw_cards = draw_cards;
 
+    var nav_html = `
+        <nav class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <a class="navbar-brand" href="./">Commander League</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="collapse navbar-collapse navHeaderCollapse">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li><a href="{1}mpw{2}">M. Paul</a></li>
+                        <li><a href="{1}eliah{2}">Eliah</a></li>
+                        <li><a href="{1}qwerty{2}">Patrick</a></li>
+                        <li><a href="{1}gant{2}">Dan</a></li>
+                        <li><a href="{1}edmond{2}">Edmond</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    `;
+    module.draw_navbar = function(url_prefix, url_postfix){
+        url_prefix = url_prefix || '';
+        url_postfix = url_postfix || '';
+        $('#nav-parent').html(str_format(nav_html, url_prefix, url_postfix));
+    }
+
 })(Module('visual'));
 

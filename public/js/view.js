@@ -14,6 +14,8 @@
     var CARD_OPTION = '<option value="{1}">{1}</option>';
 
     module.index = function(){
+        visual.draw_navbar();
+
         binder.init();
         var colors = binder.get_user().colors;
         store.get_cards_by_colors(colors).forEach(function (card_name){
@@ -36,6 +38,8 @@
     };
 
     module.diff = function(){
+        visual.draw_navbar('../', '/diff');
+
         var data_str = $('#server_data').html()
         $('#server_data').empty()
         var data = JSON.parse(data_str);
