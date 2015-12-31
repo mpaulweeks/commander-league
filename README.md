@@ -2,12 +2,6 @@
 
 http://edh.mpaulweeks.com
 
-## Todo
-
- - put rb scripts in separate directory
- - nginx
- - mutex lock on database.json?
-
 ## Public Views
 
 ### /:user_slug
