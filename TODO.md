@@ -1,6 +1,5 @@
 # Todo
 
- - debug potential bug in update_prices, doesn't null out unused cards
  - cron to update_prices
  - proper links to/from diff
  - datepicker for diff page
