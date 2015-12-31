@@ -1,6 +1,7 @@
 (function(module){
 
     var store = Module("store");
+    var visual = Module("visual");
     var binder = Module("binder");
 
     function str_format(str){
@@ -14,7 +15,7 @@
 
     module.index = function(){
         binder.init();
-        var colors = binder.get_binder().user.colors;
+        var colors = binder.get_user().colors;
         store.get_cards_by_colors(colors).forEach(function (card_name){
             var card_html = str_format(CARD_OPTION, card_name);
             $('#lookup-select').append(card_html);
@@ -39,33 +40,24 @@
         $('#server_data').empty()
         var data = JSON.parse(data_str);
 
-        var out = {
-            added: [],
-            removed: [],
-        };
+        var out = {};
         for (var card_name in data){
             var card = data[card_name];
             if (card.added > 0){
-                out.added.push(card);
+                out[card.name] = card;
             } else if (card.added < 0){
-                out.removed.push(card);
+                card.removed = Math.abs(card.added);
+                out[card.name] = card;
             }
         }
+        visual.cards = out;
 
-        var sort_cards = function(a,b){
-            return a.name.localeCompare(b.name);
-        };
+        var list_types = [
+            ['added', ''],
+            ['removed', ''],
+        ];
 
-        var CARD_HTML = '<div>{2}x {1}</div>';
-
-        for (var category in out){
-            out[category].sort(sort_cards);
-            var html = '';
-            out[category].forEach(function (card){
-                html += str_format(CARD_HTML, card.name, Math.abs(card.added));
-            })
-            $('#' + category).html(html);
-        }
+        visual.draw_cards(list_types, {}, null);
     };
 
 })(Module('view'));

@@ -4,8 +4,8 @@
     var visual = Module("visual");
     var user_slug = null;
     var binder = null;
-    // for debug
-    module.get_binder = function(){return binder;};
+
+    module.get_user = function(){return binder.user;};
 
     multiples_ok = visual.multiples_ok;
     str_format = visual.str_format;
@@ -170,7 +170,8 @@
     ];
 
     function draw(){
-        var cards_by_category_then_list = visual.draw_cards(binder.cards, list_types, card_actions, draw);
+        visual.cards = binder.cards;
+        var cards_by_category_then_list = visual.draw_cards(list_types, card_actions, draw);
 
         $('#balance').html(format_price(binder.user.balance));
         var swap_total = 0.0;

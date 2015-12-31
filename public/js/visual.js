@@ -1,5 +1,7 @@
 (function(module){
 
+    module.cards = {};
+
     var autocard = Module("autocard");
 
     var valid_multiples = {
@@ -63,7 +65,9 @@
     var categories = ['Land', 'Creature', 'Spell'];
     module.categories = categories;
 
-    function draw_cards(input_cards, list_types, card_actions, callback){
+    function draw_cards(list_types, card_actions, callback){
+        var input_cards = module.cards;
+
         var cards_by_category_then_list = {};
         categories.forEach(function (category){
             var matching_cards = [];
