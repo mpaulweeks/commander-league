@@ -1,5 +1,5 @@
 
-var _binder = Module('binder');
+var _visual = Module('visual');
 
 var get_img_url = function(card_mid){
     return 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=' + card_mid;
@@ -16,7 +16,7 @@ function getWizardsHtml(cardName){
 }
 
 function getWizardsSrc(cardName){
-    var mid = _binder.get_binder().cards[cardName].multiverse;
+    var mid = _visual.cards[cardName].multiverse;
 		return get_img_url(mid);
 }
 
