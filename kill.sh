@@ -1,2 +1,3 @@
 #!/bin/sh
-killall server_commander_league
+sudo kill `cat server.pid`
+cat /dev/null > server.pid

@@ -45,3 +45,6 @@ Thumbs.db
 
 # personal
 /json/database.json
+
+# env specific
+server.pid
