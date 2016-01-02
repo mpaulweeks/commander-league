@@ -1,5 +1,6 @@
 # Todo
 
+ - cron to update_prices
  - proper links to/from diff
  - datepicker for diff page
  - unit tests
