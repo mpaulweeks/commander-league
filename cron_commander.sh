@@ -1,4 +1,8 @@
 #!/bin/sh
+git checkout deploy
+git pull
+nohup ./run_server.sh &
+
 while [ true ]
 do
   git checkout deploy
