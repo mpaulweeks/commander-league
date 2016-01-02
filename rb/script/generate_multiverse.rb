@@ -22,4 +22,6 @@ def generate_multiverse_ids()
   end
 end
 
-generate_multiverse_ids()
+if __FILE__ == $PROGRAM_NAME
+  generate_multiverse_ids()
+end

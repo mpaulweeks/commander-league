@@ -48,3 +48,6 @@ Thumbs.db
 
 # env specific
 server.pid
+
+# test
+rb/test/tmp/*.json

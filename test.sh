@@ -1,2 +1,2 @@
 #!/bin/sh
-ruby -Ilib:test rb/test/*
+for file in rb/test/*.rb; do ruby $file; done
