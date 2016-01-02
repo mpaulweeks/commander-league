@@ -1,5 +1,6 @@
 
 require 'json'
+require_relative 'file_path'
 
 def _add_card(lookup_array, card)
   card_name = card['name']
@@ -7,7 +8,7 @@ def _add_card(lookup_array, card)
 end
 
 def generate_lookup()
-  all_cards_file = File.read('json/AllCards-x.json')
+  all_cards_file = File.read(FilePath.all_cards_extras)
   all_cards_hash = JSON.parse(all_cards_file)
 
   lookup_array = []
@@ -25,7 +26,7 @@ def generate_lookup()
     end
   end
 
-  File.open('public/json/lookup.json', "w") do |f|
+  File.open(FilePath.lookup, "w") do |f|
     f.write(lookup_array.to_json)
   end
 end

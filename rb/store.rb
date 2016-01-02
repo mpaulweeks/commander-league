@@ -1,11 +1,6 @@
 
 require 'json'
-
-class FilePath
-  def self.database
-    'json/database.json'
-  end
-end
+require_relative 'file_path'
 
 module Store
   def self.database_path
@@ -73,13 +68,13 @@ module Store
   end
 
   def Store.load_all_cards()
-    all_cards_file = File.read('json/AllCards.json')
+    all_cards_file = File.read(FilePath.all_cards)
     all_cards_hash = JSON.parse(all_cards_file)
     return all_cards_hash
   end
 
   def Store.load_multiverse()
-    multiverse_file = File.read('json/multiverse_ids.json')
+    multiverse_file = File.read(FilePath.multiverse_ids)
     multiverse_hash = JSON.parse(multiverse_file)
     return multiverse_hash
   end
