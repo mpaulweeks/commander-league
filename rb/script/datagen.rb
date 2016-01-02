@@ -1,6 +1,6 @@
 
-require_relative 'store'
-require_relative 'repo'
+require_relative '../store'
+require_relative '../repo'
 
 USER_DATA = {
   :eliah => {:name => 'Eliah', :colors => ['U','G'], :deck => 'simic'},

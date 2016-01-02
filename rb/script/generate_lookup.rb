@@ -1,6 +1,6 @@
 
 require 'json'
-require_relative 'file_path'
+require_relative '../file_path'
 
 def _add_card(lookup_array, card)
   card_name = card['name']

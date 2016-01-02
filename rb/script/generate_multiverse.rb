@@ -1,6 +1,6 @@
 
 require 'json'
-require_relative 'file_path'
+require_relative '../file_path'
 
 def generate_multiverse_ids()
   all_sets_file = File.read(FilePath.all_sets)
