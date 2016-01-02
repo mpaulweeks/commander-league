@@ -6,6 +6,8 @@ require_relative 'repo'
 require_relative 'oracle'
 require_relative 'differ'
 
+Process.setproctitle("server_commander_league")
+
 set :public_folder, File.dirname(__FILE__) + '/../public'
 set :views, settings.root + '/../view'
 
