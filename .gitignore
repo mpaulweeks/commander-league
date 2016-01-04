@@ -43,6 +43,9 @@ build/
 ehthumbs.db
 Thumbs.db
 
+# dev
+nohup.out
+
 # personal
 /json/database.json
 
