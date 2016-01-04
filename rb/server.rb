@@ -6,8 +6,6 @@ require_relative 'repo'
 require_relative 'oracle'
 require_relative 'differ'
 
-File.open('server.pid', 'w') {|f| f.write Process.pid }
-
 set :public_folder, File.dirname(__FILE__) + '/../public'
 set :views, settings.root + '/../view'
 
@@ -71,3 +69,23 @@ get '/api/user/:user_slug/diff' do |user_slug|
   data = get_diff_json(_oracle, user_slug, params)
   return data
 end
+
+# shutdown
+
+File.open('server.pid', 'w') {|f| f.write Process.pid }
+def shut_down
+  puts "\nCleaning up server.pid"
+  File.open('server.pid', 'w') {|f| f.write '' }
+end
+
+# Trap ^C
+Signal.trap("INT") {
+  shut_down
+  exit
+}
+
+# Trap `Kill `
+Signal.trap("TERM") {
+  shut_down
+  exit
+}
