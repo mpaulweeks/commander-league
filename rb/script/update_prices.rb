@@ -64,4 +64,6 @@ def update_prices
   end
 end
 
-update_prices()
+if __FILE__ == $PROGRAM_NAME
+  update_prices()
+end
