@@ -4,7 +4,7 @@ require 'net/http'
 
 COMBODECK_URL = "http://combodeck.net/Search/FullCard?cardName=%s"
 
-module Market
+class Market
 
   def self.fetch_url(raw_url)
     escaped = URI.escape(raw_url)
@@ -25,8 +25,7 @@ module Market
     end
   end
 
-  def Market.get_price(card_name)
-    # return 0.25
+  def self.get_price(card_name)
     url = COMBODECK_URL % card_name
     json_str = self.fetch_url(url)
     price = self.parse_json(card_name, json_str)

@@ -51,3 +51,6 @@ nohup.out
 
 # env specific
 server.pid
+
+# test
+rb/test/tmp/*.json

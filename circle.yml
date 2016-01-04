@@ -1,0 +1,17 @@
+## Customize the test machine
+machine:
+
+  # Version of ruby to use
+  ruby:
+    version:
+      2.2.1
+
+
+dependencies:
+  pre:
+    - gem install minitest
+
+## Customize test commands
+test:
+  override:
+    - ./test.sh

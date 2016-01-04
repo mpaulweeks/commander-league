@@ -2,6 +2,8 @@
 
 http://edh.mpaulweeks.com
 
+[![Circle CI](https://circleci.com/gh/mpaulweeks/commander-league.svg?style=svg)](https://circleci.com/gh/mpaulweeks/commander-league)
+
 ## Public Views
 
 ### /:user_slug

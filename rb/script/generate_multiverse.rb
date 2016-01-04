@@ -1,8 +1,9 @@
 
 require 'json'
+require_relative '../file_path'
 
 def generate_multiverse_ids()
-  all_sets_file = File.read('json/AllSets.json')
+  all_sets_file = File.read(FilePath.all_sets)
   all_sets_hash = JSON.parse(all_sets_file)
 
   multiverse_hash = {}
@@ -16,9 +17,11 @@ def generate_multiverse_ids()
     end
   end
 
-  File.open('json/multiverse_ids.json', "w") do |f|
+  File.open(FilePath.multiverse_ids, "w") do |f|
     f.write(multiverse_hash.to_json)
   end
 end
 
-generate_multiverse_ids()
+if __FILE__ == $PROGRAM_NAME
+  generate_multiverse_ids()
+end
