@@ -1,2 +1,2 @@
 #!/bin/sh
-echo "no jobs programmed"
+ruby rb/update_prices.rb
