@@ -74,18 +74,17 @@ end
 
 File.open('server.pid', 'w') {|f| f.write Process.pid }
 def shut_down
-  puts "\nCleaning up server.pid"
+  puts "Cleaning up server.pid"
   File.open('server.pid', 'w') {|f| f.write '' }
+  puts "Ruby cleanup done!"
 end
 
 # Trap ^C
 Signal.trap("INT") {
   shut_down
-  exit
 }
 
 # Trap `Kill `
 Signal.trap("TERM") {
   shut_down
-  exit
 }
