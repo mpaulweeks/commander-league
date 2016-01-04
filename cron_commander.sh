@@ -8,7 +8,7 @@ do
   git checkout deploy
   gout=$(git pull 2>&1)
   echo $gout
-  if ! [[ $gout == "Already up-to-date." ]]
+  if ! [[ $gout == *"Already up-to-date." ]]
   then
     echo "Changes found, restarting server..."
     ./kill_server.sh
