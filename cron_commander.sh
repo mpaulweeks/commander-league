@@ -14,5 +14,6 @@ do
     ./kill_server.sh
     nohup ./run_server.sh &
   fi
+  ./cron_jobs.sh
   sleep 60
 done
