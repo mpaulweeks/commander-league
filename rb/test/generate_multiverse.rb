@@ -20,4 +20,12 @@ class GenerateMultiverseTest < Minitest::Test
       assert_equal before, after
     end
   end
+
+  def test_structure
+    FilePath.stub :multiverse_ids, @test_path do
+      generate_multiverse_ids()
+      res = JSON.parse(File.read(@test_path))
+      assert_equal res['Black Lotus'], 382866
+    end
+  end
 end
