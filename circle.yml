@@ -13,5 +13,5 @@ dependencies:
 
 ## Customize test commands
 test:
-  override:
-    - ./test.sh
+  minitest_globs:
+    - rb/test/*.rb
