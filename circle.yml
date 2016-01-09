@@ -10,8 +10,3 @@ machine:
 dependencies:
   pre:
     - gem install minitest
-
-## Customize test commands
-test:
-  minitest_globs:
-    - rb/test/*.rb
