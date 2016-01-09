@@ -24,8 +24,4 @@ class StoreTest < Minitest::Test
       assert_equal 1, db_cache[Store::WALLET]['qwerty'].length
     end
   end
-
-  def test_fail
-    assert false
-  end
 end
