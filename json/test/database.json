@@ -2,12 +2,12 @@
     "card": {
         "Abandon Hope": {
             "name": "Abandon Hope",
-            "price": 0.21,
+            "price": 21,
             "price_fetched": "2015-01-01 01:45:39 -0500"
         },
         "Abrupt Decay": {
             "name": "Abrupt Decay",
-            "price": 13.25,
+            "price": 1325,
             "price_fetched": "2015-01-01 23:17:54 -0500"
         },
         "Acidic Slime": {
@@ -577,7 +577,7 @@
         },
         "Forest": {
             "name": "Forest",
-            "price": 0.16,
+            "price": 16,
             "price_fetched": "2016-01-02 01:45:49 -0500"
         },
         "Forgotten Ancient": {
@@ -4426,40 +4426,40 @@
     "wallet": {
         "edmond": [
             {
-                "delta": 5.0,
+                "delta": 500,
                 "timestamp": "2015-12-30 22:58:54 -0500",
                 "user_slug": "edmond"
             }
         ],
         "eliah": [
             {
-                "delta": 5.0,
+                "delta": 500,
                 "timestamp": "2015-12-30 22:58:54 -0500",
                 "user_slug": "eliah"
             }
         ],
         "gant": [
             {
-                "delta": 5.0,
+                "delta": 500,
                 "timestamp": "2015-12-30 22:58:54 -0500",
                 "user_slug": "gant"
             }
         ],
         "mpw": [
             {
-                "delta": 5.0,
+                "delta": 500,
                 "timestamp": "2015-12-30 22:58:54 -0500",
                 "user_slug": "mpw"
             },
             {
-                "delta": -0.21,
+                "delta": -21,
                 "timestamp": "2016-01-02 01:45:49 -0500",
                 "user_slug": "mpw"
             }
         ],
         "qwerty": [
             {
-                "delta": 5.0,
+                "delta": 500,
                 "timestamp": "2015-12-30 22:58:54 -0500",
                 "user_slug": "qwerty"
             }
