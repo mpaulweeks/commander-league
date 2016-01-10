@@ -2,8 +2,6 @@
 require_relative '../store'
 
 def insert_transaction(delta)
-  delta = delta / 1.0
-
   puts "Inserting wallet transaction: %s" % delta
 
   db_cache = Store.load_database

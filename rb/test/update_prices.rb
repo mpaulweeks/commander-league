@@ -25,24 +25,24 @@ class UpdatePricesTest < Minitest::Test
 
   def test_updates_sideboard_prices
     card_name = 'Forest'
-    market_price = 12.34
-    expected_before = 0.16
+    market_price = 1234
+    expected_before = 16
     expected_after = market_price
     assert_changes card_name, market_price, expected_before, expected_after
   end
 
   def test_forgets_maindeck_prices
     card_name = 'Abandon Hope'
-    market_price = 12.34
-    expected_before = 0.21
+    market_price = 1234
+    expected_before = 21
     expected_after = nil
     assert_changes card_name, market_price, expected_before, expected_after
   end
 
   def test_forgets_unlisted_prices
     card_name = 'Abrupt Decay'
-    market_price = 14.25
-    expected_before = 13.25
+    market_price = 1425
+    expected_before = 1325
     expected_after = nil
     assert_changes card_name, market_price, expected_before, expected_after
   end

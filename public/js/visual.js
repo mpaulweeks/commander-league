@@ -34,7 +34,7 @@
         if (price == null){
             return 'FREE';
         }
-        return price.toFixed(2);
+        return (price/100.0).toFixed(2);
     }
     module.format_price = format_price;
 

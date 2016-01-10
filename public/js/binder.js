@@ -174,7 +174,7 @@
         var cards_by_category_then_list = visual.draw_cards(list_types, card_actions, draw);
 
         $('#balance').html(format_price(binder.user.balance));
-        var swap_total = 0.0;
+        var swap_total = 0;
         for (var category in cards_by_category_then_list){
             var cards = cards_by_category_then_list[category]['sideboard_swap'].cards;
             cards.forEach(function (card){

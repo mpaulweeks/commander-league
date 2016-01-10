@@ -14,7 +14,7 @@ module Repo
 
   def Repo.load_user_info(db_cache, user_slug)
     user = db_cache[Store::USER][user_slug]
-    balance = 0.0
+    balance = 0
     db_cache[Store::WALLET][user_slug].each do |transaction|
       balance += transaction['delta']
     end
@@ -110,7 +110,7 @@ module Repo
     old_cards = Repo.load_cards(db_cache, user_slug)
     to_save = []
     cards_added = 0
-    balance = 0.0
+    balance = 0
     statuses.each do |raw_status_hash|
       if not self.is_valid_status?(raw_status_hash)
         puts 'failed validation! %s' % raw_status_hash
@@ -144,10 +144,10 @@ module Repo
       raise ArgumentError.new("failed! num cards != removed. added: #{cards_added}")
     end
     Store.insert_statuses!(user_slug, to_save)
-    if balance > 0.0
+    if balance > 0
       wallet_entry = {
         :user_slug => user_slug,
-        :delta => 0.0 - balance,
+        :delta => 0 - balance,
         :timestamp => Store.now_str,
       }
       Store.insert_wallet!(user_slug, wallet_entry)
@@ -164,7 +164,7 @@ module Repo
     updated_data = {
       :cards => updated_cards
     }
-    if balance > 0.0
+    if balance > 0
       updated_data[:user] = Repo.load_user_info(db_cache, user_slug)
     end
     return updated_data

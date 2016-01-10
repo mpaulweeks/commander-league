@@ -21,7 +21,7 @@ def create_users
     }
     wallet_hash[slug] = [{
       :user_slug => slug,
-      :delta => 5.0,
+      :delta => 500,
       :timestamp => Store.now_str,
     }]
   end
