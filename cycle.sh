@@ -1,8 +1,7 @@
 #!/bin/sh
 
 echo "kill existing processes"
-./kill_cron.sh
-./kill_server.sh
+./kill_all.sh
 
 echo "get latest version"
 git checkout deploy
