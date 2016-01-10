@@ -26,7 +26,7 @@ def update_prices
     current_cards = Repo.load_cards(db_cache, user_slug)
     current_cards.each do |card_name, card|
       if cards_with_prices.include? card_name
-        if card[:maindeck] > 0 || card[:sideboard] > 0
+        if card[:sideboard] > 0
           cards_to_update.add(card_name)
         end
       end
