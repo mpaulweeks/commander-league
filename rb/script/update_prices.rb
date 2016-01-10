@@ -9,6 +9,8 @@ require_relative '../market'
 STALE_DAYS = 1
 STALE_SECONDS = STALE_DAYS*60*60*24
 
+BATCH_MAX = 10
+
 def update_prices
   puts "Running price updater..."
 
@@ -33,27 +35,34 @@ def update_prices
     end
   end
 
-  updated = 0
   forgotten = 0
-
   cards = {}
+  cards_needing_price = {}
   cards_with_prices.each do |card_name|
     card = db_cache[Store::CARD][card_name]
     if card['price_fetched'] < cutoff
       if cards_to_update.include? card_name
-        card['price'] = Market.get_price(card_name)
-        card['price_fetched'] = Store.now_str
-        updated += 1
+        cards_needing_price[card_name] = card
       else
         card['price'] = nil
         card['price_fetched'] = nil
         forgotten += 1
+        cards[card_name] = card
       end
+    end
+  end
+
+  update_requests = 0
+  cards_needing_price.each do |card_name, card|
+    if update_requests < BATCH_MAX
+      card['price'] = Market.get_price(card_name)
+      card['price_fetched'] = Store.now_str
+      update_requests += 1
       cards[card_name] = card
     end
   end
 
-  puts "Prices updated: %s" % updated
+  puts "Prices updated: %s" % update_requests
   puts "Prices forgotten: %s" % forgotten
 
   if cards.size > 0
