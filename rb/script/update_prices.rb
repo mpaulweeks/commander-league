@@ -6,7 +6,7 @@ require_relative '../store'
 require_relative '../repo'
 require_relative '../market'
 
-STALE_DAYS = 7
+STALE_DAYS = 1
 STALE_SECONDS = STALE_DAYS*60*60*24
 
 def update_prices
