@@ -34,12 +34,12 @@ http://edh.mpaulweeks.com
         "slug":"mpw",
         "name":"M. Paul",
         "colors":["B","G"],
-        "balance":4.0
+        "balance":400
     },
     "cards":{
         "Sakura-Tribe Elder":{
             "name":"Sakura-Tribe Elder",
-            "price":0.25,
+            "price":25,
             "maindeck":1,
             "sideboard":0,
             "category":"Creature",
@@ -106,7 +106,7 @@ http://edh.mpaulweeks.com
         "slug":"eliah",
         "name":"Eliah",
         "colors":["U","G"],
-        "balance":4.25,
+        "balance":425,
     },
     "cards":{
         "Abduction":{
@@ -119,7 +119,7 @@ http://edh.mpaulweeks.com
         },
         "Lightning Greaves":{
             "name":"Lightning Greaves",
-            "price":0.75,
+            "price":75,
             "maindeck":1,
             "sideboard":0,
             "category":"Spell",

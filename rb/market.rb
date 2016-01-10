@@ -20,7 +20,7 @@ class Market
     json_dict = JSON.parse json_str
     json_dict['Cards'].each do |card|
       if card['CardName'] == card_name
-        return card['PriceInCents'] / 100.0
+        return card['PriceInCents']
       end
     end
   end
