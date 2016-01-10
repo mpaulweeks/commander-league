@@ -1,6 +1,5 @@
 # Todo
 
- - batch price updates
  - convert all pricing to cents
  - proper links to/from diff
  - datepicker for diff page
