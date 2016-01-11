@@ -60,19 +60,27 @@ http://edh.mpaulweeks.com
 
 ```
 {
-    "Sakura-Tribe Elder":{
-        "name":"Sakura-Tribe Elder",
-        "added": 0,
-        "category":"Creature",
-        "multiverse":405363
+    "user":{
+        "slug":"mpw",
+        "name":"M. Paul",
+        "colors":["B","G"],
+        "balance":400
     },
-    "Naya Panorama":{
-        "name":"Naya Panorama",
-        "added":1,
-        "category":"Land",
-        "multiverse":376424
-    },
-    ...
+    "cards":{
+        "Sakura-Tribe Elder":{
+            "name":"Sakura-Tribe Elder",
+            "added": 0,
+            "category":"Creature",
+            "multiverse":405363
+        },
+        "Naya Panorama":{
+            "name":"Naya Panorama",
+            "added":1,
+            "category":"Land",
+            "multiverse":376424
+        },
+        ...
+    }
 }
 ```
 

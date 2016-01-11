@@ -43,10 +43,12 @@
         var data_str = $('#server_data').html()
         $('#server_data').empty()
         var data = JSON.parse(data_str);
+        $('#user_name').html(data.user.name);
+        var cards = data.cards;
 
         var out = {};
-        for (var card_name in data){
-            var card = data[card_name];
+        for (var card_name in cards){
+            var card = cards[card_name];
             if (card.added > 0){
                 out[card.name] = card;
             } else if (card.added < 0){

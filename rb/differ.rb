@@ -51,7 +51,9 @@ module Differ
       end
     end
 
-    return cards_out
+    user_hash = Repo.load_user_info(db_cache, user_slug)
+    out_hash = {:user => user_hash, :cards => cards_out}
+    return out_hash
   end
 
 end

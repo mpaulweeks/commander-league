@@ -22,7 +22,7 @@ def get_diff_json(oracle, user_slug, params)
   from = params['from']
   to = params['to']
   data = Differ.get_diff(user_slug, from, to)
-  oracle.add_card_meta!(data)
+  oracle.add_card_meta!(data[:cards])
   return JSON.generate(data)
 end
 
@@ -31,6 +31,9 @@ def validate_user_slug(user_slugs, user_slug)
     halt 404
   end
 end
+
+# redirect trailing slashes
+get %r{(.+)/$} do |r| redirect r; end;
 
 get '/' do
   random_slug = _user_slugs.sample
