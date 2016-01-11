@@ -12,6 +12,8 @@
     }
 
     function init(){
+        visual.draw_navbar();
+
         var data_str = $('#server_data').html()
         $('#server_data').empty()
         var data = JSON.parse(data_str);
@@ -24,7 +26,6 @@
     var CARD_OPTION = '<option value="{1}">{1}</option>';
 
     module.index = function(){
-        visual.draw_navbar();
         var data = init();
         binder.init(data);
 
@@ -49,7 +50,6 @@
     };
 
     module.diff = function(){
-        visual.draw_navbar('../', '/diff');
         var data = init();
 
         var cards = data.cards;

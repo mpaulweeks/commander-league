@@ -130,7 +130,7 @@
     var nav_html = `
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
-                <a class="navbar-brand" href="./">Commander League</a>
+                <a class="navbar-brand" href="/">Commander League</a>
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navHeaderCollapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -139,20 +139,39 @@
                 </button>
                 <div class="collapse navbar-collapse navHeaderCollapse">
                     <ul class="nav navbar-nav navbar-left">
-                        <li><a href="{1}mpw{2}">M. Paul</a></li>
-                        <li><a href="{1}eliah{2}">Eliah</a></li>
-                        <li><a href="{1}qwerty{2}">Patrick</a></li>
-                        <li><a href="{1}gant{2}">Dan</a></li>
-                        <li><a href="{1}edmond{2}">Edmond</a></li>
+                        <li><a href="{2}">{3}</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/mpw{1}">M. Paul</a></li>
+                        <li><a href="/eliah{1}">Eliah</a></li>
+                        <li><a href="/qwerty{1}">Patrick</a></li>
+                        <li><a href="/gant{1}">Dan</a></li>
+                        <li><a href="/edmond{1}">Edmond</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
     `;
-    module.draw_navbar = function(url_prefix, url_postfix){
-        url_prefix = url_prefix || '';
-        url_postfix = url_postfix || '';
-        $('#nav-parent').html(str_format(nav_html, url_prefix, url_postfix));
+    module.draw_navbar = function(){
+        var pathname = window.location.pathname;
+
+        var link_postfix = '';
+        var switch_url = pathname + '/diff';
+        var switch_message = 'view diff';
+
+        var diff_index = pathname.indexOf("/diff");
+        if (diff_index > 0){
+            link_postfix = '/diff';
+            switch_url = pathname.substring(0, diff_index);
+            switch_message = 'goto edit';
+        }
+
+        $('#nav-parent').html(str_format(
+            nav_html,
+            link_postfix,
+            switch_url,
+            switch_message
+        ));
     }
 
 })(Module('visual'));
