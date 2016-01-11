@@ -5,8 +5,6 @@
     var user_slug = null;
     var binder = null;
 
-    module.get_user = function(){return binder.user;};
-
     multiples_ok = visual.multiples_ok;
     str_format = visual.str_format;
     format_price = visual.format_price;
@@ -29,12 +27,9 @@
         draw();
     }
 
-    function init(){
-        var data_str = $('#server_data').html()
-        $('#server_data').empty()
-        binder = JSON.parse(data_str);
+    function init(data){
+        binder = data;
         user_slug = binder.user.slug;
-        $('#user_name').html(binder.user.name);
         var cards = binder.cards;
         for (card_name in cards){
             var card = cards[card_name];

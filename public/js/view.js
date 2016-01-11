@@ -11,13 +11,24 @@
         });
     }
 
+    function init(){
+        var data_str = $('#server_data').html()
+        $('#server_data').empty()
+        var data = JSON.parse(data_str);
+
+        $('#user_name').html(data.user.name);
+
+        return data;
+    }
+
     var CARD_OPTION = '<option value="{1}">{1}</option>';
 
     module.index = function(){
         visual.draw_navbar();
+        var data = init();
+        binder.init(data);
 
-        binder.init();
-        var colors = binder.get_user().colors;
+        var colors = data.user.colors;
         store.get_cards_by_colors(colors).forEach(function (card_name){
             var card_html = str_format(CARD_OPTION, card_name);
             $('#lookup-select').append(card_html);
@@ -39,13 +50,9 @@
 
     module.diff = function(){
         visual.draw_navbar('../', '/diff');
+        var data = init();
 
-        var data_str = $('#server_data').html()
-        $('#server_data').empty()
-        var data = JSON.parse(data_str);
-        $('#user_name').html(data.user.name);
         var cards = data.cards;
-
         var out = {};
         for (var card_name in cards){
             var card = cards[card_name];
