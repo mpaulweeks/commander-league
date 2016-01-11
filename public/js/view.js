@@ -64,13 +64,13 @@
             }
         }
         visual.cards = out;
-
         var list_types = [
             ['added', ''],
             ['removed', ''],
         ];
-
         visual.draw_cards(list_types, {}, null);
+
+        $("#datepicker").datepicker();
     };
 
 })(Module('view'));
