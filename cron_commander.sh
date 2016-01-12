@@ -16,7 +16,7 @@ do
   ./cron_jobs.sh
 
   pid=`cat server.pid`
-  if [ ${#pid} -gt 0 ]
+  if [ ${#pid} == 0 ]
   then
     echo "Server is offline, starting back up..."
     sleep 5
