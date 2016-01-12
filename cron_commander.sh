@@ -1,7 +1,5 @@
 #!/bin/sh
-git checkout deploy
-git pull
-nohup ./server.sh &
+./kill_server.sh
 
 while [ true ]
 do
