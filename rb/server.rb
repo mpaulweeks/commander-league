@@ -75,10 +75,13 @@ end
 
 # shutdown
 
-File.open('server.pid', 'w') {|f| f.write Process.pid }
+PID_FILE = 'server.pid'
+$shutting_down = false
+File.open(PID_FILE, 'w') {|f| f.write Process.pid }
 def shut_down
-  puts "Cleaning up server.pid"
-  File.open('server.pid', 'w') {|f| f.write '' }
+  $shutting_down = true
+  puts "Cleaning up %s" % PID_FILE
+  File.open(PID_FILE, 'w') {|f| f.write '' }
   puts "Ruby cleanup done!"
 end
 
@@ -91,3 +94,14 @@ Signal.trap("INT") {
 Signal.trap("TERM") {
   shut_down
 }
+
+# check for shutdown
+def check_for_shut_down
+  while File.read(PID_FILE).length > 0
+    sleep(5)
+  end
+  unless $shutting_down
+    Process.kill 'INT', Process.pid
+  end
+end
+t = Thread.new{check_for_shut_down()}
