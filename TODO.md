@@ -1,6 +1,5 @@
 # Todo
 
- - don't require index to wait for dropdown to load
  - add loading animations to dropdown
  - datepicker for diff page
  - nginx

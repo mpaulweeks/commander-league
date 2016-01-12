@@ -28,7 +28,7 @@
 <span id="nav-parent"></span>
 <div class="container">
 
-    <span id='server_data' style="display: none;">
+    <span id='server_data' class="hidden">
         <%= data %>
     </span>
 
@@ -57,13 +57,16 @@
     </div>
     <div class="col-md-4">
         <h3> Sideboard </h3>
-        <div>
+        <div id="lookup-holder" class="hidden">
             <form id="lookup-form">
                 <select class="col-md-9" id="lookup-select"></select>
                 <input class="col-md-3" type="submit" value="Add" />
             </form>
+            <br/>
         </div>
-        <br/>
+        <div id="lookup-loading" class="text-center">
+            loading...
+        </div>
         <br/>
         <div id="sideboard" class="col-md-12 cardlistdisplay"></div>
     </div>

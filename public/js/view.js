@@ -29,15 +29,6 @@
         var data = init();
         binder.init(data);
 
-        var colors = data.user.colors;
-        store.get_cards_by_colors(colors).forEach(function (card_name){
-            var card_html = str_format(CARD_OPTION, card_name);
-            $('#lookup-select').append(card_html);
-        });
-        $('#lookup-select').select2({
-            placeholder: "Click to type"
-        });
-
         $("#lookup-form").on("submit", function(evt){
             evt.preventDefault();
             var card_name = $("#lookup-select").val();
@@ -46,6 +37,20 @@
         $("#swap-cards").on("click", function(evt){
             evt.preventDefault();
             binder.swap_cards();
+        });
+
+        store.init(function (){
+            $('#lookup-holder').removeClass('hidden');
+            $('#lookup-loading').addClass('hidden');
+
+            var colors = data.user.colors;
+            store.get_cards_by_colors(colors).forEach(function (card_name){
+                var card_html = str_format(CARD_OPTION, card_name);
+                $('#lookup-select').append(card_html);
+            });
+            $('#lookup-select').select2({
+                placeholder: "Click to type"
+            });
         });
     };
 

@@ -33,3 +33,6 @@ h3 {
 #cost {
   color: red;
 }
+.hidden {
+  display: none;
+}
