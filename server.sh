@@ -1,3 +1,3 @@
 #!/bin/sh
 touch server.pid
-rvmsudo ruby rb/server.rb -e production -p 80
+ruby rb/server.rb -e production -p 4567
