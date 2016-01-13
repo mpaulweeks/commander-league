@@ -20,6 +20,18 @@
 
         $('#user_name').html(data.user.name);
 
+        $('.copy').on("click", function(){
+            var list_id = $(this).data("id");
+            var card_list = "";
+            $(".cardlistdisplay#" + list_id).children().each(function (){
+                var row = $(this);
+                if (row.data("id")){
+                    card_list += (row.text() + '\n').substring(1);
+                }
+            });
+            console.log(card_list);
+        });
+
         return data;
     }
 
