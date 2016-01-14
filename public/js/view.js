@@ -11,6 +11,13 @@
         });
     }
 
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
     function copyTextToClipboard(text) {
         // Taken from: http://stackoverflow.com/a/30810322
 
@@ -126,6 +133,55 @@
         });
     };
 
+    function convert_from_datepicker(date_str){
+        if (date_str.length == 0){
+            return null;
+        }
+        return str_format(
+            "{1}-{2}-{3}",
+            date_str.substring(6),
+            date_str.substring(0,2),
+            date_str.substring(3,5)
+        );
+    }
+
+    function convert_to_datepicker(date_str){
+        if (date_str.length == 0){
+            return "";
+        }
+        return str_format(
+            "{1}/{2}/{3}",
+            date_str.substring(5,7),
+            date_str.substring(8),
+            date_str.substring(0,4)
+        );
+    }
+
+    var date_args = ["from", "to"];
+
+    function load_dates(){
+        date_args.forEach(function (arg){
+            var query = getParameterByName(arg);
+            var dp_val = convert_to_datepicker(query);
+            $('#date-' + arg).val(dp_val);
+        });
+    }
+
+    function reload_diff(){
+        var args = {};
+        date_args.forEach(function (arg){
+            var str = convert_from_datepicker($("#date-" + arg).val());
+            if (str != null){
+                args[arg] = str;
+            }
+        });
+        var new_url = window.location.pathname;
+        if (!$.isEmptyObject(args)){
+            new_url += "?" + $.param(args);
+        }
+        window.location.href = new_url;
+    }
+
     module.diff = function(){
         var data = init();
 
@@ -148,6 +204,12 @@
         visual.draw_cards(list_types, {}, null);
 
         $(".datepicker").datepicker();
+        load_dates();
+        $(".datepicker").on("change", reload_diff);
+        $("#date-reset").on("click", function(){
+            $(".datepicker").val("");
+            reload_diff();
+        });
     };
 
 })(Module('view'));
