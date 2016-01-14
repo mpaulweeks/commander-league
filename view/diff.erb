@@ -9,6 +9,7 @@
 
     <script src="/js/jquery.min.js"></script>
     <script src="/js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="/css/jquery-ui.min.css">
 
     <script type="text/javascript" src="http://twitter.github.io/bootstrap/assets/js/bootstrap-transition.js"></script>
     <script type="text/javascript" src="http://twitter.github.io/bootstrap/assets/js/bootstrap-collapse.js"></script>
@@ -34,13 +35,14 @@
     <h2 id="user_name" class="text-center">loading js...</h2>
     <hr/>
 
-    <div class="col-md-6">
-        From: <input type="text" id="datepicker">
+    <div class="col-md-12 text-center">
+        <label>From:</label>
+        <input type="text" id="date-from" class="datepicker" size="10" />
+        <label>To:</label>
+        <input type="text" id="date-to" class="datepicker" size="10" />
+        <button type="text" id="reset-dates">RESET</button>
     </div>
-    <div class="col-md-6">
-        To: <input type="text" id="datepicker">
-    </div>
-    <hr/>
+    <div class="col-md-12"><hr/></div>
 
     <div class="col-md-6">
         <div class="col-md-2"></div>

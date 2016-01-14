@@ -147,7 +147,7 @@
         ];
         visual.draw_cards(list_types, {}, null);
 
-        $("#datepicker").datepicker();
+        $(".datepicker").datepicker();
     };
 
 })(Module('view'));
