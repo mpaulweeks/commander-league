@@ -1,5 +1,5 @@
 #!/bin/sh
-./kill_server.sh
+./shell/kill_server.sh
 
 while [ true ]
 do
@@ -9,18 +9,18 @@ do
   if ! [[ $gout == *"Already up-to-date." ]]
   then
     echo "Changes found, shutting down server..."
-    ./kill_server.sh
+    ./shell/kill_server.sh
     sleep 5
   fi
 
-  ./cron_jobs.sh
+  ./shell/cron_jobs.sh
 
   pid=`cat server.pid`
   if [ ${#pid} == 0 ]
   then
     echo "Server is offline, starting back up..."
     sleep 5
-    nohup ./server.sh &
+    nohup ./shell/server.sh &
   fi
 
   sleep 60
