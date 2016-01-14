@@ -1,3 +1,3 @@
 #!/bin/sh
-pkill -xf "/bin/sh ./cron_commander.sh"
+pkill -xf "/bin/sh ./shell/cron_commander.sh"
 ./shell/kill_server.sh
