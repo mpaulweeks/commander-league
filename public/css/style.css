@@ -33,3 +33,23 @@ h3 {
 #cost {
   color: red;
 }
+.hidden {
+  display: none;
+}
+.cardlist-title {
+  text-align: center;
+  font-size: 24px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+  margin-left: 0;
+  margin-right: 0;
+}
+.copy {
+  cursor: pointer;
+  width: 1.17em;
+  height: 1.17em;
+}

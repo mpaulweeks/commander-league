@@ -28,7 +28,7 @@
 <span id="nav-parent"></span>
 <div class="container">
 
-    <span id='server_data' style="display: none;">
+    <span id='server_data' class="hidden">
         <%= data %>
     </span>
 
@@ -36,11 +36,19 @@
     <hr/>
 
     <div class="col-md-4">
-        <h3> Maindeck </h3>
+        <div class="col-md-2"></div>
+        <div class="col-md-8 cardlist-title">
+            Maindeck
+        </div>
+        <div class="col-md-2 cardlist-title">
+            <img src="/img/copy-icon.png" class="copy" data-id="maindeck"/>
+        </div>
         <div id="maindeck" class="col-md-12 cardlistdisplay"></div>
     </div>
     <div class="col-md-4">
-        <h3> Exchange </h3>
+        <div class="col-md-12 cardlist-title">
+            Exchange
+        </div>
         <div id="user_info" class="col-md-12">
             <div class="col-md-6">
                 Balance: <span id="balance">N/A</span>
@@ -56,14 +64,23 @@
         <div id="sideboard_swap" class="col-md-12 cardlistdisplay"></div>
     </div>
     <div class="col-md-4">
-        <h3> Sideboard </h3>
-        <div>
+        <div class="col-md-2"></div>
+        <div class="col-md-8 cardlist-title">
+            Sideboard
+        </div>
+        <div class="col-md-2 cardlist-title">
+            <img src="/img/copy-icon.png" class="copy" data-id="sideboard"/>
+        </div>
+        <div id="lookup-holder" class="hidden">
             <form id="lookup-form">
                 <select class="col-md-9" id="lookup-select"></select>
                 <input class="col-md-3" type="submit" value="Add" />
             </form>
+            <br/>
         </div>
-        <br/>
+        <div id="lookup-loading" class="text-center">
+            loading...
+        </div>
         <br/>
         <div id="sideboard" class="col-md-12 cardlistdisplay"></div>
     </div>

@@ -20,9 +20,8 @@ def generate_lookup()
           _add_card(lookup_array, card)
         end
       end
-    elsif card['printings'].include? 'C15'
-      # temp workaround while MTGJson is stale
-      _add_card(lookup_array, card)
+    # elsif card['printings'].include? 'C15'
+    #   _add_card(lookup_array, card)
     end
   end
 
