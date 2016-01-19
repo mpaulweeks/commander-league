@@ -40,7 +40,7 @@
     }
     module.init = init;
 
-    function add_card_to_sideboard(new_card_name){
+    function add_card_to_sideboard(new_card_name, callback){
         if (!(new_card_name in binder.cards)){
             var new_card = {};
             new_card.name = new_card_name;
@@ -55,7 +55,7 @@
             alert("cannot add card already in deck");
             return;
         }
-        increment_card_sideboard(card);
+        increment_card_sideboard(card, callback);
     }
     module.add_card_to_sideboard = add_card_to_sideboard;
 
@@ -69,10 +69,15 @@
         }
     }
 
-    function increment_card_sideboard(card){
+    function increment_card_sideboard(card, callback){
         if (card.sideboard == 0 || multiples_ok(card)){
             card.sideboard += 1;
-            store.create_statuses(user_slug, [card], load_update_data);
+            store.create_statuses(user_slug, [card], function (data){
+                load_update_data(data);
+                if (callback){
+                    callback();
+                }
+            });
         }
     }
 

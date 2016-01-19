@@ -111,7 +111,10 @@
         $("#lookup-form").on("submit", function(evt){
             evt.preventDefault();
             var card_name = $("#lookup-select").val();
-            binder.add_card_to_sideboard(card_name);
+            binder.add_card_to_sideboard(card_name, function (){
+                console.log("callback");
+                $("#lookup-select").select2("data", null);
+            });
         });
         $("#swap-cards").on("click", function(evt){
             evt.preventDefault();
@@ -128,6 +131,7 @@
                 $('#lookup-select').append(card_html);
             });
             $('#lookup-select').select2({
+                minimumInputLength: 3,
                 placeholder: "Click to type"
             });
         });
