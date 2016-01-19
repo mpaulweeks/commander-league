@@ -8,13 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
 
     <script type="text/javascript" src="http://twitter.github.io/bootstrap/assets/js/bootstrap-transition.js"></script>
     <script type="text/javascript" src="http://twitter.github.io/bootstrap/assets/js/bootstrap-collapse.js"></script>
     <link rel="stylesheet" href="/css/bootstrap.css">
     <script src="/js/bootstrap.js"></script>
-    <link rel="stylesheet" href="/css/select2.css">
-    <script src="/js/select2.js"></script>
     <link rel="stylesheet" href="/css/style.css">
 
     <script src="/js/module.js"></script>
@@ -73,10 +72,10 @@
         </div>
         <div id="lookup-holder" class="hidden">
             <form id="lookup-form">
-                <select class="col-md-9" id="lookup-select"></select>
+                <input class="col-md-9" id="lookup-auto" />
                 <input class="col-md-3" type="submit" value="Add" />
             </form>
-            <br/>
+            <div class="col-md-12"><br/></div>
         </div>
         <div id="lookup-loading" class="text-center">
             loading...

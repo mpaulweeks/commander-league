@@ -108,28 +108,26 @@
         var data = init();
         binder.init(data);
 
-        $("#lookup-form").on("submit", function(evt){
-            evt.preventDefault();
-            var card_name = $("#lookup-select").val();
-            binder.add_card_to_sideboard(card_name);
-        });
         $("#swap-cards").on("click", function(evt){
             evt.preventDefault();
             binder.swap_cards();
         });
 
         store.init(function (){
+            var colors = data.user.colors;
+            var card_names = store.get_cards_by_colors(colors);
+            $('#lookup-auto').autocomplete({
+                source: card_names,
+            });
+            $("#lookup-form").on("submit", function(evt){
+                evt.preventDefault();
+                var card_name = $("#lookup-auto").val();
+                // check that name is good
+                binder.add_card_to_sideboard(card_name);
+            });
+
             $('#lookup-holder').removeClass('hidden');
             $('#lookup-loading').addClass('hidden');
-
-            var colors = data.user.colors;
-            store.get_cards_by_colors(colors).forEach(function (card_name){
-                var card_html = str_format(CARD_OPTION, card_name);
-                $('#lookup-select').append(card_html);
-            });
-            $('#lookup-select').select2({
-                placeholder: "Click to type"
-            });
         });
     };
 
