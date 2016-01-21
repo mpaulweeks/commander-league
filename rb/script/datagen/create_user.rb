@@ -75,7 +75,7 @@ def create_deck(user_slug, file_name)
   status_hash[user_slug] = card_statuses
 
   puts "Cards inserted: %s" % card_hash.length
-  puts "Statuses inserted: %s" % status_hash.length
+  puts "Statuses inserted: %s" % card_statuses.length
   db_hash = {
     Store::CARD => card_hash,
     Store::STATUS => status_hash,
@@ -102,5 +102,4 @@ if __FILE__ == $PROGRAM_NAME
     end
   end
   create_deck slug, deck_file
-  insert_transaction
 end
