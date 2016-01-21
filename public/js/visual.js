@@ -147,6 +147,8 @@
                         <li><a href="/qwerty{1}">Patrick</a></li>
                         <li><a href="/gant{1}">Dan</a></li>
                         <li><a href="/edmond{1}">Edmond</a></li>
+                        <li><a href="/kevin{1}">Kevin</a></li>
+                        <li><a href="/mike{1}">Mike</a></li>
                     </ul>
                 </div>
             </div>
