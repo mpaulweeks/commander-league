@@ -78,6 +78,26 @@
         alert("Copied to clipboard!");
     }
 
+    var color_mapping = [
+        [["U", "G"], "gu"],
+        [["W", "B"], "wb"],
+        [["B", "G"], "bg"],
+        [["W", "R"], "rw"],
+        [["U", "R"], "ur"],
+    ]
+    function get_color_file(colors){
+        var color_file = '';
+        var sorted_colors = JSON.stringify(colors.concat().sort());
+        color_mapping.forEach(function (mapping){
+            if (sorted_colors == JSON.stringify(mapping[0].concat().sort())){
+                color_file = mapping[1];
+            }
+        });
+        return color_file;
+    }
+    var MANA_SYMBOL_HTML = '<img class="mana-symbol" src="/img/mana-symbol-{1}.png" />';
+    var TITLE_HTML = '{2} {1} {2}';
+
     function init(){
         visual.draw_navbar();
 
@@ -85,7 +105,9 @@
         $('#server_data').empty()
         var data = JSON.parse(data_str);
 
-        $('#user_name').html(data.user.name);
+        var mana_symbol_html = str_format(MANA_SYMBOL_HTML, get_color_file(data.user.colors));
+        var title_html = str_format(TITLE_HTML, data.user.name, mana_symbol_html);
+        $('#user_name').html(title_html);
 
         $('.copy').on("click", function(){
             var list_id = $(this).data("id");
