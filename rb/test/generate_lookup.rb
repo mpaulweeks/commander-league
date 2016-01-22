@@ -29,7 +29,7 @@ class GenerateLookupTest < Minitest::Test
       assert_includes res, ['Fog', ['G']]
       assert_includes res, ['Lightning Helix', ['R', 'W']]
       assert_includes res, ['Zendikar Resurgent', ['G']]
-      # assert_includes res, ['Council Guardian', ['W']]
+      assert_includes res, ['Council Guardian', ['W']]
     end
   end
 end
