@@ -4,7 +4,8 @@ require_relative '../file_path'
 
 def _add_card(lookup_array, card)
   card_name = card['name']
-  lookup_array.push([card_name, card['colorIdentity'] || []])
+  colors = card['colorIdentity'] || []
+  lookup_array.push([card_name, colors.sort])
 end
 
 def generate_lookup()
@@ -14,14 +15,19 @@ def generate_lookup()
   lookup_array = []
   all_cards_hash.each do |card_name, card|
     if card.include? 'legalities'
+      added = false
       legalities = card['legalities']
       legalities.each do |legal_hash|
         if legal_hash['format'] == 'Commander' && legal_hash['legality'] == 'Legal'
           _add_card(lookup_array, card)
+          added = true
         end
       end
-    # elsif card['printings'].include? 'C15'
-    #   _add_card(lookup_array, card)
+      if (not added) && card['printings'] == ['CNS']
+        _add_card(lookup_array, card)
+      end
+    elsif card['printings'].include? 'OGW'
+      _add_card(lookup_array, card)
     end
   end
 
@@ -30,4 +36,6 @@ def generate_lookup()
   end
 end
 
-generate_lookup()
+if __FILE__ == $PROGRAM_NAME
+  generate_lookup
+end
