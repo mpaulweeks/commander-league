@@ -16,7 +16,7 @@ class Market
     return res.body
   end
 
-  def self.parse_json(card_name, json_str)
+  def self.parse_combodeck_json(card_name, json_str)
     json_dict = JSON.parse json_str
     json_dict['Cards'].each do |card|
       if card['CardName'] == card_name
@@ -28,7 +28,7 @@ class Market
   def self.get_price(card_name)
     url = COMBODECK_URL % card_name
     json_str = self.fetch_url(url)
-    price = self.parse_json(card_name, json_str)
+    price = self.parse_combodeck_json(card_name, json_str)
     return price
   end
 end
