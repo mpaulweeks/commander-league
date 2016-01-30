@@ -6,8 +6,16 @@ require 'json'
 
 class MarketTest < Minitest::Test
 
-  def test_get_price
+  def test_get_price_simple
     assert 0 < Market.get_price('Masticore')
+  end
+
+  def test_get_price_unicode
+    assert 0 < Market.get_price('Æther Flash')
+  end
+
+  def test_get_price_split
+    assert 0 < Market.get_price('Hit // Run')
   end
 
   def test_url_fetch
