@@ -9,13 +9,14 @@ class RepoTest < Minitest::Test
   def setup
     @test_path = 'rb/test/tmp/database.json'
     @market_price = 25
+    @repo = Repo.new
     FileUtils.cp('json/test/database.json', @test_path)
   end
 
   def insert_statuses(user_slug, statuses)
     FilePath.stub :database, @test_path do
       Market.stub :get_price, @market_price do
-        return Repo.create_statuses!(user_slug, statuses)
+        return @repo.create_statuses!(user_slug, statuses)
       end
     end
   end
@@ -36,7 +37,7 @@ class RepoTest < Minitest::Test
     }
     assert_equal res[:cards][card_name], expected
     FilePath.stub :database, @test_path do
-      res = Repo.load_user_cards(user_slug)
+      res = @repo.load_user_cards(user_slug)
     end
     assert_equal res[:cards][card_name], expected
   end
@@ -50,6 +51,8 @@ class RepoTest < Minitest::Test
   end
 
   def test_insert_maindeck_fake
-    assert_status_inserted 'fart', 0, 1
+    assert_raises(IllegalCardException) {
+      assert_status_inserted 'fart', 0, 1
+    }
   end
 end

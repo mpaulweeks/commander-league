@@ -5,14 +5,23 @@ require 'time'
 require_relative 'store'
 require_relative 'market'
 
-module Repo
+class IllegalCardException < Exception
+end
 
-  def Repo.load_user_slugs
+class Repo
+
+  attr_reader :all_cards, :multiverse
+
+  def initialize
+    @all_cards = Store.load_all_cards
+  end
+
+  def load_user_slugs
     db_cache = Store.load_database
     return db_cache[Store::USER].collect{ |user_slug, hash| user_slug }
   end
 
-  def Repo.load_user_info(db_cache, user_slug)
+  def load_user_info(db_cache, user_slug)
     user = db_cache[Store::USER][user_slug]
     balance = 0
     db_cache[Store::WALLET][user_slug].each do |transaction|
@@ -26,7 +35,7 @@ module Repo
     }
   end
 
-  def Repo.load_cards(db_cache, user_slug, cutoff_timestamp=nil)
+  def load_cards(db_cache, user_slug, cutoff_timestamp=nil)
     out_status = {}
     was_maindeck = Set.new
     cutoff_timestamp = cutoff_timestamp || Store.now_time
@@ -67,17 +76,20 @@ module Repo
     return out_cards
   end
 
-  def Repo.load_user_cards(user_slug)
+  def load_user_cards(user_slug)
     db_cache = Store.load_database()
-    user_hash = Repo.load_user_info(db_cache, user_slug)
-    card_hash = Repo.load_cards(db_cache, user_slug)
+    user_hash = self.load_user_info(db_cache, user_slug)
+    card_hash = self.load_cards(db_cache, user_slug)
     out_hash = {:user => user_hash, :cards => card_hash}
     return out_hash
   end
 
-  def self.ensure_card_exists(db_cache, card_name)
+  def ensure_card_exists(db_cache, card_name)
     card_hash = db_cache[Store::CARD][card_name]
-    if not card_hash
+    unless card_hash
+      unless @all_cards.include? card_name
+        raise IllegalCardException
+      end
       card_hash = {
         :name => card_name,
         'price' => nil,
@@ -96,7 +108,7 @@ module Repo
     end
   end
 
-  def self.is_valid_status?(status_hash)
+  def is_valid_status?(status_hash)
     return (
       status_hash.has_key?('name') &&
       status_hash.has_key?('maindeck') &&
@@ -104,10 +116,10 @@ module Repo
     )
   end
 
-  def Repo.create_statuses!(user_slug, statuses)
+  def create_statuses!(user_slug, statuses)
     db_cache = Store.load_database
-    old_user = Repo.load_user_info(db_cache, user_slug)
-    old_cards = Repo.load_cards(db_cache, user_slug)
+    old_user = self.load_user_info(db_cache, user_slug)
+    old_cards = self.load_cards(db_cache, user_slug)
     to_save = []
     cards_added = 0
     balance = 0
@@ -155,7 +167,7 @@ module Repo
 
     # refresh db cache, load current versions
     db_cache = Store.load_database
-    refreshed_cards = Repo.load_cards(db_cache, user_slug)
+    refreshed_cards = self.load_cards(db_cache, user_slug)
     updated_cards = {}
     to_save.each do |status_hash|
       card_name = status_hash[:card_name]
@@ -165,7 +177,7 @@ module Repo
       :cards => updated_cards
     }
     if balance > 0
-      updated_data[:user] = Repo.load_user_info(db_cache, user_slug)
+      updated_data[:user] = self.load_user_info(db_cache, user_slug)
     end
     return updated_data
   end

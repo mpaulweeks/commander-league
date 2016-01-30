@@ -17,14 +17,14 @@ module Differ
     return epoch
   end
 
-  def Differ.get_diff(user_slug, from_str, to_str)
+  def Differ.get_diff(repo, user_slug, from_str, to_str)
     db_cache = Store.load_database
 
     from_time = from_str ? Time.parse(from_str) : self.get_epoch(db_cache, user_slug)
     to_time = to_str ? Time.parse(to_str) : Store.now_time
 
-    from_cards = Repo.load_cards(db_cache, user_slug, from_time)
-    to_cards = Repo.load_cards(db_cache, user_slug, to_time)
+    from_cards = repo.load_cards(db_cache, user_slug, from_time)
+    to_cards = repo.load_cards(db_cache, user_slug, to_time)
 
     cards_out = {}
 
@@ -51,7 +51,7 @@ module Differ
       end
     end
 
-    user_hash = Repo.load_user_info(db_cache, user_slug)
+    user_hash = repo.load_user_info(db_cache, user_slug)
     out_hash = {:user => user_hash, :cards => cards_out}
     return out_hash
   end
