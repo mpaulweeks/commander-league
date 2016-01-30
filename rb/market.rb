@@ -3,6 +3,8 @@ require_relative 'store'
 
 require 'json'
 require 'net/http'
+require 'nokogiri'
+require 'open-uri'
 
 COMBODECK_URL = "http://combodeck.net/Search/FullCard?cardName=%s"
 MTG_PRICE_URL = "http://www.mtgprice.com/sets/%s/%s"
@@ -12,6 +14,11 @@ end
 
 class MarketParseException < MarketException
 end
+
+SetRename = {
+  'Classic Sixth Edition' => '6th Edition',
+  'Seventh Edition' => '7th Edition',
+}
 
 class Market
 
@@ -42,7 +49,25 @@ class Market
     return min_price
   end
 
-  def self.parse_mtg_price(url)
+  def self.parse_mtg_price(url, card_name)
+    url.gsub!(' ', '_')
+    escaped = URI.escape(url)
+    page = Nokogiri::HTML(open(escaped))
+    raw_text = page.css('#card-name').text
+    unless raw_text.include? card_name
+      return nil
+    end
+    raw_text.split('&nbsp').each do |chunk|
+      if chunk.include? '$'
+        puts escaped, chunk
+        dollar, change = chunk[1..-1].split('.')
+        price = change.to_i
+        if dollar.length > 0
+          price += dollar.to_i * 100
+        end
+        return price
+      end
+    end
     return nil
   end
 
@@ -50,19 +75,23 @@ class Market
     json_dict['Cards'].each do |card|
       if card['CardName'] == card_name
         formatted_name = card_name
-        other_name = card['OtherSideCardName']
-        if other_name
-          if card['Side'] == 1
-            formatted_name = "%s__%s" % [other_name, card_name]
-          else
-            formatted_name = "%s__%s" % [card_name, other_name]
-          end
-        end
+        # other_name = card['OtherSideCardName']
+        # if other_name
+        #   if card['Side'] == 1
+        #     formatted_name = "%s__%s" % [other_name, card_name]
+        #   else
+        #     formatted_name = "%s__%s" % [card_name, other_name]
+        #   end
+        # end
+        formatted_name.gsub!('Æ', 'AE')
         min_price = nil
-        cards['Printings'].each do |printing|
+        card['Printings'].each do |printing|
           set_name = printing['SetName']
+          if SetRename.has_key? set_name
+            set_name = SetRename[set_name]
+          end
           url = MTG_PRICE_URL % [set_name, formatted_name]
-          printing_price = self.parse_mtg_price(url)
+          printing_price = self.parse_mtg_price(url, formatted_name)
           unless printing_price.nil? || printing_price == 0
             if min_price.nil? || printing_price < min_price
               min_price = printing_price
