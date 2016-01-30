@@ -58,7 +58,7 @@ def update_prices
       begin
         card['price'] = Market.get_price(card_name)
       rescue MarketException
-        # do nothing, pretend we got the same price
+        puts "[ERROR] failed to lookup market price for %s" % card_name
       end
       card['price_fetched'] = Store.now_str
       update_requests += 1
