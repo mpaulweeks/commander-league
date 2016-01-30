@@ -24,42 +24,41 @@ class Market
     return res.body
   end
 
-  def self.parse_combodeck_json(card_name, json_str)
-    json_dict = JSON.parse json_str
+  def self.parse_combodeck_json(card_name, json_dict)
     min_price = nil
     json_dict['Cards'].each do |card|
       if card['CardName'] == card_name
         card['Printings'].each do |printing|
           printing_price = printing['PriceCentsPaper']
-          if printing_price && printing_price > 0
+          unless printing_price.nil? || printing_price == 0
             if min_price.nil? || printing_price < min_price
               min_price = printing_price
             end
           end
         end
       end
-    return 0
+    end
+    return min_price
   end
 
-  def self.fetch_mtg_price(card_name, combodeck_json)
-    json_dict = JSON.parse combodeck_json
+  def self.fetch_mtg_price(card_name, json_dict)
     json_dict['Cards'].each do |card|
       if card['CardName'] == card_name
         # TBD
       end
     end
-    return 0
-    end
-    return min_price
+    return nil
   end
 
   def self.get_price(card_name)
     url = COMBODECK_URL % card_name
-    json_str = self.fetch_url(url)
-    price = self.parse_combodeck_json(card_name, json_str)
+    combodeck_json_dict = JSON.parse self.fetch_url(url)
+    price = self.parse_combodeck_json(card_name, combodeck_json_dict)
     if price.nil?
-      price = self.fetch_mtg_price(card_name, json_str)
-      raise MarketParseException
+      price = self.fetch_mtg_price(card_name, combodeck_json_dict)
+      if price.nil?
+        raise MarketParseException
+      end
     end
     return price
   end
