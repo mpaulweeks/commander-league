@@ -5,6 +5,7 @@ require 'json'
 require 'net/http'
 
 COMBODECK_URL = "http://combodeck.net/Search/FullCard?cardName=%s"
+MTG_PRICE_URL = "http://www.mtgprice.com/sets/%s/%s"
 
 class MarketException < Exception
 end
@@ -41,10 +42,34 @@ class Market
     return min_price
   end
 
+  def self.parse_mtg_price(url)
+    return nil
+  end
+
   def self.fetch_mtg_price(card_name, json_dict)
     json_dict['Cards'].each do |card|
       if card['CardName'] == card_name
-        # TBD
+        formatted_name = card_name
+        other_name = card['OtherSideCardName']
+        if other_name
+          if card['Side'] == 1
+            formatted_name = "%s__%s" % [other_name, card_name]
+          else
+            formatted_name = "%s__%s" % [card_name, other_name]
+          end
+        end
+        min_price = nil
+        cards['Printings'].each do |printing|
+          set_name = printing['SetName']
+          url = MTG_PRICE_URL % [set_name, formatted_name]
+          printing_price = self.parse_mtg_price(url)
+          unless printing_price.nil? || printing_price == 0
+            if min_price.nil? || printing_price < min_price
+              min_price = printing_price
+            end
+          end
+        end
+        return min_price
       end
     end
     return nil
