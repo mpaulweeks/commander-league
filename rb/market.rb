@@ -18,6 +18,15 @@ end
 SetRename = {
   'Classic Sixth Edition' => '6th Edition',
   'Seventh Edition' => '7th Edition',
+  'Eight Edition' => '8th Edition',
+  'Ninth Edition' => '9th Edition',
+  'Tenth Edition' => '10th Edition',
+  'Magic 2010' => 'M10',
+  'Magic 2011' => 'M11',
+  'Magic 2012' => 'M12',
+  'Magic 2013' => 'M13',
+  'Magic 2014' => 'M14',
+  'Magic 2015' => 'M15',
 }
 
 class Market
@@ -50,7 +59,7 @@ class Market
   end
 
   def self.parse_mtg_price(url, card_name)
-    url.gsub!(' ', '_')
+    url = url.gsub(' ', '_')
     escaped = URI.escape(url)
     puts escaped
     page = Nokogiri::HTML(open(escaped))
@@ -75,7 +84,7 @@ class Market
   def self.fetch_mtg_price(card_name, json_dict)
     json_dict['Cards'].each do |card|
       if card['CardName'] == card_name
-        formatted_name = card_name
+        formatted_name = card_name.gsub('Æ', 'AE')
         # other_name = card['OtherSideCardName']
         # if other_name
         #   if card['Side'] == 1
@@ -84,7 +93,6 @@ class Market
         #     formatted_name = "%s__%s" % [card_name, other_name]
         #   end
         # end
-        formatted_name.gsub!('Æ', 'AE')
         min_price = nil
         card['Printings'].each do |printing|
           set_name = printing['SetName']

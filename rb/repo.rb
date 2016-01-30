@@ -87,7 +87,7 @@ class Repo
   def ensure_card_exists(db_cache, card_name)
     card_hash = db_cache[Store::CARD][card_name]
     unless card_hash
-      unless @all_cards.include? card_name
+      unless @all_cards.has_key? card_name
         raise IllegalCardException
       end
       card_hash = {
