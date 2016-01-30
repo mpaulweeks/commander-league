@@ -15,6 +15,7 @@
         $.ajax({
             url: 'api/user/' + user_slug + '/status',
             type: 'POST',
+            contentType: "charset=utf-8",
             data: data,
         }).done(function (data){
             callback(data);

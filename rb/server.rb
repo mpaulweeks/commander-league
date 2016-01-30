@@ -56,6 +56,7 @@ post '/api/user/:user_slug/status' do |user_slug|
   validate_user_slug(_user_slugs, user_slug)
   request.body.rewind  # in case someone already read it
   status_hash = JSON.parse request.body.read
+  puts status_hash[0]['name'].encoding.name
   new_data = Repo.create_statuses!(user_slug, status_hash)
   _oracle.add_card_meta!(new_data[:cards])
   return JSON.generate(new_data)

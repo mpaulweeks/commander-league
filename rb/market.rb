@@ -52,6 +52,7 @@ class Market
   def self.parse_mtg_price(url, card_name)
     url.gsub!(' ', '_')
     escaped = URI.escape(url)
+    puts escaped
     page = Nokogiri::HTML(open(escaped))
     raw_text = page.css('#card-name').text
     unless raw_text.include? card_name
@@ -59,7 +60,7 @@ class Market
     end
     raw_text.split('&nbsp').each do |chunk|
       if chunk.include? '$'
-        puts escaped, chunk
+        puts chunk
         dollar, change = chunk[1..-1].split('.')
         price = change.to_i
         if dollar.length > 0
@@ -105,6 +106,7 @@ class Market
   end
 
   def self.get_price(card_name)
+    puts "fetching price for: %s" % card_name
     url = COMBODECK_URL % card_name
     combodeck_json_dict = JSON.parse self.fetch_url(url)
     price = self.parse_combodeck_json(card_name, combodeck_json_dict)
