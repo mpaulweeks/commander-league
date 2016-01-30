@@ -46,4 +46,12 @@ class UpdatePricesTest < Minitest::Test
     expected_after = nil
     assert_changes card_name, market_price, expected_before, expected_after
   end
+
+  def test_handles_market_error
+    card_name = 'Forest'
+    market_price = -> (_){ raise MarketParseException }
+    expected_before = 16
+    expected_after = 16
+    assert_changes card_name, market_price, expected_before, expected_after
+  end
 end

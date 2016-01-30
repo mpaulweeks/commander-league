@@ -4,6 +4,12 @@ require 'net/http'
 
 COMBODECK_URL = "http://combodeck.net/Search/FullCard?cardName=%s"
 
+class MarketException < Exception
+end
+
+class MarketParseException < MarketException
+end
+
 class Market
 
   def self.fetch_url(raw_url)
@@ -39,7 +45,7 @@ class Market
     json_str = self.fetch_url(url)
     price = self.parse_combodeck_json(card_name, json_str)
     if price.nil?
-      raise 'No legal price found'
+      raise MarketParseException
     end
     return price
   end

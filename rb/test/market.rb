@@ -29,4 +29,8 @@ class MarketTest < Minitest::Test
     assert_equal nil, Market.parse_combodeck_json('Fog', json_str)
     assert_equal 169, Market.parse_combodeck_json('Masticore', json_str)
   end
+
+  def test_raises_on_fail
+    assert_raises(MarketParseException) { Market.get_price 'fart' }
+  end
 end

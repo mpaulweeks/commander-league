@@ -55,7 +55,11 @@ def update_prices
   update_requests = 0
   cards_needing_price.each do |card_name, card|
     if update_requests < BATCH_MAX
-      card['price'] = Market.get_price(card_name)
+      begin
+        card['price'] = Market.get_price(card_name)
+      rescue MarketException
+        # do nothing, pretend we got the same price
+      end
       card['price_fetched'] = Store.now_str
       update_requests += 1
       cards[card_name] = card
