@@ -18,6 +18,8 @@
             data: data,
         }).done(function (data){
             callback(data);
+        }).fail(function (){
+            alert("There was an error. Please contact the admin.");
         });
     };
 
