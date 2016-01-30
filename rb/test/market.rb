@@ -11,8 +11,7 @@ class MarketTest < Minitest::Test
   end
 
   def test_get_price_unicode
-    skip
-    refute_equal 0, Market.get_price('Æther Flash')
+    refute_equal 0, Market.get_price('Ætherspouts')
   end
 
   def test_get_price_split

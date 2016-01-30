@@ -8,6 +8,9 @@ require_relative 'market'
 class IllegalCardException < Exception
 end
 
+class InvalidStatusException < Exception
+end
+
 class Repo
 
   attr_reader :all_cards, :multiverse
@@ -88,7 +91,7 @@ class Repo
     card_hash = db_cache[Store::CARD][card_name]
     unless card_hash
       unless @all_cards.has_key? card_name
-        raise IllegalCardException
+        raise IllegalCardException, card_name
       end
       card_hash = {
         :name => card_name,
@@ -125,8 +128,7 @@ class Repo
     balance = 0
     statuses.each do |raw_status_hash|
       if not self.is_valid_status?(raw_status_hash)
-        puts 'failed validation! %s' % raw_status_hash
-        next
+        raise InvalidStatusException, raw_status_hash
       end
 
       new_status_hash = {

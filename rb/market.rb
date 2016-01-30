@@ -25,8 +25,8 @@ SetRename = {
   'Magic 2011' => 'M11',
   'Magic 2012' => 'M12',
   'Magic 2013' => 'M13',
-  'Magic 2014' => 'M14',
-  'Magic 2015' => 'M15',
+  'Magic 2014 Core Set' => 'M14',
+  'Magic 2015 Core Set' => 'M15',
 }
 
 class Market
@@ -61,7 +61,6 @@ class Market
   def self.parse_mtg_price(url, card_name)
     url = url.gsub(' ', '_')
     escaped = URI.escape(url)
-    puts escaped
     page = Nokogiri::HTML(open(escaped))
     raw_text = page.css('#card-name').text
     unless raw_text.include? card_name
@@ -69,7 +68,6 @@ class Market
     end
     raw_text.split('&nbsp').each do |chunk|
       if chunk.include? '$'
-        puts chunk
         dollar, change = chunk[1..-1].split('.')
         price = change.to_i
         if dollar.length > 0
@@ -84,7 +82,7 @@ class Market
   def self.fetch_mtg_price(card_name, json_dict)
     json_dict['Cards'].each do |card|
       if card['CardName'] == card_name
-        formatted_name = card_name.gsub('Æ', 'AE')
+        formatted_name = card_name
         # other_name = card['OtherSideCardName']
         # if other_name
         #   if card['Side'] == 1
@@ -93,17 +91,28 @@ class Market
         #     formatted_name = "%s__%s" % [card_name, other_name]
         #   end
         # end
+        if card_name.include? ''
+          formatted_names = [
+            formatted_name.gsub('Æ', 'AE'),
+            formatted_name.gsub('Æ', 'Ae'),
+          ]
+        else
+          formatted_names = [formatted_name]
+        end
         min_price = nil
-        card['Printings'].each do |printing|
-          set_name = printing['SetName']
-          if SetRename.has_key? set_name
-            set_name = SetRename[set_name]
-          end
-          url = MTG_PRICE_URL % [set_name, formatted_name]
-          printing_price = self.parse_mtg_price(url, formatted_name)
-          unless printing_price.nil? || printing_price == 0
-            if min_price.nil? || printing_price < min_price
-              min_price = printing_price
+        formatted_names.each do |mtg_price_name|
+          card['Printings'].each do |printing|
+            set_name = printing['SetName']
+            if SetRename.has_key? set_name
+              set_name = SetRename[set_name]
+            end
+            url = MTG_PRICE_URL % [set_name, mtg_price_name]
+            printing_price = self.parse_mtg_price(url, mtg_price_name)
+            puts "%s - %s" % [url, printing_price]
+            unless printing_price.nil? || printing_price == 0
+              if min_price.nil? || printing_price < min_price
+                min_price = printing_price
+              end
             end
           end
         end
@@ -114,11 +123,12 @@ class Market
   end
 
   def self.get_price(card_name)
-    puts "fetching price for: %s" % card_name
+    puts "Looking up %s price via Combodeck" % card_name
     url = COMBODECK_URL % card_name
     combodeck_json_dict = JSON.parse self.fetch_url(url)
     price = self.parse_combodeck_json(card_name, combodeck_json_dict)
     if price.nil?
+      puts "Looking up via MTGPrice"
       price = self.fetch_mtg_price(card_name, combodeck_json_dict)
       if price.nil?
         raise MarketParseException
