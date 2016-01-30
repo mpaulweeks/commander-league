@@ -15,10 +15,10 @@ class StoreTest < Minitest::Test
     FilePath.stub :database, 'json/test/database.json' do
       db_cache = Store.load_database
 
-      assert db_cache[Store::USER].include? 'mpw'
-      assert db_cache[Store::WALLET].include? 'mpw'
-      assert db_cache[Store::CARD].include? 'Abandon Hope'
-      assert db_cache[Store::STATUS].include? 'mpw'
+      assert_includes db_cache[Store::USER], 'mpw'
+      assert_includes db_cache[Store::WALLET], 'mpw'
+      assert_includes db_cache[Store::CARD], 'Abandon Hope'
+      assert_includes db_cache[Store::STATUS], 'mpw'
 
       assert_equal 2, db_cache[Store::WALLET]['mpw'].length
       assert_equal 1, db_cache[Store::WALLET]['qwerty'].length
