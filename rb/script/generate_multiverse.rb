@@ -12,6 +12,12 @@ def generate_multiverse_ids()
       name = card["name"]
       mid = card["multiverseid"]
       if mid
+        if card['layout'] == 'split'
+          if name != card['names'][0]
+            next
+          end
+          name = card['names'].join('/')
+        end
         multiverse_hash[name] = mid
       end
     end
