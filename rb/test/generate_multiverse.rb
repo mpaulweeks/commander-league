@@ -25,7 +25,11 @@ class GenerateMultiverseTest < Minitest::Test
     FilePath.stub :multiverse_ids, @test_path do
       generate_multiverse_ids()
       res = JSON.parse(File.read(@test_path))
-      assert_equal res['Black Lotus'], 382866
+      assert_equal 382866, res['Black Lotus']
+      assert_equal 249394, res['Spite/Malice']
+      refute_includes res, 'Malice/Spite'
+      refute_includes res, 'Spite'
+      refute_includes res, 'Malice'
     end
   end
 end

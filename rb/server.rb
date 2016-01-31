@@ -2,6 +2,7 @@
 require 'sinatra'
 
 require 'json'
+require_relative 'card_ref'
 require_relative 'repo'
 require_relative 'oracle'
 require_relative 'differ'
@@ -9,8 +10,9 @@ require_relative 'differ'
 set :public_folder, File.dirname(__FILE__) + '/../public'
 set :views, settings.root + '/../view'
 
-_repo = Repo.new
-_oracle = Oracle.new
+_card_ref = CardRef.new
+_repo = Repo.new _card_ref
+_oracle = Oracle.new _card_ref
 _user_slugs = _repo.load_user_slugs
 
 def get_cards_json(repo, oracle, user_slug)

@@ -3,6 +3,7 @@ require 'set'
 require 'time'
 
 require_relative 'store'
+require_relative 'card_ref'
 require_relative 'market'
 
 class IllegalCardException < Exception
@@ -13,10 +14,8 @@ end
 
 class Repo
 
-  attr_reader :all_cards, :multiverse
-
-  def initialize
-    @all_cards = Store.load_all_cards
+  def initialize(card_ref=nil)
+    @card_ref = card_ref || CardRef.new
   end
 
   def load_user_slugs
@@ -90,7 +89,7 @@ class Repo
   def ensure_card_exists(db_cache, card_name)
     card_hash = db_cache[Store::CARD][card_name]
     unless card_hash
-      unless @all_cards.has_key? card_name
+      unless @card_ref.has_card? card_name
         raise IllegalCardException, card_name
       end
       card_hash = {

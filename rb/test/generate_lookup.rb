@@ -30,6 +30,10 @@ class GenerateLookupTest < Minitest::Test
       assert_includes res, ['Lightning Helix', ['R', 'W']]
       assert_includes res, ['Zendikar Resurgent', ['G']]
       assert_includes res, ['Council Guardian', ['W']]
+      assert_includes res, ['Spite/Malice', ['B', 'U']]
+      refute_includes res, ['Malice/Spite', ['B', 'U']]
+      refute_includes res, ['Spite', ['B', 'U']]
+      refute_includes res, ['Spite', ['U']]
     end
   end
 end
