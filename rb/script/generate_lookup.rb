@@ -35,6 +35,7 @@ def generate_lookup()
     #   to_add = true
     end
     if to_add
+       _add_card(lookup_array, card)
     end
   end
 
