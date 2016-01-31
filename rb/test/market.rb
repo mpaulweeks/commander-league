@@ -18,6 +18,10 @@ class MarketTest < Minitest::Test
     refute_equal 0, Market.get_price('Hit/Run')
   end
 
+  def test_get_price_split_apostrophe
+    refute_equal 0, Market.get_price('Wear/Tear')
+  end
+
   def test_url_fetch
     card_name = 'Masticore'
     url = COMBODECK_URL % card_name

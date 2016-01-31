@@ -30,6 +30,9 @@ SetRename = {
   'Magic 2013' => 'M13',
   'Magic 2014 Core Set' => 'M14',
   'Magic 2015 Core Set' => 'M15',
+  'Magic: The Gathering-Commander' => 'Commander',
+  'Commander 2013 Edition' => 'Commander 2013',
+  'Planechase 2012 Edition' => 'Planechase 2012',
 }
 
 class Market
@@ -63,6 +66,7 @@ class Market
 
   def self.parse_mtg_price(url, card_name)
     url = url.gsub(' ', '_')
+    url = url.gsub("'", '')
     escaped = URI.escape(url)
     page = Nokogiri::HTML(open(escaped))
     raw_text = page.css('#card-name').text
@@ -84,9 +88,7 @@ class Market
 
   def self.fetch_mtg_price(card_name, card_dict)
     formatted_name = card_name
-    if self.is_split? card_name
-      formatted_name = formatted_name.gsub('/', '__')
-    end
+    formatted_name = formatted_name.gsub('/', '__')
     if card_name.include? 'Æ'
       formatted_names = [
         formatted_name.gsub('Æ', 'AE'),
