@@ -26,8 +26,8 @@ def generate_lookup()
       if (not added) && card['printings'] == ['CNS']
         _add_card(lookup_array, card)
       end
-    elsif card['printings'].include? 'OGW'
-      _add_card(lookup_array, card)
+    # elsif card['printings'].include? 'OGW'
+    #   _add_card(lookup_array, card)
     end
   end
 
