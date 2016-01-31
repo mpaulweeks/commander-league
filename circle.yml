@@ -10,6 +10,7 @@ machine:
 dependencies:
   pre:
     - gem install minitest
+    - gem install nokogiri
 
 test:
   override:

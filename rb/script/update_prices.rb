@@ -13,6 +13,7 @@ BATCH_MAX = 10
 
 def update_prices
   puts "Running price updater..."
+  repo = Repo.new
 
   cutoff = (Store.now_time - STALE_SECONDS).inspect
 
@@ -25,7 +26,7 @@ def update_prices
     end
   end
   db_cache[Store::USER].each do |user_slug, user|
-    current_cards = Repo.load_cards(db_cache, user_slug)
+    current_cards = repo.load_cards(db_cache, user_slug)
     current_cards.each do |card_name, card|
       if cards_with_prices.include? card_name
         if card[:sideboard] > 0

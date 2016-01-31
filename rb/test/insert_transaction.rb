@@ -7,6 +7,7 @@ class InsertTransactionTest < Minitest::Test
 
   def setup
     @test_path = 'rb/test/tmp/database.json'
+    @repo = Repo.new
     FileUtils.cp('json/test/database.json', @test_path)
   end
 
@@ -14,7 +15,7 @@ class InsertTransactionTest < Minitest::Test
     balance = {}
     db_cache = Store.load_database
     db_cache[Store::USER].each do |user_slug, user|
-      user_info = Repo.load_user_info(db_cache, user_slug)
+      user_info = @repo.load_user_info(db_cache, user_slug)
       balance[user_slug] = user_info[:balance]
     end
     return balance
