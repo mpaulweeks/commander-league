@@ -9,17 +9,34 @@ class Oracle
   def initialize(card_ref=nil)
     @card_ref = card_ref || CardRef.new
     @multiverse = Store.load_multiverse
+    @categories = [
+      'Land',
+      'Enchantment - Aura',
+      'Enchantment',
+      'Creature',
+      'Artifact - Equipment',
+      'Artifact',
+      'Planeswalker',
+      'Sorcery',
+      'Instant'
+    ]
   end
 
   def determine_category(card_meta)
     types = card_meta['types']
-    if types.include? 'Land'
-      return :Land
+    @categories.each do |category|
+      types.each do |type|
+        if (category.include? '-') && (card_meta.has_key? "subtypes")
+          subtype = card_meta["subtypes"][0]
+          if category == ("%s - %s" % [type, subtype])
+            return category
+          end
+        elsif category == type
+          return category
+        end
+      end
     end
-    if types.include? 'Creature'
-      return :Creature
-    end
-    return :Spell
+    raise "Found an un-categorizable card! %s" % card_meta
   end
 
   def add_card_meta!(cards)

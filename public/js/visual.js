@@ -62,7 +62,17 @@
         return html_out;
     }
 
-    var categories = ['Land', 'Creature', 'Spell'];
+    var categories = [
+        'Land',
+        'Creature',
+        'Sorcery',
+        'Instant',
+        'Artifact',
+        'Artifact - Equipment',
+        'Enchantment',
+        'Enchantment - Aura',
+        'Planeswalker',
+    ];
     module.categories = categories;
 
     function draw_cards(list_types, card_actions, callback){
