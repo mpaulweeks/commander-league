@@ -11,9 +11,9 @@ class Oracle
     @multiverse = Store.load_multiverse
     @categories = [
       'Land',
+      'Creature',
       'Enchantment - Aura',
       'Enchantment',
-      'Creature',
       'Artifact - Equipment',
       'Artifact',
       'Planeswalker',
