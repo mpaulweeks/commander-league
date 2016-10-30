@@ -20,7 +20,7 @@ do
   then
     echo "Server is offline, starting back up..."
     sleep 5
-    nohup ./shell/server.sh &
+    ./shell/background.sh
   fi
 
   sleep 60
