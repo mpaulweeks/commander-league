@@ -1,7 +1,11 @@
 
 class FilePath
-  def self.database
-    'json/database.json'
+  def self.users
+    'json/db/users.json'
+  end
+
+  def self.prices
+    'json/db/prices.json'
   end
 
   def self.all_cards_extras
@@ -22,5 +26,13 @@ class FilePath
 
   def self.lookup
     'public/json/lookup.json'
+  end
+
+  def self.test_users
+    'json/test/users.json'
+  end
+
+  def self.test_prices
+    'json/test/prices.json'
   end
 end

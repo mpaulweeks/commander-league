@@ -1,5 +1,6 @@
 
 require "minitest/autorun"
+require_relative '../file_path'
 require_relative '../script/update_prices'
 
 require 'json'
@@ -7,12 +8,15 @@ require 'json'
 class UpdatePricesTest < Minitest::Test
 
   def setup
-    @test_path = 'rb/test/tmp/database.json'
-    FileUtils.cp('json/test/database.json', @test_path)
+    @test_users = 'rb/test/tmp/users.json'
+    @test_prices = 'rb/test/tmp/prices.json'
+    FileUtils.cp(FilePath.test_users, @test_users)
+    FileUtils.cp(FilePath.test_prices, @test_prices)
   end
 
   def assert_changes(card_name, market_price, expected_before, expected_after)
-    FilePath.stub :database, @test_path do
+    FilePath.stub :users, @test_users do
+    FilePath.stub :prices, @test_prices do
       Market.stub :get_price, market_price do
         before_db = Store.load_database
         assert_equal expected_before, before_db[Store::CARD][card_name]['price']
@@ -20,6 +24,7 @@ class UpdatePricesTest < Minitest::Test
         after_db = Store.load_database
         assert_equal expected_after, after_db[Store::CARD][card_name]['price']
       end
+    end
     end
   end
 

@@ -1,5 +1,6 @@
 
 require "minitest/autorun"
+require_relative '../file_path'
 require_relative '../repo'
 
 require 'json'
@@ -7,17 +8,21 @@ require 'json'
 class RepoTest < Minitest::Test
 
   def setup
-    @test_path = 'rb/test/tmp/database.json'
+    @test_users = 'rb/test/tmp/users.json'
+    @test_prices = 'rb/test/tmp/prices.json'
     @market_price = 25
     @repo = Repo.new
-    FileUtils.cp('json/test/database.json', @test_path)
+    FileUtils.cp(FilePath.test_users, @test_users)
+    FileUtils.cp(FilePath.test_prices, @test_prices)
   end
 
   def insert_statuses(user_slug, statuses)
-    FilePath.stub :database, @test_path do
+    FilePath.stub :users, @test_users do
+    FilePath.stub :prices, @test_prices do
       Market.stub :get_price, @market_price do
         return @repo.create_statuses!(user_slug, statuses)
       end
+    end
     end
   end
 
@@ -36,8 +41,10 @@ class RepoTest < Minitest::Test
       :sideboard => sideboard,
     }
     assert_equal res[:cards][card_name], expected
-    FilePath.stub :database, @test_path do
+    FilePath.stub :users, @test_users do
+    FilePath.stub :prices, @test_prices do
       res = @repo.load_user_cards(user_slug)
+    end
     end
     assert_equal res[:cards][card_name], expected
   end

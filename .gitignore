@@ -48,6 +48,7 @@ nohup.out
 
 # personal
 /json/database.json
+/json/db/
 
 # env specific
 server.pid

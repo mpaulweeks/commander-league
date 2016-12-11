@@ -1,14 +1,15 @@
 
 require "minitest/autorun"
+require_relative '../file_path'
 require_relative '../script/insert_transaction'
 require_relative '../repo'
 
 class InsertTransactionTest < Minitest::Test
 
   def setup
-    @test_path = 'rb/test/tmp/database.json'
+    @test_users = 'rb/test/tmp/users.json'
     @repo = Repo.new
-    FileUtils.cp('json/test/database.json', @test_path)
+    FileUtils.cp(FilePath.test_users, @test_users)
   end
 
   def get_balance
@@ -22,7 +23,7 @@ class InsertTransactionTest < Minitest::Test
   end
 
   def test_insert_transaction
-    FilePath.stub :database, @test_path do
+    FilePath.stub :users, @test_users do
       before_balance = get_balance
       delta = -1234
       insert_transaction(delta)

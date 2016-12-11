@@ -1,5 +1,6 @@
 
 require "minitest/autorun"
+require_relative '../file_path'
 require_relative '../store'
 
 require 'json'
@@ -12,7 +13,8 @@ class StoreTest < Minitest::Test
   end
 
   def test_load_database
-    FilePath.stub :database, 'json/test/database.json' do
+    FilePath.stub :users, FilePath.test_users do
+    FilePath.stub :prices, FilePath.test_prices do
       db_cache = Store.load_database
 
       assert_includes db_cache[Store::USER], 'mpw'
@@ -22,6 +24,7 @@ class StoreTest < Minitest::Test
 
       assert_equal 2, db_cache[Store::WALLET]['mpw'].length
       assert_equal 1, db_cache[Store::WALLET]['qwerty'].length
+    end
     end
   end
 end
