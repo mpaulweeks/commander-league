@@ -24,6 +24,7 @@ class InsertTransactionTest < Minitest::Test
 
   def test_insert_transaction
     FilePath.stub :users, @test_users do
+    FilePath.stub :prices, FilePath.test_prices do
       before_balance = get_balance
       delta = -1234
       insert_transaction(delta)
@@ -34,6 +35,7 @@ class InsertTransactionTest < Minitest::Test
       end
       refute_equal after_balance, before_balance
       assert_equal after_balance, expected_balance
+    end
     end
   end
 end
