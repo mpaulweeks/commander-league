@@ -1,2 +1,2 @@
 #!/bin/sh
-nohup ./bash/server.sh > /dev/null &
+nohup ./bash/server_commander.sh > /dev/null &
