@@ -1,4 +1,9 @@
 
+# first run
+# rvm cron setup
+# then copy setup from
+# crontab -e
+
 # Example of job definition:
 # .---------------- minute (0 - 59)
 # |  .------------- hour (0 - 23)
@@ -9,4 +14,4 @@
 # *  *  *  *  * user-name command to be executed
 
 * * * * * ec2-user cd /home/ec2-user/commander-league && ./bash/cron_commander.sh
-* 10 * * * ec2-user cd /home/ec2-user/commander-league && ./bash/cron_update_prices.sh
+0 10 * * * ec2-user cd /home/ec2-user/commander-league && ./bash/cron_update_prices.sh
