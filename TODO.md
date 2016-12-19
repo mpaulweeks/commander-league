@@ -1,7 +1,5 @@
 # Todo
 
-- cron is currently broken, root can't find sinatra gem
-- update mtgjson
 - fix combodeck api hit
 - find a way to split data by year
 

@@ -26,7 +26,7 @@
 1 Desperate Ravings
 1 Urza's Rage
 1 Counterflux
-1 Ætherize
+1 Aetherize
 1 Fact or Fiction
 1 Reins of Power
 1 Steam Augury
@@ -68,7 +68,7 @@
 1 Awaken the Sky Tyrant
 1 Rite of the Raging Storm
 1 Mystic Confluence
-1 Æthersnatch
+1 Aethersnatch
 1 Mirror Match
 1 Mizzix's Mastery
 1 Meteor Blast

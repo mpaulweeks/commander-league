@@ -1635,13 +1635,13 @@
             "price": null,
             "price_fetched": null
         },
-        "\u00c6therize": {
-            "name": "\u00c6therize",
+        "Aetherize": {
+            "name": "Aetherize",
             "price": null,
             "price_fetched": null
         },
-        "\u00c6thersnatch": {
-            "name": "\u00c6thersnatch",
+        "Aethersnatch": {
+            "name": "Aethersnatch",
             "price": null,
             "price_fetched": null
         }
