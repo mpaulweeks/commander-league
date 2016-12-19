@@ -53,8 +53,8 @@ class RepoTest < Minitest::Test
     assert_status_inserted 'Fog', 0, 1
   end
 
-  def test_insert_maindeck_unicode
-    assert_status_inserted 'Æther Burst', 0, 1
+  def test_insert_maindeck_unusual
+    assert_status_inserted 'Aether Burst', 0, 1
   end
 
   def test_insert_maindeck_fake
