@@ -1,6 +1,5 @@
 # Todo
 
-- fix combodeck api hit
 - find a way to split data by year
 
 - add "visual spoiler" type view, full page, split by category
