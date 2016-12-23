@@ -16,11 +16,16 @@ class Repo
 
   def initialize(card_ref=nil)
     @card_ref = card_ref || CardRef.new
+    @stale_users = Store.load_database()[Store::USER]
   end
 
   def load_user_slugs
     db_cache = Store.load_database
     return db_cache[Store::USER].collect{ |user_slug, hash| user_slug }
+  end
+
+  def get_stale_users
+    return @stale_users
   end
 
   def load_user_info(db_cache, user_slug)

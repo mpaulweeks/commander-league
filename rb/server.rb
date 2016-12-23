@@ -18,6 +18,7 @@ _user_slugs = _repo.load_user_slugs
 def get_cards_json(repo, oracle, user_slug)
   data = repo.load_user_cards(user_slug)
   oracle.add_card_meta!(data[:cards])
+  data[:navbar] = {:users => repo.get_stale_users}
   return JSON.generate(data)
 end
 
@@ -26,6 +27,7 @@ def get_diff_json(repo, oracle, user_slug, params)
   to = params['to']
   data = Differ.get_diff(repo, user_slug, from, to)
   oracle.add_card_meta!(data[:cards])
+  data[:navbar] = {:users => repo.get_stale_users}
   return JSON.generate(data)
 end
 

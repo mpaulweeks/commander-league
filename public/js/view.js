@@ -111,11 +111,11 @@
     var TITLE_HTML = '{2} {1} {2}';
 
     function init(){
-        visual.draw_navbar();
 
         var data_str = $('#server_data').html()
         $('#server_data').empty()
         var data = JSON.parse(data_str);
+        visual.draw_navbar(data);
 
         var mana_symbol_html = get_color_html(data.user.colors);
         var title_html = str_format(TITLE_HTML, data.user.name, mana_symbol_html);

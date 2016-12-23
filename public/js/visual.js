@@ -152,19 +152,14 @@
                         <li><a href="{2}">{3}</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/mpw{1}">M. Paul</a></li>
-                        <li><a href="/eliah{1}">Eliah</a></li>
-                        <li><a href="/qwerty{1}">Patrick</a></li>
-                        <li><a href="/gant{1}">Dan</a></li>
-                        <li><a href="/edmond{1}">Edmond</a></li>
-                        <li><a href="/kevin{1}">Kevin</a></li>
-                        <li><a href="/mike{1}">Mike</a></li>
+                        {1}
                     </ul>
                 </div>
             </div>
         </nav>
     `;
-    module.draw_navbar = function(){
+    var user_html = '<li><a href="/{2}{1}">{3}</a></li>';
+    module.draw_navbar = function(data){
         var pathname = window.location.pathname;
 
         var link_postfix = '';
@@ -178,9 +173,15 @@
             switch_message = 'goto edit';
         }
 
+        console.log(data);
+        var links = '';
+        Object.values(data.navbar.users).forEach(function (user){
+            links += str_format(user_html, link_postfix, user.slug, user.name);
+        });
+
         $('#nav-parent').html(str_format(
             nav_html,
-            link_postfix,
+            links,
             switch_url,
             switch_message
         ));
