@@ -24,13 +24,19 @@ module Store
   end
 
   def Store.glass_database!()
-    db_hash = {
+    users_hash = {
       Store::USER => {},
       Store::STATUS => {},
       Store::WALLET => {},
     }
-    File.open(self.database_path, "w") do |f|
-      f.write(db_hash.to_json)
+    File.open(self.users_path, "w") do |f|
+      f.write(users_hash.to_json)
+    end
+    prices_hash = {
+      Store::CARD => {}
+    }
+    File.open(self.prices_path, "w") do |f|
+      f.write(prices_hash.to_json)
     end
   end
 

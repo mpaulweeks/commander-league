@@ -1,22 +1,28 @@
 
 require_relative '../../store'
+require_relative '../../card_ref'
 require_relative '../../repo'
 
-DECK_FILES = [
-  {:colors => Set.new(['U','G']), :deck => 'simic'},
-  {:colors => Set.new(['W','B']), :deck => 'orzhov'},
-  {:colors => Set.new(['B','G']), :deck => 'golgari'},
-  {:colors => Set.new(['W','R']), :deck => 'boros'},
-  {:colors => Set.new(['U','R']), :deck => 'izzet'},
-]
+DECK_FILES = {
+  'simic' => {:colors => ['U','G'], :path => '2015/simic'},
+  'orzhov' => {:colors => ['W','B'], :path => '2015/orzhov'},
+  'golgari' => {:colors => ['B','G'], :path => '2015/golgari'},
+  'boros' => {:colors => ['W','R'], :path => '2015/boros'},
+  'izzet' => {:colors => ['U','R'], :path => '2015/izzet'},
+  'atraxa' => {:colors => ['G', 'W', 'U', 'B'], :path => '2016/atraxa'},
+  'breya' => {:colors => ['W', 'U', 'B', 'R'], :path => '2016/breya'},
+  'kynaios' => {:colors => ['R', 'G', 'W', 'U'], :path => '2016/kynaios'},
+  'saskia' => {:colors => ['B', 'R', 'G', 'W'], :path => '2016/saskia'},
+  'yidris' => {:colors => ['U', 'B', 'R', 'G'], :path => '2016/yidris'},
+}
 
-def create_user(slug, name, colors, balance)
+def create_user(slug, name, deck_data, balance)
   user_hash = {}
   wallet_hash = {}
   user_hash[slug] = {
     :slug => slug,
     :name => name,
-    :colors => colors,
+    :colors => deck_data[:colors],
   }
   wallet_hash[slug] = [{
     :user_slug => slug,
@@ -30,9 +36,9 @@ def create_user(slug, name, colors, balance)
   Store.update_database!(db_hash)
 end
 
-def create_deck(user_slug, file_name)
-  all_cards = Store.load_all_cards()
-  all_cards_lower = Hash[all_cards.map{|card_name, card| [card_name.downcase, card]}]
+def create_deck(user_slug, deck_data)
+  card_ref = CardRef.new
+
   db_cache = Store.load_database
 
   status_hash = {}
@@ -40,7 +46,7 @@ def create_deck(user_slug, file_name)
 
   card_hash = {}
   card_statuses = Array.new
-  file_path = "data/#{file_name}.txt"
+  file_path = "data/#{deck_data[:path]}.txt"
   file_text = File.readlines(file_path)
   file_text.each do |line|
     line = line.strip()
@@ -49,12 +55,12 @@ def create_deck(user_slug, file_name)
     end
     space = line.index(' ')
     quantity = Integer(line.slice(0..space))
-    card_name = line.slice((space+1)..-1)
-    if not all_cards_lower.has_key?(card_name.downcase)
+    card_name = line.slice((space+1)..-1).gsub(' // ', '/')
+    if not card_ref.has_card?(card_name)
       puts 'Card not found: %s' % card_name.downcase
-      next
+      raise 'Aborting'
     end
-    card = all_cards_lower[card_name.downcase]
+    card = card_ref.get_card(card_name)
     card_name = card['name']
     card_status = {
       :user_slug => user_slug,
@@ -85,21 +91,19 @@ end
 
 
 if __FILE__ == $PROGRAM_NAME
+  # Store.glass_database!
+
   puts "Player slug: "
   slug = gets.chomp
   puts "Player name: "
   name = gets.chomp
-  puts "Player colors: "
-  colors = gets.chomp.split(',')
-  puts "Player balance: "
-  balance = gets.chomp.to_i
-  create_user slug, name, colors, balance
+  puts "Player deck: "
+  deck_name = gets.chomp
+  # puts "Player balance: "
+  # balance = gets.chomp.to_i
+  balance = 1000
 
-  deck_file = ''
-  DECK_FILES.each do |deck_hash|
-    if deck_hash[:colors] == Set.new(colors)
-      deck_file = deck_hash[:deck]
-    end
-  end
-  create_deck slug, deck_file
+  deck_data = DECK_FILES[deck_name]
+  create_user slug, name, deck_data, balance
+  create_deck slug, deck_data
 end

@@ -1,11 +1,11 @@
 
 class FilePath
   def self.users
-    'json/db/users.json'
+    'json/db/2016/users.json'
   end
 
   def self.prices
-    'json/db/prices.json'
+    'json/db/2016/prices.json'
   end
 
   def self.all_cards_extras
