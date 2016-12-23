@@ -85,15 +85,27 @@
         [["W", "R"], "rw"],
         [["U", "R"], "ur"],
     ]
-    function get_color_file(colors){
-        var color_file = '';
-        var sorted_colors = JSON.stringify(colors.concat().sort());
-        color_mapping.forEach(function (mapping){
-            if (sorted_colors == JSON.stringify(mapping[0].concat().sort())){
-                color_file = mapping[1];
+    function get_color_html(colors){
+        function two_colors_html(two_colors){
+            var color_file = 'null';
+            var sorted_colors = JSON.stringify(two_colors.concat().sort());
+            color_mapping.forEach(function (mapping){
+                if (sorted_colors == JSON.stringify(mapping[0].concat().sort())){
+                    color_file = mapping[1];
+                }
+            });
+            return str_format(MANA_SYMBOL_HTML, color_file);
+        };
+        var color_html = '';
+        if (colors.length > 2){
+            for (var i = 0; i < colors.length/2; i += 1){
+                var two_colors = [colors[i], colors[i+2]];
+                color_html += two_colors_html(two_colors);
             }
-        });
-        return color_file;
+        } else {
+            color_html = two_colors_html(colors);
+        }
+        return color_html;
     }
     var MANA_SYMBOL_HTML = '<img class="mana-symbol" src="/img/mana-symbol-{1}.png" />';
     var TITLE_HTML = '{2} {1} {2}';
@@ -105,7 +117,7 @@
         $('#server_data').empty()
         var data = JSON.parse(data_str);
 
-        var mana_symbol_html = str_format(MANA_SYMBOL_HTML, get_color_file(data.user.colors));
+        var mana_symbol_html = get_color_html(data.user.colors);
         var title_html = str_format(TITLE_HTML, data.user.name, mana_symbol_html);
         $('#user_name').html(title_html);
 
