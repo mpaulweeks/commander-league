@@ -33,7 +33,7 @@ end
 
 def validate_user_slug(user_slugs, user_slug)
   unless user_slugs.include? user_slug
-    halt 404
+    halt 404, "No user found named: #{user_slug}"
   end
 end
 
@@ -43,6 +43,11 @@ get %r{(.+)/$} do |r| redirect r; end;
 get '/' do
   random_slug = _user_slugs.sample
   redirect to("/#{random_slug}/edit"), 303
+end
+
+get '/:user_slug' do |user_slug|
+  validate_user_slug(_user_slugs, user_slug)
+  redirect to("/#{user_slug}/edit"), 303
 end
 
 get '/:user_slug/edit' do |user_slug|
