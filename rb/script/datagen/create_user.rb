@@ -99,8 +99,8 @@ if __FILE__ == $PROGRAM_NAME
   name = gets.chomp
   puts "Player deck: "
   deck_name = gets.chomp
-  # puts "Player balance: "
-  # balance = gets.chomp.to_i
+  puts "Player balance: "
+  balance = gets.chomp.to_i
   balance = 1000
 
   deck_data = DECK_FILES[deck_name]
