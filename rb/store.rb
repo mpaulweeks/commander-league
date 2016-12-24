@@ -57,7 +57,7 @@ module Store
   end
 
   def Store.update_users!(new_hash)
-    db_hash = load_database()
+    db_hash = load_users
     [USER, STATUS, WALLET].each do |key|
       if new_hash.has_key?(key)
         db_hash[key] = db_hash[key].merge(new_hash[key])
@@ -69,7 +69,7 @@ module Store
   end
 
   def Store.update_prices!(new_hash)
-    db_hash = load_prices()
+    db_hash = load_prices
     [CARD].each do |key|
       if new_hash.has_key?(key)
         db_hash[key] = db_hash[key].merge(new_hash[key])

@@ -13,7 +13,7 @@
     module.create_statuses = function(user_slug, cards, callback){
         data = JSON.stringify(cards)
         $.ajax({
-            url: 'api/user/' + user_slug + '/status',
+            url: '/api/user/' + user_slug + '/status',
             type: 'POST',
             contentType: "charset=utf-8",
             data: data,
