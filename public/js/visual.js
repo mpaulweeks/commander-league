@@ -173,7 +173,6 @@
             switch_message = 'goto edit';
         }
 
-        console.log(data);
         var links = '';
         Object.values(data.navbar.users).forEach(function (user){
             links += str_format(user_html, link_postfix, user.slug, user.name);

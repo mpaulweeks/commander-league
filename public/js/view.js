@@ -146,7 +146,6 @@
             evt.preventDefault();
             var card_name = $("#lookup-select").val();
             binder.add_card_to_sideboard(card_name, function (){
-                console.log("callback");
                 $("#lookup-select").select2("data", null);
             });
         });
