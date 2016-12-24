@@ -149,7 +149,8 @@
                 </button>
                 <div class="collapse navbar-collapse navHeaderCollapse">
                     <ul class="nav navbar-nav navbar-left">
-                        <li><a href="{2}">{3}</a></li>
+                        <li><a href="/{2}/edit">EDIT</a></li>
+                        <li><a href="/{2}/diff">DIFF</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {1}
@@ -158,31 +159,20 @@
             </div>
         </nav>
     `;
-    var user_html = '<li><a href="/{2}{1}">{3}</a></li>';
+    var user_html = '<li><a href="/{2}/{1}">{3}</a></li>';
     module.draw_navbar = function(data){
         var pathname = window.location.pathname;
-
-        var link_postfix = '';
-        var switch_url = pathname + '/diff';
-        var switch_message = 'view diff';
-
-        var diff_index = pathname.indexOf("/diff");
-        if (diff_index > 0){
-            link_postfix = '/diff';
-            switch_url = pathname.substring(0, diff_index);
-            switch_message = 'goto edit';
-        }
+        var link_type = pathname.split("/")[2];
 
         var links = '';
         Object.values(data.navbar.users).forEach(function (user){
-            links += str_format(user_html, link_postfix, user.slug, user.name);
+            links += str_format(user_html, link_type, user.slug, user.name);
         });
 
         $('#nav-parent').html(str_format(
             nav_html,
             links,
-            switch_url,
-            switch_message
+            data.user.slug
         ));
     }
 

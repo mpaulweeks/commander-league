@@ -42,10 +42,10 @@ get %r{(.+)/$} do |r| redirect r; end;
 
 get '/' do
   random_slug = _user_slugs.sample
-  redirect to("/#{random_slug}"), 303
+  redirect to("/#{random_slug}/edit"), 303
 end
 
-get '/:user_slug' do |user_slug|
+get '/:user_slug/edit' do |user_slug|
   validate_user_slug(_user_slugs, user_slug)
   data = get_cards_json(_repo, _oracle, user_slug)
   erb :index, :locals => {:data => data}
