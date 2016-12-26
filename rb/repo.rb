@@ -83,10 +83,10 @@ class Repo
     return out_cards
   end
 
-  def load_user_cards(user_slug)
+  def load_user_cards(user_slug, cutoff_timestamp=nil)
     db_cache = Store.load_database()
     user_hash = self.load_user_info(db_cache, user_slug)
-    card_hash = self.load_cards(db_cache, user_slug)
+    card_hash = self.load_cards(db_cache, user_slug, cutoff_timestamp=nil)
     out_hash = {:user => user_hash, :cards => card_hash}
     return out_hash
   end

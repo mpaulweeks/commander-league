@@ -10,6 +10,9 @@
 	padding: 1em;
 	border: 0.3em double black;
 }
+.cardimage {
+  width: 15.75em;
+}
 @media only screen and (max-device-width: 568px) {
 	.cardimage {
 		width: 8.965em;

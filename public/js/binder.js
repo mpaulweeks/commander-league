@@ -171,7 +171,7 @@
 
     function draw(){
         visual.cards = binder.cards;
-        var cards_by_category_then_list = visual.draw_cards(list_types, card_actions, draw);
+        var cards_by_category_then_list = visual.draw_cards(list_types, card_actions, false, draw);
 
         $('#balance').html(format_price(binder.user.balance));
         var swap_total = 0;

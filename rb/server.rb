@@ -15,8 +15,8 @@ _repo = Repo.new _card_ref
 _oracle = Oracle.new _card_ref
 _user_slugs = _repo.load_user_slugs
 
-def get_cards_json(repo, oracle, user_slug)
-  data = repo.load_user_cards(user_slug)
+def get_cards_json(repo, oracle, user_slug, cutoff_timestamp=nil)
+  data = repo.load_user_cards(user_slug, cutoff_timestamp)
   oracle.add_card_meta!(data[:cards])
   data[:navbar] = {:users => repo.get_stale_users}
   return JSON.generate(data)
@@ -47,13 +47,26 @@ end
 
 get '/:user_slug' do |user_slug|
   validate_user_slug(_user_slugs, user_slug)
-  redirect to("/#{user_slug}/edit"), 303
+  redirect to("/#{user_slug}/view"), 303
 end
 
 get '/:user_slug/edit' do |user_slug|
   validate_user_slug(_user_slugs, user_slug)
   data = get_cards_json(_repo, _oracle, user_slug)
   erb :index, :locals => {:data => data}
+end
+
+get '/:user_slug/view' do |user_slug|
+  validate_user_slug(_user_slugs, user_slug)
+  cutoff = params['timestamp']
+  data = get_cards_json(_repo, _oracle, user_slug, cutoff)
+  erb :view, :locals => {:data => data}
+end
+
+get '/:user_slug/diff' do |user_slug|
+  validate_user_slug(_user_slugs, user_slug)
+  data = get_diff_json(_repo, _oracle, user_slug, params)
+  erb :diff, :locals => {:data => data}
 end
 
 get '/api/user/:user_slug' do |user_slug|
@@ -69,12 +82,6 @@ post '/api/user/:user_slug/status' do |user_slug|
   new_data = _repo.create_statuses!(user_slug, status_hash)
   _oracle.add_card_meta!(new_data[:cards])
   return JSON.generate(new_data)
-end
-
-get '/:user_slug/diff' do |user_slug|
-  validate_user_slug(_user_slugs, user_slug)
-  data = get_diff_json(_repo, _oracle, user_slug, params)
-  erb :diff, :locals => {:data => data}
 end
 
 get '/api/user/:user_slug/diff' do |user_slug|

@@ -194,9 +194,7 @@
         );
     }
 
-    var date_args = ["from", "to"];
-
-    function load_dates(){
+    function load_dates(date_args){
         date_args.forEach(function (arg){
             var query = getParameterByName(arg);
             var dp_val = convert_to_datepicker(query);
@@ -204,7 +202,7 @@
         });
     }
 
-    function reload_diff(){
+    function reload_page(date_args){
         var args = {};
         date_args.forEach(function (arg){
             var str = convert_from_datepicker($("#date-" + arg).val());
@@ -238,14 +236,46 @@
             ['added', ''],
             ['removed', ''],
         ];
-        visual.draw_cards(list_types, {}, null);
+        visual.draw_cards(list_types, {}, false, null);
 
         $(".datepicker").datepicker();
-        load_dates();
-        $(".datepicker").on("change", reload_diff);
+        var date_args = ["from", "to"];
+        load_dates(date_args);
+        $(".datepicker").on("change", function(){
+            reload_page(date_args);
+        });
         $("#date-reset").on("click", function(){
             $(".datepicker").val("");
-            reload_diff();
+            reload_page(date_args);
+        });
+    };
+
+    module.view = function(){
+        var data = init();
+
+        var cards = data.cards;
+        var out = {};
+        for (var card_name in cards){
+            var card = cards[card_name];
+            if (card.maindeck > 0){
+                out[card.name] = card;
+            }
+        }
+        visual.cards = out;
+        var list_types = [
+            ['maindeck', ''],
+        ];
+        visual.draw_cards(list_types, {}, true, null);
+
+        $(".datepicker").datepicker();
+        var date_args = ["timestamp"];
+        load_dates(date_args);
+        $(".datepicker").on("change", function(){
+            reload_page(date_args);
+        });
+        $("#date-reset").on("click", function(){
+            $(".datepicker").val("");
+            reload_page(date_args);
         });
     };
 

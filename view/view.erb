@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%= erb :_header %>
+</head>
+<body>
+<span id="nav-parent"></span>
+<div class="container">
+
+    <span id='server_data' class="hidden">
+        <%= data %>
+    </span>
+
+    <h2 id="user_name" class="text-center">loading js...</h2>
+    <hr/>
+
+    <div class="col-md-12 text-center">
+        <label>Date:</label>
+        <input type="text" id="date-timestamp" class="datepicker" size="12" placeholder="today"/>
+        <button type="text" id="date-reset">RESET</button>
+    </div>
+    <div class="col-md-12"><hr/></div>
+    <div id="maindeck" class="col-md-12 cardlistdisplay"></div>
+
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        Module("main").view();
+    });
+</script>
+<script src="/js/gatherer_helper.js"></script>
+<script src="/js/autocard.js"></script>
+</body>
+</html>

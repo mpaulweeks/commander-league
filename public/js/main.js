@@ -6,6 +6,10 @@
         view.index();
     };
 
+    module.view = function(){
+        view.view();
+    };
+
     module.diff = function(){
         view.diff();
     };

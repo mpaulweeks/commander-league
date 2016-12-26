@@ -26,7 +26,8 @@
     module.str_format = str_format;
 
     var INCREMENT_SIDEBOARD = '<input type="button" class="action" data-func="increment_sideboard" value="+"/>';
-    var CARD = '<div class="col-md-12"></div><div class="col-md-{5}" data-id="{1}">{2} {3}x <a href="http://combodeck.net/Query/{1}" target="_blank" class="mtgcard">{1}</a></div>{4}';
+    var CARD = '<div class="col-md-12"></div><div class="col-md-{5}" data-id="{1}">{2} {3}x <a href="http://combodeck.net/Card/{1}" target="_blank" class="mtgcard">{1}</a></div>{4}';
+    var CARD_IMG = '<a href="http://combodeck.net/Card/{1}" target="_blank"><img class="cardimage" alt="{1}" src="http://gatherer.wizards.com/Handlers/Image.ashx?type=card&amp;multiverseid={2}"><img></a>';
     var CATEGORY = '<div class="col-md-12 category text-center">{1} ({2})</div>';
     var PRICE = '<div class="col-md-3 price text-right">{1}</div>';
 
@@ -38,8 +39,17 @@
     }
     module.format_price = format_price;
 
-    function get_card_html(card, property, display){
+    function get_card_html(card, property, display, as_image){
         var count = card[property];
+
+        if (as_image){
+            var html_out = "";
+            for (var i = 0; i < count; i++){
+                html_out += str_format(CARD_IMG, card.name, card.multiverse);
+            }
+            return html_out;
+        }
+
         if (multiples_ok(card) && property == "sideboard"){
             display += INCREMENT_SIDEBOARD;
         }
@@ -53,11 +63,14 @@
         return str_format(CARD, card.name, display, count, price_html, card_width);
     }
 
-    function get_cards_html(cards, list_type){
+    function get_cards_html(cards, list_type, as_image){
         var html_out = "";
         for (var i = 0; i < cards.length; i++){
             var card = cards[i];
-            html_out += get_card_html(card, list_type[0], list_type[1]);
+            html_out += get_card_html(card, list_type[0], list_type[1], as_image);
+        }
+        if (as_image){
+            html_out += "<br/>";
         }
         return html_out;
     }
@@ -75,7 +88,7 @@
     ];
     module.categories = categories;
 
-    function draw_cards(list_types, card_actions, callback){
+    function draw_cards(list_types, card_actions, as_image, callback){
         var input_cards = module.cards;
 
         var cards_by_category_then_list = {};
@@ -116,7 +129,7 @@
             categories.forEach(function (category){
                 var matching_dict = cards_by_category_then_list[category][list_label];
                 if (matching_dict.count > 0){
-                    var cards_html = get_cards_html(matching_dict.cards, list_type);
+                    var cards_html = get_cards_html(matching_dict.cards, list_type, as_image);
                     total_html += str_format(CATEGORY, category, matching_dict.count) + cards_html;
                 }
             });
@@ -149,6 +162,7 @@
                 </button>
                 <div class="collapse navbar-collapse navHeaderCollapse">
                     <ul class="nav navbar-nav navbar-left">
+                        <li><a href="/{2}/view">VIEW</a></li>
                         <li><a href="/{2}/edit">EDIT</a></li>
                         <li><a href="/{2}/diff">DIFF</a></li>
                     </ul>
