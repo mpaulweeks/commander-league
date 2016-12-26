@@ -6,10 +6,10 @@ require_relative '../store'
 require_relative '../repo'
 require_relative '../market'
 
-STALE_DAYS = 1
+STALE_DAYS = 5
 STALE_SECONDS = STALE_DAYS*60*60*24
 
-BATCH_MAX = 10
+BATCH_MAX = 100
 
 def update_prices
   puts "Running price updater..."

@@ -1,6 +1,6 @@
 # Todo
 
-- find a way to split data by year
+- find a way to view previous year's data
 
 - add "visual spoiler" type view, full page, split by category
 
