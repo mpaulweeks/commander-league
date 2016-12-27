@@ -42,7 +42,7 @@ get %r{(.+)/$} do |r| redirect r; end;
 
 get '/' do
   random_slug = _user_slugs.sample
-  redirect to("/#{random_slug}/edit"), 303
+  redirect to("/#{random_slug}"), 303
 end
 
 get '/:user_slug' do |user_slug|
@@ -58,8 +58,9 @@ end
 
 get '/:user_slug/view' do |user_slug|
   validate_user_slug(_user_slugs, user_slug)
-  cutoff = params['timestamp']
-  data = get_cards_json(_repo, _oracle, user_slug, cutoff)
+  cutoff_str = params['timestamp']
+  cutoff_timestamp = cutoff_str ? Time.parse(cutoff_str) : Store.now_time
+  data = get_cards_json(_repo, _oracle, user_slug, cutoff_timestamp)
   erb :view, :locals => {:data => data}
 end
 
