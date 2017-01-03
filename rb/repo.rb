@@ -16,7 +16,7 @@ class Repo
 
   def initialize(card_ref=nil)
     @card_ref = card_ref || CardRef.new
-    @stale_users = Store.load_database()[Store::USER]
+    @stale_users = Store.load_database()[Store::USER].values
   end
 
   def load_user_slugs

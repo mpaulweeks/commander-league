@@ -179,7 +179,12 @@
         var link_type = pathname.split("/")[2];
 
         var links = '';
-        Object.values(data.navbar.users).forEach(function (user){
+        var sorted_users = data.navbar.users.sort(function(a, b) {
+            var x = a.name;
+            var y = b.name;
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+        sorted_users.forEach(function (user){
             links += str_format(user_html, link_type, user.slug, user.name);
         });
 
