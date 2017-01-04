@@ -18,6 +18,10 @@ class MarketTest < Minitest::Test
     refute_equal 0, Market.get_price('Aetherspouts')
   end
 
+  def test_get_price_slash_workaround
+    assert_equal 0, Market.get_price('Trial/Error')
+  end
+
   def test_get_price_foil_only
     refute_equal 0, Market.get_price('Ikra Shidiqi, the Usurper')
   end

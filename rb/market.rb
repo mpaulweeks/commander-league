@@ -58,7 +58,7 @@ class Market
     card_dict = nil
     combodeck_name = card_name
     if self.is_split? card_name
-      combodeck_name = card_name.split('/')[0]
+      return 0  # unfortunate hack
     end
 
     puts "Looking up %s price via Combodeck" % combodeck_name
