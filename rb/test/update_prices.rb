@@ -12,16 +12,17 @@ class UpdatePricesTest < Minitest::Test
     @test_prices = 'rb/test/tmp/prices.json'
     FileUtils.cp(FilePath.test_users, @test_users)
     FileUtils.cp(FilePath.test_prices, @test_prices)
+    @store = Store.new
   end
 
   def assert_changes(card_name, market_price, expected_before, expected_after)
     FilePath.stub :users, @test_users do
     FilePath.stub :prices, @test_prices do
       Market.stub :get_price, market_price do
-        before_db = Store.load_database
+        before_db = @store.load_database
         assert_equal expected_before, before_db[Store::CARD][card_name]['price']
         update_prices
-        after_db = Store.load_database
+        after_db = @store.load_database
         assert_equal expected_after, after_db[Store::CARD][card_name]['price']
       end
     end

@@ -3,8 +3,9 @@ require_relative 'store'
 
 class CardRef
 
-  def initialize
-    @all_cards = Store.load_all_cards
+  def initialize(store)
+    @store = store
+    @all_cards = @store.load_all_cards
   end
 
   def get_card(card_name)

@@ -14,13 +14,14 @@ end
 
 class Repo
 
-  def initialize(card_ref=nil)
-    @card_ref = card_ref || CardRef.new
-    @stale_users = Store.load_database()[Store::USER].values
+  def initialize(card_ref=nil, year=nil)
+    @store = Store.new(year)
+    @card_ref = card_ref || CardRef.new(@store)
+    @stale_users = @store.load_database()[Store::USER].values
   end
 
   def load_user_slugs
-    db_cache = Store.load_database
+    db_cache = @store.load_database
     return db_cache[Store::USER].collect{ |user_slug, hash| user_slug }
   end
 
@@ -84,7 +85,7 @@ class Repo
   end
 
   def load_user_cards(user_slug, cutoff_timestamp=nil)
-    db_cache = Store.load_database()
+    db_cache = @store.load_database
     user_hash = self.load_user_info(db_cache, user_slug)
     card_hash = self.load_cards(db_cache, user_slug, cutoff_timestamp)
     out_hash = {:user => user_hash, :cards => card_hash}
@@ -111,7 +112,7 @@ class Repo
           card_name => card_hash,
         }
       }
-      Store.update_database!(store_hash)
+      @store.update_database!(store_hash)
     end
   end
 
@@ -124,7 +125,7 @@ class Repo
   end
 
   def create_statuses!(user_slug, statuses)
-    db_cache = Store.load_database
+    db_cache = @store.load_database
     old_user = self.load_user_info(db_cache, user_slug)
     old_cards = self.load_cards(db_cache, user_slug)
     to_save = []
@@ -161,18 +162,18 @@ class Repo
     if cards_added != 0
       raise ArgumentError.new("failed! num cards != removed. added: #{cards_added}")
     end
-    Store.insert_statuses!(user_slug, to_save)
+    @store.insert_statuses!(user_slug, to_save)
     if balance > 0
       wallet_entry = {
         :user_slug => user_slug,
         :delta => 0 - balance,
         :timestamp => Store.now_str,
       }
-      Store.insert_wallet!(user_slug, wallet_entry)
+      @store.insert_wallet!(user_slug, wallet_entry)
     end
 
     # refresh db cache, load current versions
-    db_cache = Store.load_database
+    db_cache = @store.load_database
     refreshed_cards = self.load_cards(db_cache, user_slug)
     updated_cards = {}
     to_save.each do |status_hash|
