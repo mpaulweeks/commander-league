@@ -86,6 +86,7 @@ post '/api/user/:user_slug/status' do |user_slug|
 end
 
 get '/api/user/:user_slug/diff' do |user_slug|
+  content_type(:json)
   validate_user_slug(_user_slugs, user_slug)
   data = get_diff_json(_repo, _oracle, user_slug, params)
   return data
