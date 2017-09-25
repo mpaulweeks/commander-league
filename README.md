@@ -4,6 +4,16 @@ http://edh.mpaulweeks.com
 
 [![Circle CI](https://circleci.com/gh/mpaulweeks/commander-league.svg?style=svg)](https://circleci.com/gh/mpaulweeks/commander-league)
 
+## install
+
+Might need to install `sinatra`, Ruby dependencies/installation was not documented :(
+
+See `crontab`
+
+## deploy
+
+Push changes to the `deploy` branch,  `cron_commander.sh` job will automatically pull changes and restart the server.
+
 ## Public Views
 
 ### /:user_slug
